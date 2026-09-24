@@ -122,9 +122,6 @@
     }
 
 
-   
-    
-
 
     /* =========================
        COFFEE GRID
@@ -204,7 +201,7 @@
        ========================= */
 
     .order-form {
-      max-width: 700px;
+      max-width: 750px;
       background: white;
       padding: 25px;
       border-radius: 12px;
@@ -244,8 +241,69 @@
     }
 
 
+    .add-order-button {
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      font-family: inherit;
+    }
+
+
+    /* =========================
+       SHIPPING
+       ========================= */
+
+    .shipping-option {
+      display: flex !important;
+      align-items: center;
+      gap: 10px;
+      font-weight: normal !important;
+      cursor: pointer;
+    }
+
+
+    .shipping-option input {
+      width: auto;
+      margin: 0;
+    }
+
+
+    .shipping-info {
+      color: #66584c;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-top: 8px;
+    }
+
+
+
+    /* =========================
+       ORDER LIMIT
+       ========================= */
+
+    .order-limit {
+      margin: 20px 0;
+      padding: 18px;
+      background: #f7f3eb;
+      border-left: 4px solid #8a5b35;
+      border-radius: 6px;
+    }
+
+
+    .order-limit p {
+      margin-bottom: 0;
+      line-height: 1.6;
+      color: #66584c;
+    }
+
+
+
+    /* =========================
+       ORDER SUMMARY
+       ========================= */
+
     .order-summary {
-      margin-top: 25px;
+      margin-top: 30px;
       padding: 20px;
       background: #f7f3eb;
       border-radius: 10px;
@@ -257,8 +315,58 @@
     }
 
 
+    .cart-empty {
+      color: #66584c;
+    }
+
+
+    .cart-item {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+
+
+    .cart-item-title {
+      font-weight: bold;
+      font-size: 1.05rem;
+      margin-bottom: 6px;
+    }
+
+
+    .cart-item-details {
+      line-height: 1.6;
+      color: #66584c;
+    }
+
+
+    .cart-item-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+
+    .remove-button {
+      background: none;
+      border: none;
+      color: #8a5b35;
+      cursor: pointer;
+      font-weight: bold;
+      padding: 5px;
+    }
+
+
     .summary-line {
       margin: 8px 0;
+    }
+
+
+    .summary-divider {
+      border-top: 1px solid #d6cabc;
+      margin: 15px 0;
     }
 
 
@@ -271,10 +379,17 @@
     }
 
 
+    .bag-count {
+      font-weight: bold;
+      color: #8a5b35;
+    }
+
+
     .order-button {
       border: none;
       cursor: pointer;
       font-size: 16px;
+      font-family: inherit;
     }
 
 
@@ -322,6 +437,12 @@
 
       .form-row {
         grid-template-columns: 1fr;
+      }
+
+
+      .order-button {
+        width: 100%;
+        margin: 5px 0;
       }
 
     }
@@ -591,19 +712,18 @@
 
 
     <p>
-      Select your coffee and roast preference,
-      then contact us to place your order.
+      Select your coffee, roast preference, and size,
+      then add it to your order.
+      You may mix different coffees up to a total of 3 bags.
     </p>
 
-
-    <!-- =========================
-         ORDER FORM
-         ========================= -->
 
     <div class="order-form">
 
 
-      <!-- CUSTOMER NAME -->
+      <!-- =========================
+           CUSTOMER INFORMATION
+           ========================= -->
 
       <div class="form-group">
 
@@ -621,8 +741,6 @@
 
 
 
-      <!-- CUSTOMER EMAIL -->
-
       <div class="form-group">
 
         <label for="customerEmail">
@@ -638,8 +756,6 @@
       </div>
 
 
-
-      <!-- CUSTOMER PHONE -->
 
       <div class="form-group">
 
@@ -657,7 +773,9 @@
 
 
 
-      <!-- COFFEE -->
+      <!-- =========================
+           COFFEE SELECTION
+           ========================= -->
 
       <div class="form-group">
 
@@ -665,10 +783,7 @@
           Coffee *
         </label>
 
-        <select
-          id="coffeeSelect"
-          onchange="updateOrder()"
-        >
+        <select id="coffeeSelect">
 
           <option
             value="Guatemalan Huehuetenango"
@@ -702,7 +817,7 @@
 
 
 
-      <!-- ROAST -->
+      <!-- ROAST LEVEL -->
 
       <div class="form-group">
 
@@ -710,10 +825,7 @@
           Roast Level *
         </label>
 
-        <select
-          id="roastSelect"
-          onchange="updateOrder()"
-        >
+        <select id="roastSelect">
 
           <option value="Light">
             Light
@@ -752,10 +864,7 @@
             Size *
           </label>
 
-          <select
-            id="sizeSelect"
-            onchange="updateOrder()"
-          >
+          <select id="sizeSelect">
 
             <option value="6">
               6 oz
@@ -777,16 +886,11 @@
             Quantity *
           </label>
 
-          <select
-            id="quantitySelect"
-            onchange="updateOrder()"
-          >
+          <select id="quantitySelect">
 
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
 
           </select>
 
@@ -796,56 +900,153 @@
 
 
 
-      <!-- ORDER SUMMARY -->
+      <!-- ADD TO ORDER -->
+
+      <div class="buttons">
+
+        <button
+          type="button"
+          class="button add-order-button"
+          onclick="addToOrder()"
+        >
+          + Add to Order
+        </button>
+
+      </div>
+
+
+
+      <!-- =========================
+           DELIVERY METHOD
+           ========================= -->
+
+      <div class="form-group">
+
+        <label>
+          Delivery Method
+        </label>
+
+
+        <label class="shipping-option">
+
+          <input
+            type="checkbox"
+            id="shippingCheckbox"
+            onchange="updateOrderSummary()"
+          >
+
+          Shipping
+
+        </label>
+
+
+        <p class="shipping-info">
+
+          Leave unchecked for <strong>Local Pickup</strong>.
+
+          <br>
+
+          Shipping:
+          1 bag $7 •
+          2 bags $8 •
+          3 bags FREE
+
+        </p>
+
+      </div>
+
+
+
+      <!-- =========================
+           ORDER LIMIT
+           ========================= -->
+
+      <div class="order-limit">
+
+        <strong>
+          Order Limit: Maximum 3 bags per order.
+        </strong>
+
+        <p>
+          Colorful Coffee Bean is a small-batch passion project
+          alongside my full-time job. To ensure every order
+          receives the time and attention needed for the best
+          possible roast quality, orders are limited to
+          3 bags at a time.
+        </p>
+
+      </div>
+
+
+
+      <!-- =========================
+           ORDER SUMMARY
+           ========================= -->
 
       <div class="order-summary">
 
         <h3>
-          Order Summary
+          Your Order
         </h3>
 
 
+        <div id="cartItems">
+
+          <p class="cart-empty">
+            Your order is currently empty.
+          </p>
+
+        </div>
+
+
+        <div class="summary-divider"></div>
+
+
         <div class="summary-line">
 
-          <strong>Coffee:</strong>
+          <strong>Total Bags:</strong>
 
-          <span id="summaryCoffee"></span>
+          <span
+            id="totalBags"
+            class="bag-count"
+          >
+            0
+          </span>
+
+          / 3
 
         </div>
 
 
         <div class="summary-line">
 
-          <strong>Roast:</strong>
+          <strong>Coffee Total:</strong>
 
-          <span id="summaryRoast"></span>
-
-        </div>
-
-
-        <div class="summary-line">
-
-          <strong>Size:</strong>
-
-          <span id="summarySize"></span>
+          $<span id="coffeeTotal">
+            0.00
+          </span>
 
         </div>
 
 
         <div class="summary-line">
 
-          <strong>Quantity:</strong>
+          <strong>Delivery:</strong>
 
-          <span id="summaryQuantity"></span>
+          <span id="deliveryMethod">
+            Local Pickup
+          </span>
 
         </div>
 
 
         <div class="summary-line">
 
-          <strong>Price Each:</strong>
+          <strong>Shipping:</strong>
 
-          $<span id="summaryPrice"></span>
+          <span id="shippingCost">
+            $0.00
+          </span>
 
         </div>
 
@@ -854,7 +1055,9 @@
 
           Total:
 
-          $<span id="summaryTotal"></span>
+          $<span id="grandTotal">
+            0.00
+          </span>
 
         </div>
 
@@ -862,7 +1065,9 @@
 
 
 
-      <!-- SEND BUTTONS -->
+      <!-- =========================
+           SEND ORDER
+           ========================= -->
 
       <div class="buttons">
 
@@ -952,10 +1157,36 @@ function filterCoffee() {
 
 
 /* =========================
-   UPDATE ORDER
+   SHOPPING CART
    ========================= */
 
-function updateOrder() {
+let orderItems = [];
+
+
+/* =========================
+   TOTAL BAG COUNT
+   ========================= */
+
+function getTotalBags() {
+
+  return orderItems.reduce(
+    function(total, item) {
+
+      return total + item.quantity;
+
+    },
+    0
+  );
+
+}
+
+
+
+/* =========================
+   ADD TO ORDER
+   ========================= */
+
+function addToOrder() {
 
   const coffeeSelect =
     document.getElementById("coffeeSelect");
@@ -991,6 +1222,23 @@ function updateOrder() {
     );
 
 
+  const currentBags =
+    getTotalBags();
+
+
+  if (
+    currentBags + quantity > 3
+  ) {
+
+    alert(
+      "Maximum order is 3 bags. Please remove an item or choose a smaller quantity."
+    );
+
+    return;
+
+  }
+
+
   let price;
 
 
@@ -1013,45 +1261,276 @@ function updateOrder() {
   }
 
 
-  const total =
-    price * quantity;
+  const item = {
+
+    coffee: coffee,
+
+    roast: roast,
+
+    size: size,
+
+    quantity: quantity,
+
+    price: price
+
+  };
 
 
-  document
-    .getElementById("summaryCoffee")
-    .textContent = coffee;
+  orderItems.push(item);
 
 
-  document
-    .getElementById("summaryRoast")
-    .textContent = roast;
-
-
-  document
-    .getElementById("summarySize")
-    .textContent = size + " oz";
-
-
-  document
-    .getElementById("summaryQuantity")
-    .textContent = quantity;
-
-
-  document
-    .getElementById("summaryPrice")
-    .textContent = price.toFixed(2);
-
-
-  document
-    .getElementById("summaryTotal")
-    .textContent = total.toFixed(2);
+  updateOrderSummary();
 
 }
 
 
 
 /* =========================
-   GET CUSTOMER INFORMATION
+   REMOVE ITEM
+   ========================= */
+
+function removeOrderItem(index) {
+
+  orderItems.splice(index, 1);
+
+  updateOrderSummary();
+
+}
+
+
+
+/* =========================
+   SHIPPING COST
+   ========================= */
+
+function calculateShipping(totalBags) {
+
+  const shipping =
+    document
+      .getElementById("shippingCheckbox")
+      .checked;
+
+
+  if (!shipping) {
+
+    return 0;
+
+  }
+
+
+  if (totalBags === 1) {
+
+    return 7;
+
+  }
+
+
+  if (totalBags === 2) {
+
+    return 8;
+
+  }
+
+
+  if (totalBags === 3) {
+
+    return 0;
+
+  }
+
+
+  return 0;
+
+}
+
+
+
+/* =========================
+   UPDATE ORDER SUMMARY
+   ========================= */
+
+function updateOrderSummary() {
+
+  const cartItems =
+    document.getElementById("cartItems");
+
+
+  cartItems.innerHTML = "";
+
+
+  const totalBags =
+    getTotalBags();
+
+
+  let coffeeTotal = 0;
+
+
+
+  if (orderItems.length === 0) {
+
+    cartItems.innerHTML =
+      '<p class="cart-empty">Your order is currently empty.</p>';
+
+  }
+
+  else {
+
+
+    orderItems.forEach(
+      function(item, index) {
+
+
+        const itemTotal =
+          item.price * item.quantity;
+
+
+        coffeeTotal += itemTotal;
+
+
+        const itemDiv =
+          document.createElement("div");
+
+
+        itemDiv.className =
+          "cart-item";
+
+
+        itemDiv.innerHTML =
+
+          '<div class="cart-item-title">' +
+
+          (index + 1) +
+          '. ' +
+          item.coffee +
+
+          '</div>' +
+
+
+          '<div class="cart-item-details">' +
+
+          'Roast: ' +
+          item.roast +
+          '<br>' +
+
+          'Size: ' +
+          item.size +
+          ' oz<br>' +
+
+          'Quantity: ' +
+          item.quantity +
+
+          '</div>' +
+
+
+          '<div class="cart-item-bottom">' +
+
+          '<strong>$' +
+          itemTotal.toFixed(2) +
+          '</strong>' +
+
+          '<button type="button" class="remove-button" onclick="removeOrderItem(' +
+          index +
+          ')">' +
+
+          'Remove' +
+
+          '</button>' +
+
+          '</div>';
+
+
+        cartItems.appendChild(itemDiv);
+
+      }
+    );
+
+  }
+
+
+
+  const shippingSelected =
+    document
+      .getElementById("shippingCheckbox")
+      .checked;
+
+
+  const shippingCost =
+    calculateShipping(totalBags);
+
+
+  const grandTotal =
+    coffeeTotal + shippingCost;
+
+
+
+  let deliveryText =
+    "Local Pickup";
+
+
+  let shippingText =
+    "$0.00";
+
+
+  if (shippingSelected) {
+
+    deliveryText =
+      "Shipping";
+
+
+    if (totalBags === 3) {
+
+      shippingText =
+        "FREE";
+
+    }
+
+    else {
+
+      shippingText =
+        "$" +
+        shippingCost.toFixed(2);
+
+    }
+
+  }
+
+
+
+  document
+    .getElementById("totalBags")
+    .textContent =
+      totalBags;
+
+
+  document
+    .getElementById("coffeeTotal")
+    .textContent =
+      coffeeTotal.toFixed(2);
+
+
+  document
+    .getElementById("deliveryMethod")
+    .textContent =
+      deliveryText;
+
+
+  document
+    .getElementById("shippingCost")
+    .textContent =
+      shippingText;
+
+
+  document
+    .getElementById("grandTotal")
+    .textContent =
+      grandTotal.toFixed(2);
+
+}
+
+
+
+/* =========================
+   CUSTOMER INFORMATION
    ========================= */
 
 function getCustomerInfo() {
@@ -1079,7 +1558,9 @@ function getCustomerInfo() {
 
   if (name === "") {
 
-    alert("Please enter your name.");
+    alert(
+      "Please enter your name."
+    );
 
     return null;
 
@@ -1100,10 +1581,27 @@ function getCustomerInfo() {
   }
 
 
+  if (
+    orderItems.length === 0
+  ) {
+
+    alert(
+      "Please add at least one coffee to your order."
+    );
+
+    return null;
+
+  }
+
+
   return {
+
     name: name,
+
     email: email,
+
     phone: phone
+
   };
 
 }
@@ -1127,82 +1625,123 @@ function createOrderMessage() {
   }
 
 
-  const coffeeSelect =
-    document.getElementById(
-      "coffeeSelect"
-    );
+  const totalBags =
+    getTotalBags();
 
 
-  const selectedCoffee =
-    coffeeSelect.options[
-      coffeeSelect.selectedIndex
-    ];
+  let coffeeTotal = 0;
 
 
-  const coffee =
-    selectedCoffee.value;
+  let orderDetails =
+    "";
 
 
-  const roast =
+  orderItems.forEach(
+    function(item, index) {
+
+
+      const itemTotal =
+        item.price *
+        item.quantity;
+
+
+      coffeeTotal +=
+        itemTotal;
+
+
+      orderDetails +=
+
+        "\n" +
+        (index + 1) +
+        ". " +
+        item.coffee +
+
+        "\nRoast: " +
+        item.roast +
+
+        "\nSize: " +
+        item.size +
+        " oz" +
+
+        "\nQuantity: " +
+        item.quantity +
+
+        "\nPrice: $" +
+        itemTotal.toFixed(2) +
+
+        "\n";
+
+    }
+  );
+
+
+
+  const shippingSelected =
     document
-      .getElementById("roastSelect")
-      .value;
+      .getElementById("shippingCheckbox")
+      .checked;
 
 
-  const size =
-    document
-      .getElementById("sizeSelect")
-      .value;
+  const shippingCost =
+    calculateShipping(totalBags);
 
 
-  const quantity =
-    parseInt(
-      document
-        .getElementById("quantitySelect")
-        .value
-    );
+  const grandTotal =
+    coffeeTotal +
+    shippingCost;
 
 
-  let price;
+
+  let deliveryText =
+    "Local Pickup";
 
 
-  if (size === "6") {
+  let shippingText =
+    "$0.00";
 
-    price =
-      parseFloat(
-        selectedCoffee.dataset.price6
-      );
+
+  if (shippingSelected) {
+
+    deliveryText =
+      "Shipping";
+
+
+    if (totalBags === 3) {
+
+      shippingText =
+        "FREE";
+
+    }
+
+    else {
+
+      shippingText =
+        "$" +
+        shippingCost.toFixed(2);
+
+    }
 
   }
 
-  else {
-
-    price =
-      parseFloat(
-        selectedCoffee.dataset.price12
-      );
-
-  }
-
-
-  const total =
-    price * quantity;
 
 
   const message =
+
 `Hello Colorful Coffee Bean!
 
 I would like to place an order.
 
-Coffee: ${coffee}
-Roast: ${roast}
-Size: ${size} oz
-Quantity: ${quantity}
+ORDER
+${orderDetails}
+Total Bags: ${totalBags}
 
-Price Each: $${price.toFixed(2)}
-Total: $${total.toFixed(2)}
+Coffee Total: $${coffeeTotal.toFixed(2)}
+Delivery Method: ${deliveryText}
+Shipping: ${shippingText}
 
-Customer Information
+TOTAL: $${grandTotal.toFixed(2)}
+
+CUSTOMER INFORMATION
 
 Name: ${customer.name}
 Email: ${customer.email || "Not provided"}
@@ -1299,12 +1838,12 @@ function sendEmailOrder() {
 
 
 /* =========================
-   LOAD INITIAL ORDER
+   INITIALIZE
    ========================= */
 
 document.addEventListener(
   "DOMContentLoaded",
-  updateOrder
+  updateOrderSummary
 );
 
 
