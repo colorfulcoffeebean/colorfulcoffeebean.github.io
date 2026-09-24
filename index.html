@@ -200,6 +200,86 @@
 
 
     /* =========================
+       ORDER FORM
+       ========================= */
+
+    .order-form {
+      max-width: 700px;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.08);
+    }
+
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 13px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: white;
+      margin-bottom: 0;
+    }
+
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+
+    .order-summary {
+      margin-top: 25px;
+      padding: 20px;
+      background: #f7f3eb;
+      border-radius: 10px;
+    }
+
+
+    .order-summary h3 {
+      margin-top: 0;
+    }
+
+
+    .summary-line {
+      margin: 8px 0;
+    }
+
+
+    .total {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #d6cabc;
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+
+    .order-button {
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+
+
+    /* =========================
        FOOTER
        ========================= */
 
@@ -237,6 +317,11 @@
 
       .brand h1 {
         font-size: 2rem;
+      }
+
+
+      .form-row {
+        grid-template-columns: 1fr;
       }
 
     }
@@ -306,40 +391,7 @@
 
 <div class="container">
 
- <!-- =========================
-       ORDERING INFORMATION
-       ========================= -->
 
-  <section id="ordering-info">
-
-    <h2>
-      Ordering Information
-    </h2>
-
-    <p>
-      Ready to order? Send us an email or text message with
-      your coffee selection, roast preference, and size.
-    </p>
-
-    <p>
-      <strong>Email:</strong>
-      <a href="mailto:colorfulcb@gmail.com">
-        colorfulcb@gmail.com
-      </a>
-    </p>
-
-    <p>
-      <strong>Text:</strong>
-      <a href="sms:+12404494657">
-        (240) 449-4657
-      </a>
-    </p>
-
-  </section>
-
-
-
-  
   <!-- FRESH ROASTED -->
 
   <section>
@@ -393,86 +445,112 @@
 
 
       <!-- Guatemalan Huehuetenango FT Org. – El Guaya’b 85+ Washed Processed -->
+
       <div class="coffee-card">
+
         <div class="origin">
           Guatemalan
         </div>
+
         <h3>
           Huehuetenango
         </h3>
+
         <p>
           <strong>Process:</strong>
           Washed
         </p>
+
         <p>
           <strong>Roast:</strong>
           Light - Dark
         </p>
+
         <p>
           <strong>Tasting Notes:</strong>
           <br>
           Orange/Nutty/Caramel/Malty
         </p>
+
         <div class="price">
           $13 / 6oz<br> $25 / 12oz
         </div>
+
       </div>
 
 
+
       <!-- Ethiopia Yirgacheffe Gr. 1 Supernatural Anaerobic – Banko Gotiti -->
+
       <div class="coffee-card">
+
         <div class="origin">
           Ethiopia
         </div>
+
         <h3>
           Yirgacheffe
         </h3>
+
         <p>
           <strong>Process:</strong>
           Supernatural Anaerobic
         </p>
+
         <p>
           <strong>Roast:</strong>
           Light - Dark
         </p>
+
         <p>
           <strong>Tasting Notes:</strong>
           <br>
           Lemon/Floral/Cherry/Strawberry/Candy-like sweet/Milk-Chocolate
         </p>
+
         <div class="price">
           $15 / 6oz<br> $28 / 12oz
         </div>
+
       </div>
 
 
+
       <!-- Costa Rican SHB EP Dota Tarrazu – Santa Maria – Washed Processed -->
+
       <div class="coffee-card">
+
         <div class="origin">
           Costa Rican
         </div>
+
         <h3>
           Tarrazu
         </h3>
+
         <p>
           <strong>Process:</strong>
           Washed
         </p>
+
         <p>
           <strong>Roast:</strong>
           Light - Dark
         </p>
+
         <p>
           <strong>Tasting Notes:</strong>
           <br>
           Floral/Nutty/Chocolate/Sweet
         </p>
+
         <div class="price">
           $13 / 6oz<br> $25 / 12oz
         </div>
+
       </div>
 
-      
+
     </div>
 
   </section>
@@ -518,23 +596,294 @@
     </p>
 
 
-    <div class="buttons">
+    <!-- =========================
+         ORDER FORM
+         ========================= -->
+
+    <div class="order-form">
 
 
-      <a
-        class="button"
-        href="#"
-      >
-        Instagram
-      </a>
+      <!-- CUSTOMER NAME -->
+
+      <div class="form-group">
+
+        <label for="customerName">
+          Your Name *
+        </label>
+
+        <input
+          type="text"
+          id="customerName"
+          placeholder="Your name"
+        >
+
+      </div>
 
 
-      <a
-        class="button"
-        href="#"
-      >
-        Text to Order
-      </a>
+
+      <!-- CUSTOMER EMAIL -->
+
+      <div class="form-group">
+
+        <label for="customerEmail">
+          Email
+        </label>
+
+        <input
+          type="email"
+          id="customerEmail"
+          placeholder="your@email.com"
+        >
+
+      </div>
+
+
+
+      <!-- CUSTOMER PHONE -->
+
+      <div class="form-group">
+
+        <label for="customerPhone">
+          Phone
+        </label>
+
+        <input
+          type="tel"
+          id="customerPhone"
+          placeholder="(240) 555-1234"
+        >
+
+      </div>
+
+
+
+      <!-- COFFEE -->
+
+      <div class="form-group">
+
+        <label for="coffeeSelect">
+          Coffee *
+        </label>
+
+        <select
+          id="coffeeSelect"
+          onchange="updateOrder()"
+        >
+
+          <option
+            value="Guatemalan Huehuetenango"
+            data-price6="13"
+            data-price12="25"
+          >
+            Guatemalan - Huehuetenango
+          </option>
+
+
+          <option
+            value="Ethiopia Yirgacheffe"
+            data-price6="15"
+            data-price12="28"
+          >
+            Ethiopia - Yirgacheffe
+          </option>
+
+
+          <option
+            value="Costa Rican Tarrazu"
+            data-price6="13"
+            data-price12="25"
+          >
+            Costa Rican - Tarrazu
+          </option>
+
+        </select>
+
+      </div>
+
+
+
+      <!-- ROAST -->
+
+      <div class="form-group">
+
+        <label for="roastSelect">
+          Roast Level *
+        </label>
+
+        <select
+          id="roastSelect"
+          onchange="updateOrder()"
+        >
+
+          <option value="Light">
+            Light
+          </option>
+
+          <option value="Medium-Light">
+            Medium-Light
+          </option>
+
+          <option value="Medium" selected>
+            Medium
+          </option>
+
+          <option value="Medium-Dark">
+            Medium-Dark
+          </option>
+
+          <option value="Dark">
+            Dark
+          </option>
+
+        </select>
+
+      </div>
+
+
+
+      <!-- SIZE + QUANTITY -->
+
+      <div class="form-row">
+
+
+        <div class="form-group">
+
+          <label for="sizeSelect">
+            Size *
+          </label>
+
+          <select
+            id="sizeSelect"
+            onchange="updateOrder()"
+          >
+
+            <option value="6">
+              6 oz
+            </option>
+
+            <option value="12" selected>
+              12 oz
+            </option>
+
+          </select>
+
+        </div>
+
+
+
+        <div class="form-group">
+
+          <label for="quantitySelect">
+            Quantity *
+          </label>
+
+          <select
+            id="quantitySelect"
+            onchange="updateOrder()"
+          >
+
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ORDER SUMMARY -->
+
+      <div class="order-summary">
+
+        <h3>
+          Order Summary
+        </h3>
+
+
+        <div class="summary-line">
+
+          <strong>Coffee:</strong>
+
+          <span id="summaryCoffee"></span>
+
+        </div>
+
+
+        <div class="summary-line">
+
+          <strong>Roast:</strong>
+
+          <span id="summaryRoast"></span>
+
+        </div>
+
+
+        <div class="summary-line">
+
+          <strong>Size:</strong>
+
+          <span id="summarySize"></span>
+
+        </div>
+
+
+        <div class="summary-line">
+
+          <strong>Quantity:</strong>
+
+          <span id="summaryQuantity"></span>
+
+        </div>
+
+
+        <div class="summary-line">
+
+          <strong>Price Each:</strong>
+
+          $<span id="summaryPrice"></span>
+
+        </div>
+
+
+        <div class="total">
+
+          Total:
+
+          $<span id="summaryTotal"></span>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- SEND BUTTONS -->
+
+      <div class="buttons">
+
+        <button
+          type="button"
+          class="button order-button"
+          onclick="sendTextOrder()"
+        >
+          Send Order by Text
+        </button>
+
+
+        <button
+          type="button"
+          class="button order-button"
+          onclick="sendEmailOrder()"
+        >
+          Send Order by Email
+        </button>
+
+      </div>
 
 
     </div>
@@ -563,6 +912,11 @@
      ========================= -->
 
 <script>
+
+
+/* =========================
+   ORIGINAL COFFEE SEARCH
+   ========================= */
 
 function filterCoffee() {
 
@@ -594,6 +948,365 @@ function filterCoffee() {
   });
 
 }
+
+
+
+/* =========================
+   UPDATE ORDER
+   ========================= */
+
+function updateOrder() {
+
+  const coffeeSelect =
+    document.getElementById("coffeeSelect");
+
+
+  const selectedCoffee =
+    coffeeSelect.options[
+      coffeeSelect.selectedIndex
+    ];
+
+
+  const coffee =
+    selectedCoffee.value;
+
+
+  const roast =
+    document
+      .getElementById("roastSelect")
+      .value;
+
+
+  const size =
+    document
+      .getElementById("sizeSelect")
+      .value;
+
+
+  const quantity =
+    parseInt(
+      document
+        .getElementById("quantitySelect")
+        .value
+    );
+
+
+  let price;
+
+
+  if (size === "6") {
+
+    price =
+      parseFloat(
+        selectedCoffee.dataset.price6
+      );
+
+  }
+
+  else {
+
+    price =
+      parseFloat(
+        selectedCoffee.dataset.price12
+      );
+
+  }
+
+
+  const total =
+    price * quantity;
+
+
+  document
+    .getElementById("summaryCoffee")
+    .textContent = coffee;
+
+
+  document
+    .getElementById("summaryRoast")
+    .textContent = roast;
+
+
+  document
+    .getElementById("summarySize")
+    .textContent = size + " oz";
+
+
+  document
+    .getElementById("summaryQuantity")
+    .textContent = quantity;
+
+
+  document
+    .getElementById("summaryPrice")
+    .textContent = price.toFixed(2);
+
+
+  document
+    .getElementById("summaryTotal")
+    .textContent = total.toFixed(2);
+
+}
+
+
+
+/* =========================
+   GET CUSTOMER INFORMATION
+   ========================= */
+
+function getCustomerInfo() {
+
+  const name =
+    document
+      .getElementById("customerName")
+      .value
+      .trim();
+
+
+  const email =
+    document
+      .getElementById("customerEmail")
+      .value
+      .trim();
+
+
+  const phone =
+    document
+      .getElementById("customerPhone")
+      .value
+      .trim();
+
+
+  if (name === "") {
+
+    alert("Please enter your name.");
+
+    return null;
+
+  }
+
+
+  if (
+    email === "" &&
+    phone === ""
+  ) {
+
+    alert(
+      "Please enter your email or phone number."
+    );
+
+    return null;
+
+  }
+
+
+  return {
+    name: name,
+    email: email,
+    phone: phone
+  };
+
+}
+
+
+
+/* =========================
+   CREATE ORDER MESSAGE
+   ========================= */
+
+function createOrderMessage() {
+
+  const customer =
+    getCustomerInfo();
+
+
+  if (!customer) {
+
+    return null;
+
+  }
+
+
+  const coffeeSelect =
+    document.getElementById(
+      "coffeeSelect"
+    );
+
+
+  const selectedCoffee =
+    coffeeSelect.options[
+      coffeeSelect.selectedIndex
+    ];
+
+
+  const coffee =
+    selectedCoffee.value;
+
+
+  const roast =
+    document
+      .getElementById("roastSelect")
+      .value;
+
+
+  const size =
+    document
+      .getElementById("sizeSelect")
+      .value;
+
+
+  const quantity =
+    parseInt(
+      document
+        .getElementById("quantitySelect")
+        .value
+    );
+
+
+  let price;
+
+
+  if (size === "6") {
+
+    price =
+      parseFloat(
+        selectedCoffee.dataset.price6
+      );
+
+  }
+
+  else {
+
+    price =
+      parseFloat(
+        selectedCoffee.dataset.price12
+      );
+
+  }
+
+
+  const total =
+    price * quantity;
+
+
+  const message =
+`Hello Colorful Coffee Bean!
+
+I would like to place an order.
+
+Coffee: ${coffee}
+Roast: ${roast}
+Size: ${size} oz
+Quantity: ${quantity}
+
+Price Each: $${price.toFixed(2)}
+Total: $${total.toFixed(2)}
+
+Customer Information
+
+Name: ${customer.name}
+Email: ${customer.email || "Not provided"}
+Phone: ${customer.phone || "Not provided"}
+
+Thank you!`;
+
+
+  return {
+
+    message: message,
+
+    customer: customer
+
+  };
+
+}
+
+
+
+/* =========================
+   SEND ORDER BY TEXT
+   ========================= */
+
+function sendTextOrder() {
+
+  const order =
+    createOrderMessage();
+
+
+  if (!order) {
+
+    return;
+
+  }
+
+
+  const phoneNumber =
+    "12404494657";
+
+
+  const message =
+    encodeURIComponent(
+      order.message
+    );
+
+
+  window.location.href =
+    `sms:${phoneNumber}?body=${message}`;
+
+}
+
+
+
+/* =========================
+   SEND ORDER BY EMAIL
+   ========================= */
+
+function sendEmailOrder() {
+
+  const order =
+    createOrderMessage();
+
+
+  if (!order) {
+
+    return;
+
+  }
+
+
+  const email =
+    "colorfulcb@gmail.com";
+
+
+  const subject =
+    encodeURIComponent(
+      "Coffee Order - " +
+      order.customer.name
+    );
+
+
+  const body =
+    encodeURIComponent(
+      order.message
+    );
+
+
+  window.location.href =
+    `mailto:${email}?subject=${subject}&body=${body}`;
+
+}
+
+
+
+/* =========================
+   LOAD INITIAL ORDER
+   ========================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  updateOrder
+);
+
 
 </script>
 
