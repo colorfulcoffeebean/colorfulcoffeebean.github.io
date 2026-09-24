@@ -1,0 +1,6 @@
+.brand-logo {
+    width: min(420px, 85vw);
+    height: auto;
+    display: block;
+    margin: 0 auto 25px;
+}
