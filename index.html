@@ -1,58 +1,281 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My First Website</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            text-align: center;
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        p {
-            font-size: 1.1rem;
-            color: #7f8c8d;
-        }
-        .btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #3498db;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-        .btn:hover {
-            background-color: #2980b9;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Colorful Coffee Bean | Specialty Coffee</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f7f3eb;
+      color: #2c2118;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 30px 20px;
+    }
+
+    header {
+      text-align: center;
+      padding: 60px 20px 40px;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      max-width: 650px;
+      margin: auto;
+      line-height: 1.7;
+      color: #66584c;
+    }
+
+    .buttons {
+      margin-top: 25px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 13px 22px;
+      margin: 5px;
+      background: #38291f;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+    }
+
+    section {
+      margin: 60px 0;
+    }
+
+    h2 {
+      font-size: 2rem;
+      border-bottom: 1px solid #d6cabc;
+      padding-bottom: 10px;
+    }
+
+    .coffee-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .coffee-card {
+      background: white;
+      border-radius: 12px;
+      padding: 22px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.08);
+    }
+
+    .coffee-card h3 {
+      margin-top: 0;
+    }
+
+    .origin {
+      color: #8a5b35;
+      font-weight: bold;
+    }
+
+    .price {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 14px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 25px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px;
+      color: #777;
+    }
+  </style>
 </head>
+
 <body>
 
-    <div class="container">
-        <h1>Welcome to My Website!</h1>
-        <p>This page is built and hosted completely for free using GitHub Pages.</p>
-        <a href="#" class="btn">Click Me</a>
+<header>
+  <h1>Colorful Coffee Bean</h1>
+
+  <p>
+    Freshly roasted specialty coffee featuring carefully
+    selected single-origin beans from around the world.
+  </p>
+
+  <div class="buttons">
+    <a class="button" href="#coffee">Shop Coffee</a>
+    <a class="button" href="#">Order / Contact</a>
+  </div>
+</header>
+
+
+<div class="container">
+
+  <section>
+    <h2>Fresh Roasted Coffee</h2>
+
+    <p>
+      Every coffee is roasted fresh in small batches.
+      Explore our current selection and find your
+      next favorite cup.
+    </p>
+  </section>
+
+
+  <section id="coffee">
+
+    <h2>Our Coffee</h2>
+
+    <input
+      type="text"
+      id="search"
+      placeholder="Search origin, flavor, process..."
+      onkeyup="filterCoffee()"
+    >
+
+    <div class="coffee-grid" id="coffeeGrid">
+
+      <div class="coffee-card">
+        <div class="origin">Ethiopia</div>
+
+        <h3>Guji Natural</h3>
+
+        <p>
+          <strong>Process:</strong> Natural
+        </p>
+
+        <p>
+          <strong>Roast:</strong> Light
+        </p>
+
+        <p>
+          <strong>Tasting Notes:</strong><br>
+          Blueberry • Jasmine • Peach
+        </p>
+
+        <div class="price">$18 / 12 oz</div>
+      </div>
+
+
+      <div class="coffee-card">
+        <div class="origin">Colombia</div>
+
+        <h3>Huila Washed</h3>
+
+        <p>
+          <strong>Process:</strong> Washed
+        </p>
+
+        <p>
+          <strong>Roast:</strong> Medium
+        </p>
+
+        <p>
+          <strong>Tasting Notes:</strong><br>
+          Chocolate • Caramel • Orange
+        </p>
+
+        <div class="price">$17 / 12 oz</div>
+      </div>
+
+
+      <div class="coffee-card">
+        <div class="origin">Guatemala</div>
+
+        <h3>Huehuetenango</h3>
+
+        <p>
+          <strong>Process:</strong> Washed
+        </p>
+
+        <p>
+          <strong>Roast:</strong> Medium
+        </p>
+
+        <p>
+          <strong>Tasting Notes:</strong><br>
+          Cocoa • Almond • Brown Sugar
+        </p>
+
+        <div class="price">$18 / 12 oz</div>
+      </div>
+
     </div>
+  </section>
+
+
+  <section>
+    <h2>About Colorful Coffee Bean</h2>
+
+    <p>
+      We believe great coffee starts with great beans.
+      Our coffees are carefully sourced and roasted
+      in small batches to highlight the unique character
+      of each origin.
+    </p>
+  </section>
+
+
+  <section>
+    <h2>How to Order</h2>
+
+    <p>
+      Select your coffee and roast preference,
+      then contact us to place your order.
+    </p>
+
+    <div class="buttons">
+      <a class="button" href="#">Instagram</a>
+      <a class="button" href="#">Text to Order</a>
+    </div>
+  </section>
+
+</div>
+
+
+<footer>
+  © 2026 Colorful Coffee Bean
+</footer>
+
+
+<script>
+function filterCoffee() {
+
+  const input =
+    document.getElementById("search")
+      .value
+      .toLowerCase();
+
+  const cards =
+    document.querySelectorAll(".coffee-card");
+
+  cards.forEach(card => {
+
+    const text =
+      card.innerText.toLowerCase();
+
+    card.style.display =
+      text.includes(input)
+        ? "block"
+        : "none";
+  });
+}
+</script>
 
 </body>
 </html>
