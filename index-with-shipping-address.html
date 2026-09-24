@@ -1,0 +1,2510 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Colorful Coffee Bean | Specialty Coffee
+  </title>
+
+
+  <style>
+
+    /* =========================================================
+       BASIC PAGE STYLE
+       ========================================================= */
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f7f3eb;
+      color: #2c2118;
+    }
+
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 30px 20px;
+    }
+
+
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    header {
+      text-align: center;
+      padding: 60px 20px 40px;
+    }
+
+
+    /* Logo + Business Name */
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 15px;
+    }
+
+
+    .brand-logo {
+      width: 200px;
+      height: 200px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+
+    .brand h1 {
+      font-size: 5rem;
+      margin: 0;
+    }
+
+
+    header p {
+      max-width: 650px;
+      margin: auto;
+      line-height: 1.7;
+      color: #66584c;
+    }
+
+
+
+    /* =========================================================
+       BUTTONS
+       ========================================================= */
+
+    .buttons {
+      margin-top: 25px;
+    }
+
+
+    .button {
+      display: inline-block;
+      padding: 13px 22px;
+      margin: 5px;
+
+      background: #38291f;
+      color: white;
+
+      text-decoration: none;
+
+      border: none;
+      border-radius: 8px;
+
+      cursor: pointer;
+      font-size: 16px;
+      font-family: Arial, sans-serif;
+    }
+
+
+    .button:hover {
+      background: #594235;
+    }
+
+
+
+    /* =========================================================
+       SECTIONS
+       ========================================================= */
+
+    section {
+      margin: 60px 0;
+    }
+
+
+    h2 {
+      font-size: 2rem;
+      border-bottom: 1px solid #d6cabc;
+      padding-bottom: 10px;
+    }
+
+
+
+    /* =========================================================
+       SEARCH BOX
+       ========================================================= */
+
+    #search {
+      width: 100%;
+      box-sizing: border-box;
+
+      padding: 14px;
+      margin-bottom: 25px;
+
+      font-size: 16px;
+
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+
+
+    /* =========================================================
+       COFFEE GRID
+       ========================================================= */
+
+    .coffee-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(auto-fit, minmax(300px, 1fr));
+
+      gap: 20px;
+    }
+
+
+
+    /* =========================================================
+       COFFEE CARD
+       ========================================================= */
+
+    .coffee-card {
+      display: flex;
+      flex-direction: column;
+
+      background: white;
+
+      border-radius: 12px;
+
+      padding: 22px;
+
+      box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.08);
+    }
+
+
+    .coffee-card h3 {
+      margin-top: 0;
+    }
+
+
+    .origin {
+      color: #8a5b35;
+      font-weight: bold;
+    }
+
+
+
+    /* =========================================================
+       COFFEE ORDER OPTIONS
+       ========================================================= */
+
+    .coffee-options {
+      margin-top: auto;
+      padding-top: 20px;
+    }
+
+
+    .coffee-option {
+      display: grid;
+
+      grid-template-columns:
+        22px 55px 1fr 55px;
+
+      align-items: center;
+
+      gap: 8px;
+
+      margin-bottom: 12px;
+    }
+
+
+    .coffee-option input[type="radio"] {
+      width: auto;
+      margin: 0;
+      cursor: pointer;
+    }
+
+
+    .coffee-option label {
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+
+    .coffee-option select {
+      width: 100%;
+
+      padding: 8px;
+
+      border: 1px solid #ccc;
+      border-radius: 6px;
+
+      background: white;
+
+      font-size: 14px;
+    }
+
+
+    .option-price {
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-align: right;
+    }
+
+
+    .card-order-button {
+      text-align: right;
+      margin-top: 15px;
+    }
+
+
+
+    /* =========================================================
+       ORDER LIMIT MESSAGE
+       ========================================================= */
+
+    .order-limit {
+      margin: 20px 0;
+
+      padding: 18px;
+
+      background: #f7f3eb;
+
+      border-left: 4px solid #8a5b35;
+
+      border-radius: 6px;
+    }
+
+
+    .order-limit p {
+      margin-bottom: 0;
+
+      line-height: 1.6;
+
+      color: #66584c;
+    }
+
+
+
+    /* =========================================================
+       ORDER SECTION
+       ========================================================= */
+
+    .order-form {
+      max-width: 750px;
+
+      background: white;
+
+      padding: 25px;
+
+      border-radius: 12px;
+
+      box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.08);
+    }
+
+
+
+    /* =========================================================
+       SHOPPING CART
+       ========================================================= */
+
+    .order-summary {
+      padding: 20px;
+
+      background: #f7f3eb;
+
+      border-radius: 10px;
+
+      margin-bottom: 30px;
+    }
+
+
+    .order-summary h3 {
+      margin-top: 0;
+    }
+
+
+    .cart-empty {
+      color: #66584c;
+    }
+
+
+    .cart-item {
+      background: white;
+
+      padding: 15px;
+
+      margin-bottom: 12px;
+
+      border-radius: 8px;
+    }
+
+
+    .cart-item-title {
+      font-size: 1.05rem;
+      font-weight: bold;
+
+      margin-bottom: 6px;
+    }
+
+
+    .cart-item-details {
+      color: #66584c;
+      line-height: 1.6;
+    }
+
+
+    .cart-item-bottom {
+      display: flex;
+
+      justify-content: space-between;
+      align-items: center;
+
+      margin-top: 10px;
+    }
+
+
+    .remove-button {
+      background: none;
+
+      border: none;
+
+      color: #8a5b35;
+
+      font-weight: bold;
+
+      cursor: pointer;
+    }
+
+
+    .summary-line {
+      margin: 8px 0;
+    }
+
+
+    .summary-divider {
+      border-top: 1px solid #d6cabc;
+
+      margin: 15px 0;
+    }
+
+
+    .bag-count {
+      color: #8a5b35;
+      font-weight: bold;
+    }
+
+
+    .total {
+      margin-top: 15px;
+
+      padding-top: 15px;
+
+      border-top: 1px solid #d6cabc;
+
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+
+
+    /* =========================================================
+       CUSTOMER INFORMATION
+       ========================================================= */
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+
+    .form-group label {
+      display: block;
+
+      font-weight: bold;
+
+      margin-bottom: 7px;
+    }
+
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="tel"] {
+
+      width: 100%;
+
+      box-sizing: border-box;
+
+      padding: 13px;
+
+      font-size: 16px;
+
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+
+
+    /* =========================================================
+       SHIPPING
+       ========================================================= */
+
+    .shipping-option {
+      display: flex !important;
+
+      align-items: center;
+
+      gap: 10px;
+
+      font-weight: normal !important;
+
+      cursor: pointer;
+    }
+
+
+    .shipping-option input {
+      width: auto;
+      margin: 0;
+    }
+
+
+    .shipping-info {
+      color: #66584c;
+
+      font-size: 0.9rem;
+
+      line-height: 1.6;
+
+      margin-top: 8px;
+    }
+
+
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @media (max-width: 600px) {
+
+      header {
+        padding-top: 40px;
+      }
+
+
+      .brand {
+        gap: 12px;
+      }
+
+
+      .brand-logo {
+        width: 120px;
+        height: 120px;
+      }
+
+
+      .brand h1 {
+        font-size: 2rem;
+      }
+
+
+      .coffee-option {
+        grid-template-columns:
+          20px 48px 1fr 45px;
+
+        gap: 5px;
+      }
+
+
+      .coffee-option select {
+        font-size: 13px;
+        padding: 7px;
+      }
+
+
+      .option-price {
+        font-size: 1rem;
+      }
+
+
+      .order-button {
+        width: 100%;
+      }
+
+    }
+
+
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    footer {
+      text-align: center;
+
+      padding: 40px;
+
+      color: #777;
+    }
+
+  </style>
+
+</head>
+
+
+
+<body>
+
+
+  <!-- =========================================================
+       HEADER
+       ========================================================= -->
+
+  <header>
+
+    <div class="brand">
+
+      <img
+        src="images/colorful-coffee-bean-logo.png"
+        alt="Colorful Coffee Bean Logo"
+        class="brand-logo"
+      >
+
+      <h1>
+        Colorful Coffee Bean
+      </h1>
+
+    </div>
+
+
+    <p>
+      Freshly roasted specialty coffee featuring carefully
+      selected single-origin beans from around the world.
+    </p>
+
+
+    <div class="buttons">
+
+      <a
+        class="button"
+        href="#coffee"
+      >
+        Shop Coffee
+      </a>
+
+
+      <a
+        class="button"
+        href="#order"
+      >
+        View Order
+      </a>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- =========================================================
+       MAIN CONTENT
+       ========================================================= -->
+
+  <div class="container">
+
+
+
+    <!-- =======================================================
+         FRESH ROASTED COFFEE
+         ======================================================= -->
+
+    <section>
+
+      <h2>
+        Fresh Roasted Coffee
+      </h2>
+
+
+      <p>
+        Every coffee is roasted fresh in small batches
+        and available in 6 oz and 12 oz sizes.
+        Explore our current selection and find your
+        next favorite cup.
+      </p>
+
+    </section>
+
+
+
+    <!-- =======================================================
+         OUR COFFEE
+         ======================================================= -->
+
+    <section id="coffee">
+
+
+      <h2>
+        Our Coffee
+      </h2>
+
+
+      <!-- SEARCH -->
+
+      <input
+        type="text"
+        id="search"
+        placeholder="Search origin, flavor, process..."
+        onkeyup="filterCoffee()"
+      >
+
+
+
+      <!-- COFFEE GRID -->
+
+      <div
+        class="coffee-grid"
+        id="coffeeGrid"
+      >
+
+
+
+        <!-- ===================================================
+             GUATEMALAN
+             =================================================== -->
+
+        <div class="coffee-card">
+
+          <div class="origin">
+            Guatemalan
+          </div>
+
+
+          <h3>
+            Huehuetenango
+          </h3>
+
+
+          <p>
+            <strong>Process:</strong>
+            Washed
+          </p>
+
+
+          <p>
+            <strong>Roast:</strong>
+            Light - Dark
+          </p>
+
+
+          <p>
+            <strong>Tasting Notes:</strong>
+            <br>
+            Orange/Nutty/Caramel/Malty
+          </p>
+
+
+
+          <!-- GUATEMALA ORDER OPTIONS -->
+
+          <div class="coffee-options">
+
+
+            <!-- 6 OZ -->
+
+            <div class="coffee-option">
+
+              <input
+                type="radio"
+                name="guatemala-size"
+                id="guatemala-6"
+                value="6"
+                checked
+              >
+
+              <label for="guatemala-6">
+                6 oz
+              </label>
+
+
+              <select id="guatemala-roast-6">
+
+                <option value="Light">
+                  Light
+                </option>
+
+                <option value="Medium-Light">
+                  Medium-Light
+                </option>
+
+                <option value="Medium" selected>
+                  Medium
+                </option>
+
+                <option value="Medium-Dark">
+                  Medium-Dark
+                </option>
+
+                <option value="Dark">
+                  Dark
+                </option>
+
+              </select>
+
+
+              <span class="option-price">
+                $13
+              </span>
+
+            </div>
+
+
+
+            <!-- 12 OZ -->
+
+            <div class="coffee-option">
+
+              <input
+                type="radio"
+                name="guatemala-size"
+                id="guatemala-12"
+                value="12"
+              >
+
+              <label for="guatemala-12">
+                12 oz
+              </label>
+
+
+              <select id="guatemala-roast-12">
+
+                <option value="Light">
+                  Light
+                </option>
+
+                <option value="Medium-Light">
+                  Medium-Light
+                </option>
+
+                <option value="Medium" selected>
+                  Medium
+                </option>
+
+                <option value="Medium-Dark">
+                  Medium-Dark
+                </option>
+
+                <option value="Dark">
+                  Dark
+                </option>
+
+              </select>
+
+
+              <span class="option-price">
+                $25
+              </span>
+
+            </div>
+
+
+
+            <!-- ADD GUATEMALA -->
+
+            <div class="card-order-button">
+
+              <button
+                type="button"
+                class="button"
+                onclick="addCoffeeToOrder('guatemala')"
+              >
+                Add to Order
+              </button>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+
+
+        <!-- ===================================================
+             ETHIOPIA
+             =================================================== -->
+
+        <div class="coffee-card">
+
+          <div class="origin">
+            Ethiopia
+          </div>
+
+
+          <h3>
+            Yirgacheffe
+          </h3>
+
+
+          <p>
+            <strong>Process:</strong>
+            Supernatural Anaerobic
+          </p>
+
+
+          <p>
+            <strong>Roast:</strong>
+            Light - Dark
+          </p>
+
+
+          <p>
+            <strong>Tasting Notes:</strong>
+            <br>
+            Lemon/Floral/Cherry/Strawberry/Candy-like sweet/Milk-Chocolate
+          </p>
+
+
+
+          <!-- ETHIOPIA ORDER OPTIONS -->
+
+          <div class="coffee-options">
+
+
+            <!-- 6 OZ -->
+
+            <div class="coffee-option">
+
+              <input
+                type="radio"
+                name="ethiopia-size"
+                id="ethiopia-6"
+                value="6"
+                checked
+              >
+
+              <label for="ethiopia-6">
+                6 oz
+              </label>
+
+
+              <select id="ethiopia-roast-6">
+
+                <option value="Light">
+                  Light
+                </option>
+
+                <option value="Medium-Light">
+                  Medium-Light
+                </option>
+
+                <option value="Medium" selected>
+                  Medium
+                </option>
+
+                <option value="Medium-Dark">
+                  Medium-Dark
+                </option>
+
+                <option value="Dark">
+                  Dark
+                </option>
+
+              </select>
+
+
+              <span class="option-price">
+                $15
+              </span>
+
+            </div>
+
+
+
+            <!-- 12 OZ -->
+
+            <div class="coffee-option">
+
+              <input
+                type="radio"
+                name="ethiopia-size"
+                id="ethiopia-12"
+                value="12"
+              >
+
+              <label for="ethiopia-12">
+                12 oz
+              </label>
+
+
+              <select id="ethiopia-roast-12">
+
+                <option value="Light">
+                  Light
+                </option>
+
+                <option value="Medium-Light">
+                  Medium-Light
+                </option>
+
+                <option value="Medium" selected>
+                  Medium
+                </option>
+
+                <option value="Medium-Dark">
+                  Medium-Dark
+                </option>
+
+                <option value="Dark">
+                  Dark
+                </option>
+
+              </select>
+
+
+              <span class="option-price">
+                $28
+              </span>
+
+            </div>
+
+
+
+            <!-- ADD ETHIOPIA -->
+
+            <div class="card-order-button">
+
+              <button
+                type="button"
+                class="button"
+                onclick="addCoffeeToOrder('ethiopia')"
+              >
+                Add to Order
+              </button>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+
+
+        <!-- ===================================================
+             COSTA RICA
+             =================================================== -->
+
+        <div class="coffee-card">
+
+          <div class="origin">
+            Costa Rican
+          </div>
+
+
+          <h3>
+            Tarrazu
+          </h3>
+
+
+          <p>
+            <strong>Process:</strong>
+            Washed
+          </p>
+
+
+          <p>
+            <strong>Roast:</strong>
+            Light - Dark
+          </p>
+
+
+          <p>
+            <strong>Tasting Notes:</strong>
+            <br>
+            Floral/Nutty/Chocolate/Sweet
+          </p>
+
+
+
+          <!-- COSTA RICA ORDER OPTIONS -->
+
+          <div class="coffee-options">
+
+
+            <!-- 6 OZ -->
+
+            <div class="coffee-option">
+
+              <input
+                type="radio"
+                name="costarica-size"
+                id="costarica-6"
+                value="6"
+                checked
+              >
+
+              <label for="costarica-6">
+                6 oz
+              </label>
+
+
+              <select id="costarica-roast-6">
+
+                <option value="Light">
+                  Light
+                </option>
+
+                <option value="Medium-Light">
+                  Medium-Light
+                </option>
+
+                <option value="Medium" selected>
+                  Medium
+                </option>
+
+                <option value="Medium-Dark">
+                  Medium-Dark
+                </option>
+
+                <option value="Dark">
+                  Dark
+                </option>
+
+              </select>
+
+
+              <span class="option-price">
+                $13
+              </span>
+
+            </div>
+
+
+
+            <!-- 12 OZ -->
+
+            <div class="coffee-option">
+
+              <input
+                type="radio"
+                name="costarica-size"
+                id="costarica-12"
+                value="12"
+              >
+
+              <label for="costarica-12">
+                12 oz
+              </label>
+
+
+              <select id="costarica-roast-12">
+
+                <option value="Light">
+                  Light
+                </option>
+
+                <option value="Medium-Light">
+                  Medium-Light
+                </option>
+
+                <option value="Medium" selected>
+                  Medium
+                </option>
+
+                <option value="Medium-Dark">
+                  Medium-Dark
+                </option>
+
+                <option value="Dark">
+                  Dark
+                </option>
+
+              </select>
+
+
+              <span class="option-price">
+                $25
+              </span>
+
+            </div>
+
+
+
+            <!-- ADD COSTA RICA -->
+
+            <div class="card-order-button">
+
+              <button
+                type="button"
+                class="button"
+                onclick="addCoffeeToOrder('costarica')"
+              >
+                Add to Order
+              </button>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =======================================================
+         ABOUT
+         ======================================================= -->
+
+    <section>
+
+      <h2>
+        About Colorful Coffee Bean
+      </h2>
+
+
+      <p>
+        We believe great coffee starts with great beans.
+        Our coffees are carefully sourced and roasted
+        in small batches to highlight the unique character
+        of each origin.
+      </p>
+
+    </section>
+
+
+
+    <!-- =======================================================
+         HOW TO ORDER
+         ======================================================= -->
+
+    <section id="order">
+
+
+      <h2>
+        How to Order
+      </h2>
+
+
+      <p>
+        Choose your coffee, size, and roast level above,
+        then click <strong>Add to Order</strong>.
+        You may mix different coffees up to a total of 3 bags.
+      </p>
+
+
+
+      <div class="order-form">
+
+
+
+        <!-- ===================================================
+             YOUR ORDER / SHOPPING CART
+             =================================================== -->
+
+        <div class="order-summary">
+
+
+          <h3>
+            Your Order
+          </h3>
+
+
+          <div id="cartItems">
+
+            <p class="cart-empty">
+              Your order is currently empty.
+            </p>
+
+          </div>
+
+
+
+          <div class="summary-divider"></div>
+
+
+
+          <div class="summary-line">
+
+            <strong>
+              Total Bags:
+            </strong>
+
+            <span
+              id="totalBags"
+              class="bag-count"
+            >
+              0
+            </span>
+
+            / 3
+
+          </div>
+
+
+
+          <div class="summary-line">
+
+            <strong>
+              Coffee Total:
+            </strong>
+
+            $<span id="coffeeTotal">
+              0.00
+            </span>
+
+          </div>
+
+
+
+          <div class="summary-line">
+
+            <strong>
+              Delivery:
+            </strong>
+
+            <span id="deliveryMethod">
+              Local Pickup
+            </span>
+
+          </div>
+
+
+
+          <div class="summary-line">
+
+            <strong>
+              Shipping:
+            </strong>
+
+            <span id="shippingCost">
+              $0.00
+            </span>
+
+          </div>
+
+
+
+          <div class="total">
+
+            Total:
+
+            $<span id="grandTotal">
+              0.00
+            </span>
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- ===================================================
+             DELIVERY METHOD
+             =================================================== -->
+
+        <div class="form-group">
+
+          <label>
+            Delivery Method
+          </label>
+
+
+          <label class="shipping-option">
+
+            <input
+              type="checkbox"
+              id="shippingCheckbox"
+              onchange="toggleShippingAddress(); updateOrderSummary()"
+            >
+
+            Shipping
+
+          </label>
+
+
+          <p class="shipping-info">
+
+            Leave unchecked for
+            <strong>Local Pickup</strong>.
+
+            <br>
+
+            Shipping:
+            1 bag $7 •
+            2 bags $8 •
+            3 bags $9
+
+          </p>
+
+        </div>
+
+
+        <!-- SHIPPING ADDRESS: shown only when Shipping is selected -->
+        <div id="shippingAddressFields" style="display: none;">
+
+          <h3>Shipping Address</h3>
+
+          <div class="form-group">
+            <label for="addressLine1">Street Address *</label>
+            <input type="text" id="addressLine1" placeholder="Street address">
+          </div>
+
+          <div class="form-group">
+            <label for="addressLine2">Apartment / Unit</label>
+            <input type="text" id="addressLine2" placeholder="Apartment, suite, unit (optional)">
+          </div>
+
+          <div class="form-group">
+            <label for="shippingCity">City *</label>
+            <input type="text" id="shippingCity" placeholder="City">
+          </div>
+
+          <div class="form-group">
+            <label for="shippingState">State *</label>
+            <input type="text" id="shippingState" placeholder="State">
+          </div>
+
+          <div class="form-group">
+            <label for="shippingZip">ZIP Code *</label>
+            <input type="text" id="shippingZip" placeholder="ZIP Code">
+          </div>
+
+        </div>
+
+
+
+        <!-- ===================================================
+             ORDER LIMIT
+             =================================================== -->
+
+        <div class="order-limit">
+
+          <strong>
+            Order Limit: Maximum 3 bags per order.
+          </strong>
+
+
+          <p>
+            Colorful Coffee Bean is a small-batch passion project
+            alongside my full-time job.
+
+            To ensure every order receives the time and attention
+            needed for the best possible roast quality,
+            orders are limited to 3 bags at a time.
+          </p>
+
+        </div>
+
+
+
+        <!-- ===================================================
+             CUSTOMER INFORMATION
+             =================================================== -->
+
+        <h3>
+          Customer Information
+        </h3>
+
+
+
+        <div class="form-group">
+
+          <label for="customerName">
+            Your Name *
+          </label>
+
+
+          <input
+            type="text"
+            id="customerName"
+            placeholder="Your name"
+          >
+
+        </div>
+
+
+
+        <div class="form-group">
+
+          <label for="customerEmail">
+            Email
+          </label>
+
+
+          <input
+            type="email"
+            id="customerEmail"
+            placeholder="your@email.com"
+          >
+
+        </div>
+
+
+
+        <div class="form-group">
+
+          <label for="customerPhone">
+            Phone
+          </label>
+
+
+          <input
+            type="tel"
+            id="customerPhone"
+            placeholder="(240) 555-1234"
+          >
+
+        </div>
+
+
+
+        <!-- ===================================================
+             SEND ORDER BUTTONS
+             =================================================== -->
+
+        <div class="buttons">
+
+
+          <button
+            type="button"
+            class="button order-button"
+            onclick="sendTextOrder()"
+          >
+            Send Order by Text
+          </button>
+
+
+          <button
+            type="button"
+            class="button order-button"
+            onclick="sendEmailOrder()"
+          >
+            Send Order by Email
+          </button>
+
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+  </div>
+
+
+
+  <!-- =========================================================
+       FOOTER
+       ========================================================= -->
+
+  <footer>
+    10% of the profits from every order will be donated to charity. Thank you for enjoying great coffee while helping us give back.
+    © 2026 Colorful Coffee Bean
+
+  </footer>
+
+
+
+  <!-- =========================================================
+       JAVASCRIPT
+       ========================================================= -->
+
+  <script>
+
+
+    /* =========================================================
+       SHOPPING CART
+
+       Every time someone clicks "Add to Order",
+       one bag is added here.
+       ========================================================= */
+
+    let orderItems = [];
+
+
+
+    /* =========================================================
+       COFFEE INFORMATION
+
+       This tells JavaScript:
+       - Coffee name
+       - 6 oz price
+       - 12 oz price
+       ========================================================= */
+
+    const coffeeData = {
+
+      guatemala: {
+        name: "Guatemalan Huehuetenango",
+        price6: 13,
+        price12: 25
+      },
+
+
+      ethiopia: {
+        name: "Ethiopia Yirgacheffe",
+        price6: 15,
+        price12: 28
+      },
+
+
+      costarica: {
+        name: "Costa Rican Tarrazu",
+        price6: 13,
+        price12: 25
+      }
+
+    };
+
+
+
+    /* =========================================================
+       SEARCH COFFEE
+       ========================================================= */
+
+    function filterCoffee() {
+
+
+      const input =
+        document
+          .getElementById("search")
+          .value
+          .toLowerCase();
+
+
+      const cards =
+        document
+          .querySelectorAll(".coffee-card");
+
+
+      cards.forEach(function(card) {
+
+
+        const text =
+          card
+            .innerText
+            .toLowerCase();
+
+
+        if (text.includes(input)) {
+
+          card.style.display = "flex";
+
+        }
+
+        else {
+
+          card.style.display = "none";
+
+        }
+
+
+      });
+
+
+    }
+
+
+
+    /* =========================================================
+       ADD COFFEE TO ORDER
+       ========================================================= */
+
+    function addCoffeeToOrder(coffeeId) {
+
+
+      /* -----------------------------------------
+         CHECK IF CART IS ALREADY FULL
+         ----------------------------------------- */
+
+      if (orderItems.length >= 3) {
+
+
+        alert(
+          "Your order is full!\n\n" +
+          "Maximum order is 3 bags.\n" +
+          "Please remove an item before adding another coffee."
+        );
+
+
+        return;
+
+      }
+
+
+
+      /* -----------------------------------------
+         GET COFFEE INFORMATION
+         ----------------------------------------- */
+
+      const coffee =
+        coffeeData[coffeeId];
+
+
+
+      /* -----------------------------------------
+         FIND SELECTED SIZE
+         ----------------------------------------- */
+
+      const selectedSize =
+        document.querySelector(
+          'input[name="' +
+          coffeeId +
+          '-size"]:checked'
+        );
+
+
+      if (!selectedSize) {
+
+        alert(
+          "Please select a coffee size."
+        );
+
+        return;
+
+      }
+
+
+      const size =
+        selectedSize.value;
+
+
+
+      /* -----------------------------------------
+         FIND ROAST LEVEL
+
+         The roast dropdown depends on which
+         size radio button was selected.
+         ----------------------------------------- */
+
+      const roast =
+        document
+          .getElementById(
+            coffeeId +
+            "-roast-" +
+            size
+          )
+          .value;
+
+
+
+      /* -----------------------------------------
+         FIND PRICE
+         ----------------------------------------- */
+
+      let price;
+
+
+      if (size === "6") {
+
+        price =
+          coffee.price6;
+
+      }
+
+      else {
+
+        price =
+          coffee.price12;
+
+      }
+
+
+
+      /* -----------------------------------------
+         CREATE ORDER ITEM
+         ----------------------------------------- */
+
+      const item = {
+
+        coffee: coffee.name,
+
+        size: size,
+
+        roast: roast,
+
+        price: price
+
+      };
+
+
+
+      /* -----------------------------------------
+         ADD ONE BAG TO CART
+         ----------------------------------------- */
+
+      orderItems.push(item);
+
+
+
+      /* -----------------------------------------
+         UPDATE CART DISPLAY
+         ----------------------------------------- */
+
+      updateOrderSummary();
+
+
+
+      /* -----------------------------------------
+         LET CUSTOMER KNOW IT WAS ADDED
+         ----------------------------------------- */
+
+      alert(
+        coffee.name +
+        "\n" +
+        size +
+        " oz • " +
+        roast +
+        "\n\n" +
+        "Added to your order.\n\n" +
+        "Total Bags: " +
+        orderItems.length +
+        " / 3"
+      );
+
+
+    }
+
+
+
+    /* =========================================================
+       REMOVE COFFEE FROM ORDER
+       ========================================================= */
+
+    function removeOrderItem(index) {
+
+
+      orderItems.splice(
+        index,
+        1
+      );
+
+
+      updateOrderSummary();
+
+
+    }
+
+
+
+    /* =========================================================
+       SHOW / HIDE SHIPPING ADDRESS
+       ========================================================= */
+
+    function toggleShippingAddress() {
+
+      const shippingSelected =
+        document.getElementById("shippingCheckbox").checked;
+
+      document.getElementById("shippingAddressFields").style.display =
+        shippingSelected ? "block" : "none";
+
+    }
+
+
+
+    /* =========================================================
+       CALCULATE SHIPPING
+       ========================================================= */
+
+    function calculateShipping() {
+
+
+      const shippingSelected =
+        document
+          .getElementById("shippingCheckbox")
+          .checked;
+
+
+      const totalBags =
+        orderItems.length;
+
+
+
+      /* -----------------------------------------
+         LOCAL PICKUP
+         ----------------------------------------- */
+
+      if (!shippingSelected) {
+
+        return 0;
+
+      }
+
+
+
+      /* -----------------------------------------
+         1 BAG
+         ----------------------------------------- */
+
+      if (totalBags === 1) {
+
+        return 7;
+
+      }
+
+
+
+      /* -----------------------------------------
+         2 BAGS
+         ----------------------------------------- */
+
+      if (totalBags === 2) {
+
+        return 8;
+
+      }
+
+
+
+      /* -----------------------------------------
+         3 BAGS = FREE SHIPPING
+         ----------------------------------------- */
+
+      if (totalBags === 3) {
+
+        return 9;
+
+      }
+
+
+
+      return 0;
+
+
+    }
+
+
+
+    /* =========================================================
+       UPDATE ORDER SUMMARY
+       ========================================================= */
+
+    function updateOrderSummary() {
+
+
+      const cartItems =
+        document
+          .getElementById("cartItems");
+
+
+      cartItems.innerHTML = "";
+
+
+
+      /* -----------------------------------------
+         COFFEE TOTAL
+         ----------------------------------------- */
+
+      let coffeeTotal = 0;
+
+
+
+      /* -----------------------------------------
+         EMPTY CART
+         ----------------------------------------- */
+
+      if (orderItems.length === 0) {
+
+
+        cartItems.innerHTML =
+
+          '<p class="cart-empty">' +
+          'Your order is currently empty.' +
+          '</p>';
+
+
+      }
+
+
+      /* -----------------------------------------
+         SHOW CART ITEMS
+         ----------------------------------------- */
+
+      else {
+
+
+        orderItems.forEach(
+          function(item, index) {
+
+
+            coffeeTotal +=
+              item.price;
+
+
+
+            const itemDiv =
+              document.createElement("div");
+
+
+            itemDiv.className =
+              "cart-item";
+
+
+
+            itemDiv.innerHTML =
+
+              '<div class="cart-item-title">' +
+
+                (index + 1) +
+                '. ' +
+                item.coffee +
+
+              '</div>' +
+
+
+              '<div class="cart-item-details">' +
+
+                item.size +
+                ' oz • ' +
+                item.roast +
+
+              '</div>' +
+
+
+              '<div class="cart-item-bottom">' +
+
+                '<strong>' +
+
+                  '$' +
+                  item.price.toFixed(2) +
+
+                '</strong>' +
+
+
+                '<button ' +
+                  'type="button" ' +
+                  'class="remove-button" ' +
+                  'onclick="removeOrderItem(' +
+                  index +
+                  ')">' +
+
+                  'Remove' +
+
+                '</button>' +
+
+              '</div>';
+
+
+
+            cartItems.appendChild(
+              itemDiv
+            );
+
+
+          }
+        );
+
+
+      }
+
+
+
+      /* -----------------------------------------
+         SHIPPING
+         ----------------------------------------- */
+
+      const shippingSelected =
+        document
+          .getElementById("shippingCheckbox")
+          .checked;
+
+
+      const shippingCost =
+        calculateShipping();
+
+
+
+      /* -----------------------------------------
+         GRAND TOTAL
+         ----------------------------------------- */
+
+      const grandTotal =
+        coffeeTotal +
+        shippingCost;
+
+
+
+      /* -----------------------------------------
+         DELIVERY TEXT
+         ----------------------------------------- */
+
+      let deliveryText =
+        "Local Pickup";
+
+
+      let shippingText =
+        "$0.00";
+
+
+
+      if (shippingSelected) {
+
+
+        deliveryText =
+          "Shipping";
+
+
+        shippingText =
+          "$" +
+          shippingCost.toFixed(2);
+
+
+      }
+
+
+
+      /* -----------------------------------------
+         UPDATE SCREEN
+         ----------------------------------------- */
+
+      document
+        .getElementById("totalBags")
+        .textContent =
+          orderItems.length;
+
+
+      document
+        .getElementById("coffeeTotal")
+        .textContent =
+          coffeeTotal.toFixed(2);
+
+
+      document
+        .getElementById("deliveryMethod")
+        .textContent =
+          deliveryText;
+
+
+      document
+        .getElementById("shippingCost")
+        .textContent =
+          shippingText;
+
+
+      document
+        .getElementById("grandTotal")
+        .textContent =
+          grandTotal.toFixed(2);
+
+
+    }
+
+
+
+    /* =========================================================
+       CUSTOMER INFORMATION
+       ========================================================= */
+
+    function getCustomerInfo() {
+
+
+      const name =
+        document
+          .getElementById("customerName")
+          .value
+          .trim();
+
+
+      const email =
+        document
+          .getElementById("customerEmail")
+          .value
+          .trim();
+
+
+      const phone =
+        document
+          .getElementById("customerPhone")
+          .value
+          .trim();
+
+
+
+      /* -----------------------------------------
+         NAME REQUIRED
+         ----------------------------------------- */
+
+      if (name === "") {
+
+
+        alert(
+          "Please enter your name."
+        );
+
+
+        return null;
+
+
+      }
+
+
+
+      /* -----------------------------------------
+         EMAIL OR PHONE REQUIRED
+         ----------------------------------------- */
+
+      if (
+        email === "" &&
+        phone === ""
+      ) {
+
+
+        alert(
+          "Please enter your email or phone number."
+        );
+
+
+        return null;
+
+
+      }
+
+
+
+      /* -----------------------------------------
+         ORDER REQUIRED
+         ----------------------------------------- */
+
+      if (orderItems.length === 0) {
+
+
+        alert(
+          "Please add at least one coffee to your order."
+        );
+
+
+        return null;
+
+
+      }
+
+
+
+      const shippingSelected =
+        document.getElementById("shippingCheckbox").checked;
+
+      let shippingAddress = null;
+
+      if (shippingSelected) {
+
+        const addressLine1 = document.getElementById("addressLine1").value.trim();
+        const addressLine2 = document.getElementById("addressLine2").value.trim();
+        const city = document.getElementById("shippingCity").value.trim();
+        const state = document.getElementById("shippingState").value.trim();
+        const postalCode = document.getElementById("shippingZip").value.trim();
+
+        if (!addressLine1 || !city || !state || !postalCode) {
+          alert("Please complete the required shipping address fields.");
+          return null;
+        }
+
+        shippingAddress = {
+          addressLine1: addressLine1,
+          addressLine2: addressLine2,
+          city: city,
+          state: state,
+          postalCode: postalCode
+        };
+      }
+
+      return {
+
+        name: name,
+
+        email: email,
+
+        phone: phone,
+
+        shippingAddress: shippingAddress
+
+      };
+
+
+    }
+
+
+
+    /* =========================================================
+       CREATE ORDER MESSAGE
+       ========================================================= */
+
+    function createOrderMessage() {
+
+
+      const customer =
+        getCustomerInfo();
+
+
+      if (!customer) {
+
+        return null;
+
+      }
+
+
+
+      /* -----------------------------------------
+         CREATE COFFEE LIST
+         ----------------------------------------- */
+
+      let orderDetails = "";
+
+
+      let coffeeTotal = 0;
+
+
+
+      orderItems.forEach(
+        function(item, index) {
+
+
+          coffeeTotal +=
+            item.price;
+
+
+
+          orderDetails +=
+
+            "\n" +
+            (index + 1) +
+            ". " +
+            item.coffee +
+
+            "\nSize: " +
+            item.size +
+            " oz" +
+
+            "\nRoast: " +
+            item.roast +
+
+            "\nPrice: $" +
+            item.price.toFixed(2) +
+
+            "\n";
+
+
+        }
+      );
+
+
+
+      /* -----------------------------------------
+         SHIPPING
+         ----------------------------------------- */
+
+      const shippingSelected =
+        document
+          .getElementById("shippingCheckbox")
+          .checked;
+
+
+      const shippingCost =
+        calculateShipping();
+
+
+
+      let deliveryText =
+        "Local Pickup";
+
+
+      let shippingText =
+        "$0.00";
+
+
+
+      if (shippingSelected) {
+
+
+        deliveryText =
+          "Shipping";
+
+
+        shippingText =
+          "$" +
+          shippingCost.toFixed(2);
+
+
+      }
+
+
+
+      /* -----------------------------------------
+         GRAND TOTAL
+         ----------------------------------------- */
+
+      const grandTotal =
+        coffeeTotal +
+        shippingCost;
+
+
+
+      /* -----------------------------------------
+         FINAL MESSAGE
+         ----------------------------------------- */
+
+      const message =
+
+`Hello Colorful Coffee Bean!
+
+I would like to place an order.
+
+ORDER
+${orderDetails}
+Total Bags: ${orderItems.length}
+
+Coffee Total: $${coffeeTotal.toFixed(2)}
+Delivery Method: ${deliveryText}
+Shipping: ${shippingText}
+
+TOTAL: $${grandTotal.toFixed(2)}
+
+CUSTOMER INFORMATION
+
+Name: ${customer.name}
+Email: ${customer.email || "Not provided"}
+Phone: ${customer.phone || "Not provided"}
+
+Thank you!`;
+
+
+
+      return {
+
+        message: message,
+
+        customer: customer
+
+      };
+
+
+    }
+
+
+
+    /* =========================================================
+       SEND ORDER BY TEXT
+       ========================================================= */
+
+    function sendTextOrder() {
+
+
+      const order =
+        createOrderMessage();
+
+
+      if (!order) {
+
+        return;
+
+      }
+
+
+
+      const phoneNumber =
+        "12404494657";
+
+
+      const message =
+        encodeURIComponent(
+          order.message
+        );
+
+
+      window.location.href =
+
+        "sms:" +
+        phoneNumber +
+        "?body=" +
+        message;
+
+
+    }
+
+
+
+    /* =========================================================
+       SEND ORDER BY EMAIL
+       ========================================================= */
+
+    function sendEmailOrder() {
+
+
+      const order =
+        createOrderMessage();
+
+
+      if (!order) {
+
+        return;
+
+      }
+
+
+
+      const email =
+        "colorfulcb@gmail.com";
+
+
+      const subject =
+        encodeURIComponent(
+
+          "Coffee Order - " +
+          order.customer.name
+
+        );
+
+
+      const body =
+        encodeURIComponent(
+          order.message
+        );
+
+
+      window.location.href =
+
+        "mailto:" +
+        email +
+        "?subject=" +
+        subject +
+        "&body=" +
+        body;
+
+
+    }
+
+
+
+    /* =========================================================
+       PAGE LOAD
+       ========================================================= */
+
+    document.addEventListener(
+
+      "DOMContentLoaded",
+
+      function() {
+
+        updateOrderSummary();
+
+      }
+
+    );
+
+
+  </script>
+
+
+</body>
+
+</html>
