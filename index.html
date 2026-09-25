@@ -2504,6 +2504,37 @@ Thank you!`;
           throw new Error(errorText);
         }
 
+        // Order is already safely stored in Supabase at this point.
+        // Email is intentionally best-effort: an email failure must never
+        // turn a successfully saved order into a failed customer order.
+        try {
+          const emailResponse = await fetch(
+            SUPABASE_URL + "/functions/v1/send-order-email",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "apikey": SUPABASE_PUBLISHABLE_KEY,
+                "Authorization": "Bearer " + SUPABASE_PUBLISHABLE_KEY
+              },
+              body: JSON.stringify({
+                order_code: result.order_code
+              })
+            }
+          );
+
+          const emailResult = await emailResponse.json().catch(function() {
+            return null;
+          });
+
+          if (!emailResponse.ok || !emailResult || emailResult.success !== true) {
+            console.error("Order email could not be sent:", emailResult);
+          }
+        }
+        catch (emailError) {
+          console.error("Order email could not be sent:", emailError);
+        }
+
         alert(
           "Order received!\n\n" +
           "Order Number: " + result.order_code + "\n" +
@@ -2511,6 +2542,7 @@ Thank you!`;
           "Coffee: $" + Number(result.subtotal).toFixed(2) + "\n" +
           "Shipping: $" + Number(result.shipping).toFixed(2) + "\n" +
           "Total: $" + Number(result.total).toFixed(2) + "\n\n" +
+          "A confirmation email will be sent to " + customer.email + ".\n\n" +
           "Thank you!"
         );
 
