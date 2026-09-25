@@ -196,14 +196,24 @@ function renderOrders(orders, items) {
 
     const code = escapeHtml(o.order_code || o.order_number);
     const status = String(o.status || "new").toLowerCase();
-    const options = ["new","roasting","quality_check","ready","shipped","completed","cancelled"]
+    const statusLabels = {
+      new: "New",
+      roasting: "Roasting",
+      quality_check: "Quality Check",
+      ready: "Ready",
+      shipped: "Shipped",
+      completed: "Completed",
+      cancelled: "Cancelled"
+    };
+
+    const options = Object.keys(statusLabels)
       .map(s => '<option value="' + s + '"' + (s===status?' selected':'') + '>' +
-        s.charAt(0).toUpperCase()+s.slice(1) + '</option>').join("");
+        statusLabels[s] + '</option>').join("");
 
     return '<div class="card order">' +
       '<div class="order-head"><div><div class="order-code">Order #' + code + '</div>' +
       '<div class="muted">' + new Date(o.created_at).toLocaleString() + '</div></div>' +
-      '<div><strong>' + escapeHtml(status.toUpperCase()) + '</strong></div></div>' +
+      '<div><strong>' + escapeHtml(statusLabels[status] || status.replaceAll("_", " ")) + '</strong></div></div>' +
       '<div class="grid">' +
         '<div><strong>Customer</strong><br>' + escapeHtml(o.customer_name) +
         '<br>' + escapeHtml(o.email) + (o.phone ? '<br>'+escapeHtml(o.phone) : '') + '</div>' +
