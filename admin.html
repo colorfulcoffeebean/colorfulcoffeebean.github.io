@@ -93,6 +93,8 @@ footer { text-align:center; padding:35px; color:#777; }
         </select>
         <select id="weekFilter" onchange="applyFilters()">
           <option value="this_week">This Week</option>
+          <option value="last_week">Last Week</option>
+          <option value="this_month">This Month</option>
           <option value="all">All Orders</option>
         </select>
       </div>
@@ -226,9 +228,25 @@ function applyFilters() {
   const fulfillment = fulfillmentEl.value;
   const week = weekEl.value;
   const weekStart = startOfWeek();
+  const nextWeekStart = new Date(weekStart);
+  nextWeekStart.setDate(nextWeekStart.getDate() + 7);
+
+  const lastWeekStart = new Date(weekStart);
+  lastWeekStart.setDate(lastWeekStart.getDate() - 7);
+
+  const monthStart = new Date();
+  monthStart.setDate(1);
+  monthStart.setHours(0,0,0,0);
+
+  const nextMonthStart = new Date(monthStart);
+  nextMonthStart.setMonth(nextMonthStart.getMonth() + 1);
 
   const filtered = cachedOrders.filter(o => {
-    if (week === "this_week" && new Date(o.created_at) < weekStart) return false;
+    const created = new Date(o.created_at);
+
+    if (week === "this_week" && (created < weekStart || created >= nextWeekStart)) return false;
+    if (week === "last_week" && (created < lastWeekStart || created >= weekStart)) return false;
+    if (week === "this_month" && (created < monthStart || created >= nextMonthStart)) return false;
     if (status !== "all" && String(o.status || "").toLowerCase() !== status) return false;
     if (fulfillment !== "all" && o.fulfillment !== fulfillment) return false;
 
