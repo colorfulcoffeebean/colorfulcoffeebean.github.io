@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colorful Coffee Bean | Admin</title>
+<style>
+body { margin:0; font-family:Arial,sans-serif; background:#f7f3eb; color:#2c2118; }
+.container { max-width:1100px; margin:auto; padding:30px 20px; }
+header { text-align:center; padding:45px 20px 25px; }
+.brand { display:flex; align-items:center; justify-content:center; gap:16px; }
+.brand-logo { width:110px; height:110px; object-fit:contain; }
+h1 { margin:0; font-size:2.6rem; }
+h2 { border-bottom:1px solid #d6cabc; padding-bottom:10px; }
+.card { background:white; border-radius:12px; padding:24px; box-shadow:0 3px 12px rgba(0,0,0,.08); margin-bottom:20px; }
+.login { max-width:480px; margin:20px auto; }
+.form-group { margin-bottom:16px; }
+label { display:block; font-weight:bold; margin-bottom:7px; }
+input, select { width:100%; box-sizing:border-box; padding:12px; border:1px solid #ccc; border-radius:8px; font-size:16px; background:white; }
+.button { padding:12px 20px; border:0; border-radius:8px; background:#38291f; color:white; cursor:pointer; font-size:15px; }
+.button:hover { background:#594235; }
+.button.secondary { background:#76675b; }
+.topbar { display:flex; justify-content:space-between; align-items:center; gap:15px; flex-wrap:wrap; }
+.stats { font-size:1.15rem; font-weight:bold; }
+.order { border-left:4px solid #8a5b35; }
+.order-head { display:flex; justify-content:space-between; gap:15px; flex-wrap:wrap; align-items:flex-start; }
+.order-code { font-size:1.35rem; font-weight:bold; }
+.muted { color:#66584c; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:15px; margin-top:18px; }
+.item { background:#f7f3eb; padding:13px; border-radius:8px; margin-top:10px; }
+.money { font-weight:bold; }
+.status-row { display:flex; gap:10px; align-items:center; margin-top:18px; flex-wrap:wrap; }
+.status-row select { width:auto; min-width:180px; }
+#error { color:#9b2c2c; margin-top:12px; white-space:pre-wrap; }
+#loading { text-align:center; padding:30px; }
+.hidden { display:none !important; }
+footer { text-align:center; padding:35px; color:#777; }
+@media(max-width:600px) { h1{font-size:1.8rem} .brand-logo{width:80px;height:80px} }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <img src="images/colorful-coffee-bean-logo.png" alt="Colorful Coffee Bean Logo" class="brand-logo">
+    <h1>Colorful Coffee Bean</h1>
+  </div>
+  <p class="muted">Private Order Dashboard</p>
+</header>
+
+<div class="container">
+  <section id="loginView" class="card login">
+    <h2>Admin Login</h2>
+    <div class="form-group"><label for="email">Email</label><input id="email" type="email" autocomplete="username"></div>
+    <div class="form-group"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password"></div>
+    <button class="button" id="loginButton" onclick="login()">Sign In</button>
+    <div id="error"></div>
+  </section>
+
+  <section id="dashboardView" class="hidden">
+    <div class="card topbar">
+      <div>
+        <div class="stats" id="weekStats">This Week: — / 3 Orders</div>
+        <div class="muted">Cancelled orders do not count toward weekly capacity.</div>
+      </div>
+      <div>
+        <button class="button secondary" onclick="loadOrders()">Refresh</button>
+        <button class="button" onclick="logout()">Sign Out</button>
+      </div>
+    </div>
+    <div id="loading" class="hidden">Loading orders...</div>
+    <div id="orders"></div>
+  </section>
+</div>
+
+<footer>Colorful Coffee Bean · Admin</footer>
+
+<script>
+const SUPABASE_URL = 'https://xzvomecpkgztozvnylfz.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_YZyVqJsWa5j8Hxt8BCqFgg_inirk0Hd';
+let accessToken = null;
+
+function headers(auth=true) {
+  const h = { "apikey": SUPABASE_PUBLISHABLE_KEY, "Content-Type": "application/json" };
+  if (auth && accessToken) h["Authorization"] = "Bearer " + accessToken;
+  return h;
+}
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+}
+
+async function login() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const error = document.getElementById("error");
+  error.textContent = "";
+  if (!email || !password) { error.textContent = "Enter your email and password."; return; }
+
+  const btn = document.getElementById("loginButton");
+  btn.disabled = true; btn.textContent = "Signing In...";
+  try {
+    const r = await fetch(SUPABASE_URL + "/auth/v1/token?grant_type=password", {
+      method:"POST", headers:headers(false), body:JSON.stringify({email,password})
+    });
+    const data = await r.json();
+    if (!r.ok || !data.access_token) throw new Error(data.error_description || data.msg || "Login failed.");
+    accessToken = data.access_token;
+
+    // RLS is the real admin authorization check.
+    const test = await fetch(SUPABASE_URL + "/rest/v1/orders?select=id&limit=1", {headers:headers()});
+    if (!test.ok) throw new Error("This account is not authorized to view orders.");
+
+    document.getElementById("loginView").classList.add("hidden");
+    document.getElementById("dashboardView").classList.remove("hidden");
+    await loadOrders();
+  } catch(e) {
+    accessToken = null;
+    error.textContent = e.message;
+  } finally {
+    btn.disabled = false; btn.textContent = "Sign In";
+  }
+}
+
+async function logout() {
+  if (accessToken) {
+    try { await fetch(SUPABASE_URL + "/auth/v1/logout", {method:"POST",headers:headers()}); } catch(e) {}
+  }
+  accessToken = null;
+  document.getElementById("orders").innerHTML = "";
+  document.getElementById("dashboardView").classList.add("hidden");
+  document.getElementById("loginView").classList.remove("hidden");
+  document.getElementById("password").value = "";
+}
+
+function startOfWeek() {
+  const d = new Date();
+  const day = d.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+  d.setDate(d.getDate() + diff);
+  d.setHours(0,0,0,0);
+  return d;
+}
+
+async function loadOrders() {
+  const loading = document.getElementById("loading");
+  loading.classList.remove("hidden");
+  try {
+    const orderRes = await fetch(
+      SUPABASE_URL + "/rest/v1/orders?select=*&order=created_at.desc",
+      {headers:headers()}
+    );
+    if (!orderRes.ok) throw new Error("Could not load orders.");
+    const orders = await orderRes.json();
+
+    const itemRes = await fetch(
+      SUPABASE_URL + "/rest/v1/order_items?select=*&order=order_code.asc",
+      {headers:headers()}
+    );
+    if (!itemRes.ok) throw new Error("Could not load order items.");
+    const items = await itemRes.json();
+
+    const weekStart = startOfWeek();
+    const activeThisWeek = orders.filter(o =>
+      new Date(o.created_at) >= weekStart && o.status !== "cancelled"
+    ).length;
+    document.getElementById("weekStats").textContent =
+      "This Week: " + activeThisWeek + " / 3 Orders";
+
+    renderOrders(orders, items);
+  } catch(e) {
+    document.getElementById("orders").innerHTML =
+      '<div class="card"><strong>Error:</strong> ' + escapeHtml(e.message) + '</div>';
+  } finally {
+    loading.classList.add("hidden");
+  }
+}
+
+function renderOrders(orders, items) {
+  const box = document.getElementById("orders");
+  if (!orders.length) {
+    box.innerHTML = '<div class="card">No orders yet.</div>';
+    return;
+  }
+
+  box.innerHTML = orders.map(o => {
+    const its = items.filter(i => i.order_id === o.id);
+    const itemHtml = its.map(i =>
+      '<div class="item"><strong>' + escapeHtml(i.coffee_name) + '</strong><br>' +
+      escapeHtml(i.size) + ' · ' + escapeHtml(i.roast_level) +
+      '<br>$' + Number(i.unit_price).toFixed(2) + '</div>'
+    ).join("");
+
+    const address = o.fulfillment === "shipping"
+      ? [o.address_line1,o.address_line2,o.city,o.state,o.postal_code].filter(Boolean).map(escapeHtml).join(", ")
+      : "Local Pickup";
+
+    const code = escapeHtml(o.order_code || o.order_number);
+    const status = String(o.status || "new").toLowerCase();
+    const options = ["new","roasting","ready","shipped","completed","cancelled"]
+      .map(s => '<option value="' + s + '"' + (s===status?' selected':'') + '>' +
+        s.charAt(0).toUpperCase()+s.slice(1) + '</option>').join("");
+
+    return '<div class="card order">' +
+      '<div class="order-head"><div><div class="order-code">Order #' + code + '</div>' +
+      '<div class="muted">' + new Date(o.created_at).toLocaleString() + '</div></div>' +
+      '<div><strong>' + escapeHtml(status.toUpperCase()) + '</strong></div></div>' +
+      '<div class="grid">' +
+        '<div><strong>Customer</strong><br>' + escapeHtml(o.customer_name) +
+        '<br>' + escapeHtml(o.email) + (o.phone ? '<br>'+escapeHtml(o.phone) : '') + '</div>' +
+        '<div><strong>Fulfillment</strong><br>' + escapeHtml(address) + '</div>' +
+        '<div><strong>Amount</strong><br>Subtotal: $' + Number(o.subtotal).toFixed(2) +
+        '<br>Shipping: $' + Number(o.shipping_cost).toFixed(2) +
+        '<br><span class="money">Total: $' + Number(o.total).toFixed(2) + '</span></div>' +
+      '</div>' +
+      '<div><h3>Items</h3>' + itemHtml + '</div>' +
+      '<div class="status-row"><strong>Status:</strong><select id="status-' + escapeHtml(o.id) + '">' +
+      options + '</select><button class="button" onclick="updateStatus(\'' + escapeHtml(o.id) + '\')">Save Status</button></div>' +
+    '</div>';
+  }).join("");
+}
+
+async function updateStatus(orderId) {
+  const select = document.getElementById("status-" + orderId);
+  const status = select.value;
+  try {
+    const r = await fetch(
+      SUPABASE_URL + "/rest/v1/orders?id=eq." + encodeURIComponent(orderId),
+      {
+        method:"PATCH",
+        headers:{...headers(), "Prefer":"return=minimal"},
+        body:JSON.stringify({status})
+      }
+    );
+    if (!r.ok) {
+      const e = await r.text();
+      throw new Error(e || "Could not update status.");
+    }
+    await loadOrders();
+    alert("Order status updated.");
+  } catch(e) {
+    alert("Status could not be updated.\n\n" + e.message);
+  }
+}
+
+document.getElementById("password").addEventListener("keydown", e => {
+  if (e.key === "Enter") login();
+});
+</script>
+</body>
+</html>
