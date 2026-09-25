@@ -34,6 +34,10 @@ input, select { width:100%; box-sizing:border-box; padding:12px; border:1px soli
 #error { color:#9b2c2c; margin-top:12px; white-space:pre-wrap; }
 #loading { text-align:center; padding:30px; }
 .hidden { display:none !important; }
+.filters { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:10px; margin-top:16px; }
+.filters input, .filters select { width:100%; }
+.order.completed-order { opacity:.78; }
+@media(max-width:750px) { .filters { grid-template-columns:1fr; } }
 footer { text-align:center; padding:35px; color:#777; }
 @media(max-width:600px) { h1{font-size:1.8rem} .brand-logo{width:80px;height:80px} }
 </style>
@@ -67,6 +71,33 @@ footer { text-align:center; padding:35px; color:#777; }
         <button class="button" onclick="logout()">Sign Out</button>
       </div>
     </div>
+
+    <div class="card">
+      <strong>Find Orders</strong>
+      <div class="filters">
+        <input id="orderSearch" type="text" placeholder="Search order #, customer, email..." oninput="applyFilters()">
+        <select id="statusFilter" onchange="applyFilters()">
+          <option value="all">All Statuses</option>
+          <option value="new">New</option>
+          <option value="roasting">Roasting</option>
+          <option value="quality_check">Quality Check</option>
+          <option value="ready">Ready</option>
+          <option value="shipped">Shipped</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+        <select id="fulfillmentFilter" onchange="applyFilters()">
+          <option value="all">Pickup + Shipping</option>
+          <option value="pickup">Local Pickup</option>
+          <option value="shipping">Shipping</option>
+        </select>
+        <select id="weekFilter" onchange="applyFilters()">
+          <option value="this_week">This Week</option>
+          <option value="all">All Orders</option>
+        </select>
+      </div>
+    </div>
+
     <div id="loading" class="hidden">Loading orders...</div>
     <div id="orders"></div>
   </section>
@@ -78,6 +109,8 @@ footer { text-align:center; padding:35px; color:#777; }
 const SUPABASE_URL = 'https://xzvomecpkgztozvnylfz.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_YZyVqJsWa5j8Hxt8BCqFgg_inirk0Hd';
 let accessToken = null;
+let cachedOrders = [];
+let cachedItems = [];
 
 function headers(auth=true) {
   const h = { "apikey": SUPABASE_PUBLISHABLE_KEY, "Content-Type": "application/json" };
@@ -166,13 +199,49 @@ async function loadOrders() {
     document.getElementById("weekStats").textContent =
       "This Week: " + activeThisWeek + " / 3 Orders";
 
-    renderOrders(orders, items);
+    cachedOrders = orders;
+    cachedItems = items;
+    applyFilters();
   } catch(e) {
     document.getElementById("orders").innerHTML =
       '<div class="card"><strong>Error:</strong> ' + escapeHtml(e.message) + '</div>';
   } finally {
     loading.classList.add("hidden");
   }
+}
+
+function applyFilters() {
+  const searchEl = document.getElementById("orderSearch");
+  const statusEl = document.getElementById("statusFilter");
+  const fulfillmentEl = document.getElementById("fulfillmentFilter");
+  const weekEl = document.getElementById("weekFilter");
+
+  if (!searchEl || !statusEl || !fulfillmentEl || !weekEl) {
+    renderOrders(cachedOrders, cachedItems);
+    return;
+  }
+
+  const q = searchEl.value.trim().toLowerCase();
+  const status = statusEl.value;
+  const fulfillment = fulfillmentEl.value;
+  const week = weekEl.value;
+  const weekStart = startOfWeek();
+
+  const filtered = cachedOrders.filter(o => {
+    if (week === "this_week" && new Date(o.created_at) < weekStart) return false;
+    if (status !== "all" && String(o.status || "").toLowerCase() !== status) return false;
+    if (fulfillment !== "all" && o.fulfillment !== fulfillment) return false;
+
+    if (q) {
+      const haystack = [
+        o.order_code, o.order_number, o.customer_name, o.email, o.phone
+      ].filter(Boolean).join(" ").toLowerCase();
+      if (!haystack.includes(q)) return false;
+    }
+    return true;
+  });
+
+  renderOrders(filtered, cachedItems);
 }
 
 function renderOrders(orders, items) {
@@ -210,7 +279,8 @@ function renderOrders(orders, items) {
       .map(s => '<option value="' + s + '"' + (s===status?' selected':'') + '>' +
         statusLabels[s] + '</option>').join("");
 
-    return '<div class="card order">' +
+    const subdued = (status === "completed" || status === "cancelled") ? " completed-order" : "";
+    return '<div class="card order' + subdued + '">' +
       '<div class="order-head"><div><div class="order-code">Order #' + code + '</div>' +
       '<div class="muted">' + new Date(o.created_at).toLocaleString() + '</div></div>' +
       '<div><strong>' + escapeHtml(statusLabels[status] || status.replaceAll("_", " ")) + '</strong></div></div>' +
