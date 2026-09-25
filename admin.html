@@ -259,9 +259,20 @@ function renderOrders(orders, items) {
       '<br>$' + Number(i.unit_price).toFixed(2) + '</div>'
     ).join("");
 
-    const address = o.fulfillment === "shipping"
-      ? [o.address_line1,o.address_line2,o.city,o.state,o.postal_code].filter(Boolean).map(escapeHtml).join(", ")
-      : "Local Pickup";
+    const pickupLocations = {
+      applebees_germantown:
+        "Local Pickup<br><strong>Applebee's</strong><br>21048 Frederick Rd<br>Germantown, MD 20876",
+      royal_farms_gaithersburg:
+        "Local Pickup<br><strong>Royal Farms</strong><br>690 Watkins Mill Rd<br>Gaithersburg, MD 20879"
+    };
+
+    const fulfillmentHtml = o.fulfillment === "shipping"
+      ? "Shipping<br>" +
+        [o.address_line1,o.address_line2,o.city,o.state,o.postal_code]
+          .filter(Boolean)
+          .map(escapeHtml)
+          .join(", ")
+      : (pickupLocations[o.pickup_location] || "Local Pickup");
 
     const code = escapeHtml(o.order_code || o.order_number);
     const status = String(o.status || "new").toLowerCase();
@@ -287,7 +298,7 @@ function renderOrders(orders, items) {
       '<div class="grid">' +
         '<div><strong>Customer</strong><br>' + escapeHtml(o.customer_name) +
         '<br>' + escapeHtml(o.email) + (o.phone ? '<br>'+escapeHtml(o.phone) : '') + '</div>' +
-        '<div><strong>Fulfillment</strong><br>' + escapeHtml(address) + '</div>' +
+        '<div><strong>Fulfillment</strong><br>' + fulfillmentHtml + '</div>' +
         '<div><strong>Amount</strong><br>Subtotal: $' + Number(o.subtotal).toFixed(2) +
         '<br>Shipping: $' + Number(o.shipping_cost).toFixed(2) +
         '<br><span class="money">Total: $' + Number(o.total).toFixed(2) + '</span></div>' +
