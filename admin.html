@@ -196,7 +196,7 @@ function renderOrders(orders, items) {
 
     const code = escapeHtml(o.order_code || o.order_number);
     const status = String(o.status || "new").toLowerCase();
-    const options = ["new","roasting","ready","shipped","completed","cancelled"]
+    const options = ["new","roasting","quality check","ready","shipped","completed","cancelled"]
       .map(s => '<option value="' + s + '"' + (s===status?' selected':'') + '>' +
         s.charAt(0).toUpperCase()+s.slice(1) + '</option>').join("");
 
