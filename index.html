@@ -432,7 +432,8 @@
 
     .form-group input[type="text"],
     .form-group input[type="email"],
-    .form-group input[type="tel"] {
+    .form-group input[type="tel"],
+    .form-group select {
 
       width: 100%;
 
@@ -1355,6 +1356,30 @@
         </div>
 
 
+        <!-- LOCAL PICKUP LOCATION: shown only when Shipping is not selected -->
+        <div id="pickupLocationFields">
+
+          <div class="form-group">
+            <label for="pickupLocation">Pickup Location *</label>
+
+            <select id="pickupLocation">
+              <option value="">Select a pickup location...</option>
+              <option value="applebees_germantown">
+                Applebee's — 21048 Frederick Rd, Germantown, MD 20876
+              </option>
+              <option value="royal_farms_gaithersburg">
+                Royal Farms — 690 Watkins Mill Rd, Gaithersburg, MD 20879
+              </option>
+            </select>
+
+            <p class="shipping-info">
+              Please choose where you would like to pick up your coffee.
+            </p>
+          </div>
+
+        </div>
+
+
         <!-- SHIPPING ADDRESS: shown only when Shipping is selected -->
         <div id="shippingAddressFields" style="display: none;">
 
@@ -1821,6 +1846,9 @@
       document.getElementById("shippingAddressFields").style.display =
         shippingSelected ? "block" : "none";
 
+      document.getElementById("pickupLocationFields").style.display =
+        shippingSelected ? "none" : "block";
+
     }
 
 
@@ -2207,6 +2235,17 @@
         document.getElementById("shippingCheckbox").checked;
 
       let shippingAddress = null;
+      let pickupLocation = null;
+
+      if (!shippingSelected) {
+        pickupLocation =
+          document.getElementById("pickupLocation").value;
+
+        if (!pickupLocation) {
+          alert("Please select a pickup location.");
+          return null;
+        }
+      }
 
       if (shippingSelected) {
 
@@ -2238,7 +2277,9 @@
 
         phone: phone,
 
-        shippingAddress: shippingAddress
+        shippingAddress: shippingAddress,
+
+        pickupLocation: pickupLocation
 
       };
 
@@ -2453,6 +2494,7 @@ Thank you!`;
         p_city: address.city || "",
         p_state: address.state || "",
         p_postal_code: address.postalCode || "",
+        p_pickup_location: shippingSelected ? null : customer.pickupLocation,
         p_items: items
       };
 
@@ -2501,6 +2543,11 @@ Thank you!`;
             return;
           }
 
+          if (errorText.includes("PICKUP_LOCATION_REQUIRED")) {
+            alert("Please select a pickup location.");
+            return;
+          }
+
           throw new Error(errorText);
         }
 
@@ -2541,6 +2588,12 @@ Thank you!`;
           "Bags: " + result.bags + "\n" +
           "Coffee: $" + Number(result.subtotal).toFixed(2) + "\n" +
           "Shipping: $" + Number(result.shipping).toFixed(2) + "\n" +
+          (!shippingSelected
+            ? "Pickup: " +
+              (customer.pickupLocation === "applebees_germantown"
+                ? "Applebee's - Germantown"
+                : "Royal Farms - Gaithersburg") + "\n"
+            : "") +
           "Total: $" + Number(result.total).toFixed(2) + "\n\n" +
           "A confirmation email will be sent to " + customer.email + ".\n\n" +
           "Thank you!"
@@ -2549,6 +2602,7 @@ Thank you!`;
         // Clear the cart only after Supabase confirms the order.
         orderItems = [];
         document.getElementById("shippingCheckbox").checked = false;
+        document.getElementById("pickupLocation").value = "";
         toggleShippingAddress();
         updateOrderSummary();
 
