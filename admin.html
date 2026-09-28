@@ -1,359 +1,3561 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Colorful Coffee Bean | Admin</title>
-<style>
-body { margin:0; font-family:Arial,sans-serif; background:#f7f3eb; color:#2c2118; }
-.container { max-width:1100px; margin:auto; padding:30px 20px; }
-header { text-align:center; padding:45px 20px 25px; }
-.brand { display:flex; align-items:center; justify-content:center; gap:16px; }
-.brand-logo { width:110px; height:110px; object-fit:contain; }
-h1 { margin:0; font-size:2.6rem; }
-h2 { border-bottom:1px solid #d6cabc; padding-bottom:10px; }
-.card { background:white; border-radius:12px; padding:24px; box-shadow:0 3px 12px rgba(0,0,0,.08); margin-bottom:20px; }
-.login { max-width:480px; margin:20px auto; }
-.form-group { margin-bottom:16px; }
-label { display:block; font-weight:bold; margin-bottom:7px; }
-input, select { width:100%; box-sizing:border-box; padding:12px; border:1px solid #ccc; border-radius:8px; font-size:16px; background:white; }
-.button { padding:12px 20px; border:0; border-radius:8px; background:#38291f; color:white; cursor:pointer; font-size:15px; }
-.button:hover { background:#594235; }
-.button.secondary { background:#76675b; }
-.topbar { display:flex; justify-content:space-between; align-items:center; gap:15px; flex-wrap:wrap; }
-.stats { font-size:1.15rem; font-weight:bold; }
-.order { border-left:4px solid #8a5b35; }
-.order-head { display:flex; justify-content:space-between; gap:15px; flex-wrap:wrap; align-items:flex-start; }
-.order-code { font-size:1.35rem; font-weight:bold; }
-.muted { color:#66584c; }
-.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:15px; margin-top:18px; }
-.item { background:#f7f3eb; padding:13px; border-radius:8px; margin-top:10px; }
-.money { font-weight:bold; }
-.status-row { display:flex; gap:10px; align-items:center; margin-top:18px; flex-wrap:wrap; }
-.status-row select { width:auto; min-width:180px; }
-#error { color:#9b2c2c; margin-top:12px; white-space:pre-wrap; }
-#loading { text-align:center; padding:30px; }
-.hidden { display:none !important; }
-.filters { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:10px; margin-top:16px; }
-.filters input, .filters select { width:100%; }
-.order.completed-order { opacity:.78; }
-@media(max-width:750px) { .filters { grid-template-columns:1fr; } }
-footer { text-align:center; padding:35px; color:#777; }
-@media(max-width:600px) { h1{font-size:1.8rem} .brand-logo{width:80px;height:80px} }
-</style>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Colorful Coffee Bean | Admin</title>
+
+
+  <style>
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f7f3eb;
+      color: #2c2118;
+    }
+
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 30px 20px;
+    }
+
+
+    header {
+      text-align: center;
+      padding: 45px 20px 25px;
+    }
+
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+
+    .brand-logo {
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+    }
+
+
+    h1 {
+      margin: 0;
+      font-size: 2.6rem;
+    }
+
+
+    h2 {
+      border-bottom: 1px solid #d6cabc;
+      padding-bottom: 10px;
+    }
+
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.08);
+      margin-bottom: 20px;
+    }
+
+
+    .login {
+      max-width: 480px;
+      margin: 20px auto;
+    }
+
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+
+    input,
+    select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      background: white;
+    }
+
+
+    .button {
+      padding: 12px 20px;
+      border: 0;
+      border-radius: 8px;
+      background: #38291f;
+      color: white;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+
+    .button:hover {
+      background: #594235;
+    }
+
+
+    .button.secondary {
+      background: #76675b;
+    }
+
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+
+    .stats {
+      font-size: 1.15rem;
+      font-weight: bold;
+    }
+
+
+    .order {
+      border-left: 4px solid #8a5b35;
+    }
+
+
+    .order-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+
+    .order-code {
+      font-size: 1.35rem;
+      font-weight: bold;
+    }
+
+
+    .muted {
+      color: #66584c;
+    }
+
+
+    .grid {
+      display: grid;
+      grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      margin-top: 18px;
+    }
+
+
+    .item {
+      background: #f7f3eb;
+      padding: 13px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+
+    .money {
+      font-weight: bold;
+    }
+
+
+    .status-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+
+    .status-row select {
+      width: auto;
+      min-width: 180px;
+    }
+
+
+    #error {
+      color: #9b2c2c;
+      margin-top: 12px;
+      white-space: pre-wrap;
+    }
+
+
+    #loading {
+      text-align: center;
+      padding: 30px;
+    }
+
+
+    .hidden {
+      display: none !important;
+    }
+
+
+    .filters {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+
+    .filters input,
+    .filters select {
+      width: 100%;
+    }
+
+
+    .order.completed-order {
+      opacity: .78;
+    }
+
+
+    footer {
+      text-align: center;
+      padding: 35px;
+      color: #777;
+    }
+
+
+    /* ==========================================
+       ADMIN TABS
+       ========================================== */
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+
+    .tab-button {
+      padding: 12px 20px;
+      border: 1px solid #d6cabc;
+      border-radius: 8px;
+      background: white;
+      color: #38291f;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+
+    .tab-button.active {
+      background: #38291f;
+      color: white;
+    }
+
+
+
+    /* ==========================================
+       INVENTORY
+       ========================================== */
+
+    .inventory-card {
+      border-left: 4px solid #5f7a4f;
+    }
+
+
+    .inventory-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+
+    .inventory-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+
+
+    .inventory-stats {
+      display: grid;
+      grid-template-columns:
+        repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+
+    .inventory-stat {
+      background: #f7f3eb;
+      padding: 14px;
+      border-radius: 8px;
+    }
+
+
+    .inventory-stat strong {
+      display: block;
+      font-size: 1.15rem;
+      margin-top: 4px;
+    }
+
+
+    .low-stock {
+      color: #9b2c2c;
+      font-weight: bold;
+    }
+
+
+    .stock-ok {
+      color: #3f6b3f;
+      font-weight: bold;
+    }
+
+
+    .inventory-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+
+
+    /* ==========================================
+       INVENTORY HISTORY
+       ========================================== */
+
+    .history {
+      margin-top: 18px;
+      border-top: 1px solid #e1d8cc;
+      padding-top: 14px;
+    }
+
+
+    .history-row {
+      display: grid;
+      grid-template-columns: 150px 110px 1fr;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee7df;
+      font-size: .94rem;
+    }
+
+
+
+    /* ==========================================
+       DELETE ORDER
+       ========================================== */
+
+    .delete-area {
+      margin-top: 18px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+
+    .delete-button {
+      background: #9b2c2c;
+    }
+
+
+    .delete-button:hover {
+      background: #7f1f1f;
+    }
+
+
+    .confirm-box {
+      margin-top: 12px;
+      padding: 14px;
+      background: #fff4f4;
+      border: 1px solid #e4b9b9;
+      border-radius: 8px;
+    }
+
+
+    .confirm-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      justify-content: flex-end;
+    }
+
+
+
+    /* ==========================================
+       INVENTORY MODAL
+       ========================================== */
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.45);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+
+      z-index: 999;
+    }
+
+
+    .modal {
+      background: white;
+      width: min(520px, 100%);
+      border-radius: 12px;
+      padding: 24px;
+
+      box-shadow:
+        0 12px 40px rgba(0,0,0,.25);
+    }
+
+
+    .modal h3 {
+      margin-top: 0;
+    }
+
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+
+
+    /* ==========================================
+       MOBILE
+       ========================================== */
+
+    @media(max-width: 750px) {
+
+      .filters {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+
+    @media(max-width: 650px) {
+
+      .history-row {
+        grid-template-columns: 1fr;
+        gap: 3px;
+      }
+
+    }
+
+
+    @media(max-width: 600px) {
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+
+      .brand-logo {
+        width: 80px;
+        height: 80px;
+      }
+
+    }
+
+  </style>
+
 </head>
+
+
+
 <body>
+
+
+<!-- ==========================================
+     HEADER
+     ========================================== -->
+
 <header>
+
   <div class="brand">
-    <img src="images/colorful-coffee-bean-logo.png" alt="Colorful Coffee Bean Logo" class="brand-logo">
-    <h1>Colorful Coffee Bean</h1>
+
+    <img
+      src="images/colorful-coffee-bean-logo.png"
+      alt="Colorful Coffee Bean Logo"
+      class="brand-logo"
+    >
+
+    <h1>
+      Colorful Coffee Bean
+    </h1>
+
   </div>
-  <p class="muted">Private Order Dashboard</p>
+
+
+  <p class="muted">
+    Private Order Dashboard
+  </p>
+
 </header>
 
+
+
 <div class="container">
-  <section id="loginView" class="card login">
-    <h2>Admin Login</h2>
-    <div class="form-group"><label for="email">Email</label><input id="email" type="email" autocomplete="username"></div>
-    <div class="form-group"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password"></div>
-    <button class="button" id="loginButton" onclick="login()">Sign In</button>
+
+
+  <!-- ==========================================
+       LOGIN
+       ========================================== -->
+
+  <section
+    id="loginView"
+    class="card login"
+  >
+
+    <h2>
+      Admin Login
+    </h2>
+
+
+    <div class="form-group">
+
+      <label for="email">
+        Email
+      </label>
+
+      <input
+        id="email"
+        type="email"
+        autocomplete="username"
+      >
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label for="password">
+        Password
+      </label>
+
+      <input
+        id="password"
+        type="password"
+        autocomplete="current-password"
+      >
+
+    </div>
+
+
+    <button
+      class="button"
+      id="loginButton"
+      onclick="login()"
+    >
+      Sign In
+    </button>
+
+
     <div id="error"></div>
+
   </section>
 
-  <section id="dashboardView" class="hidden">
-    <div class="card topbar">
-      <div>
-        <div class="stats" id="weekStats">This Week: — / 3 Orders</div>
-        <div class="muted">Cancelled orders do not count toward weekly capacity.</div>
-      </div>
-      <div>
-        <button class="button secondary" onclick="loadOrders()">Refresh</button>
-        <button class="button" onclick="logout()">Sign Out</button>
-      </div>
+
+
+  <!-- ==========================================
+       DASHBOARD
+       ========================================== -->
+
+  <section
+    id="dashboardView"
+    class="hidden"
+  >
+
+
+    <!-- ADMIN TABS -->
+
+    <div class="tabs">
+
+      <button
+        id="ordersTabButton"
+        class="tab-button active"
+        onclick="showTab('orders')"
+      >
+        Orders
+      </button>
+
+
+      <button
+        id="inventoryTabButton"
+        class="tab-button"
+        onclick="showTab('inventory')"
+      >
+        Inventory
+      </button>
+
     </div>
 
-    <div class="card">
-      <strong>Find Orders</strong>
-      <div class="filters">
-        <input id="orderSearch" type="text" placeholder="Search order #, customer, email..." oninput="applyFilters()">
-        <select id="statusFilter" onchange="applyFilters()">
-          <option value="all">All Statuses</option>
-          <option value="new">New</option>
-          <option value="roasting">Roasting</option>
-          <option value="quality_check">Quality Check</option>
-          <option value="ready">Ready</option>
-          <option value="shipped">Shipped</option>
-          <option value="completed">Completed</option>
-          <option value="cancelled">Cancelled</option>
-        </select>
-        <select id="fulfillmentFilter" onchange="applyFilters()">
-          <option value="all">Pickup + Shipping</option>
-          <option value="pickup">Local Pickup</option>
-          <option value="shipping">Shipping</option>
-        </select>
-        <select id="weekFilter" onchange="applyFilters()">
-          <option value="this_week">This Week</option>
-          <option value="last_week">Last Week</option>
-          <option value="this_month">This Month</option>
-          <option value="all">All Orders</option>
-        </select>
+
+
+    <!-- ==========================================
+         ORDERS TAB
+         ========================================== -->
+
+    <div id="ordersTab">
+
+
+      <div class="card topbar">
+
+        <div>
+
+          <div
+            class="stats"
+            id="weekStats"
+          >
+            This Week: — / 3 Orders
+          </div>
+
+
+          <div class="muted">
+            Cancelled orders do not count toward weekly capacity.
+          </div>
+
+        </div>
+
+
+        <div>
+
+          <button
+            class="button secondary"
+            onclick="loadOrders()"
+          >
+            Refresh
+          </button>
+
+
+          <button
+            class="button"
+            onclick="logout()"
+          >
+            Sign Out
+          </button>
+
+        </div>
+
       </div>
+
+
+
+      <!-- ORDER FILTERS -->
+
+      <div class="card">
+
+        <strong>
+          Find Orders
+        </strong>
+
+
+        <div class="filters">
+
+
+          <input
+            id="orderSearch"
+            type="text"
+            placeholder="Search order #, customer, email..."
+            oninput="applyFilters()"
+          >
+
+
+          <select
+            id="statusFilter"
+            onchange="applyFilters()"
+          >
+
+            <option value="all">
+              All Statuses
+            </option>
+
+            <option value="new">
+              New
+            </option>
+
+            <option value="roasting">
+              Roasting
+            </option>
+
+            <option value="quality_check">
+              Quality Check
+            </option>
+
+            <option value="ready">
+              Ready
+            </option>
+
+            <option value="shipped">
+              Shipped
+            </option>
+
+            <option value="completed">
+              Completed
+            </option>
+
+            <option value="cancelled">
+              Cancelled
+            </option>
+
+          </select>
+
+
+
+          <select
+            id="fulfillmentFilter"
+            onchange="applyFilters()"
+          >
+
+            <option value="all">
+              Pickup + Shipping
+            </option>
+
+            <option value="pickup">
+              Local Pickup
+            </option>
+
+            <option value="shipping">
+              Shipping
+            </option>
+
+          </select>
+
+
+
+          <select
+            id="weekFilter"
+            onchange="applyFilters()"
+          >
+
+            <option value="this_week">
+              This Week
+            </option>
+
+            <option value="last_week">
+              Last Week
+            </option>
+
+            <option value="this_month">
+              This Month
+            </option>
+
+            <option value="all">
+              All Orders
+            </option>
+
+          </select>
+
+
+        </div>
+
+      </div>
+
+
+
+      <div
+        id="loading"
+        class="hidden"
+      >
+        Loading orders...
+      </div>
+
+
+      <div id="orders"></div>
+
+
     </div>
 
-    <div id="loading" class="hidden">Loading orders...</div>
-    <div id="orders"></div>
+
+
+    <!-- ==========================================
+         INVENTORY TAB
+         ========================================== -->
+
+    <div
+      id="inventoryTab"
+      class="hidden"
+    >
+
+
+      <div class="card topbar">
+
+        <div>
+
+          <div class="stats">
+            Green Coffee Inventory
+          </div>
+
+
+          <div class="muted">
+            Green weight, estimated roasted yield,
+            and bag availability.
+          </div>
+
+        </div>
+
+
+        <button
+          class="button secondary"
+          onclick="loadInventory()"
+        >
+          Refresh Inventory
+        </button>
+
+      </div>
+
+
+
+      <div
+        id="inventoryLoading"
+        class="hidden"
+      >
+        Loading inventory...
+      </div>
+
+
+      <div id="inventoryList"></div>
+
+
+    </div>
+
+
   </section>
+
+
 </div>
 
-<footer>Colorful Coffee Bean · Admin</footer>
+
+
+<!-- ==========================================
+     INVENTORY MODAL
+     ========================================== -->
+
+<div
+  id="inventoryModal"
+  class="modal-backdrop hidden"
+>
+
+  <div class="modal">
+
+
+    <h3 id="inventoryModalTitle">
+      Inventory
+    </h3>
+
+
+    <div
+      id="inventoryModalCoffee"
+      class="muted"
+      style="margin-bottom:18px;"
+    ></div>
+
+
+
+    <div class="form-group">
+
+      <label for="inventoryAmount">
+        Amount
+      </label>
+
+
+      <input
+        id="inventoryAmount"
+        type="number"
+        min="0"
+        step="0.01"
+      >
+
+    </div>
+
+
+
+    <div
+      id="inventoryUnitGroup"
+      class="form-group"
+    >
+
+      <label for="inventoryUnit">
+        Unit
+      </label>
+
+
+      <select id="inventoryUnit">
+
+        <option value="oz">
+          oz
+        </option>
+
+        <option value="lb">
+          lb
+        </option>
+
+      </select>
+
+    </div>
+
+
+
+    <div class="form-group">
+
+      <label for="inventoryNote">
+        Note
+      </label>
+
+
+      <input
+        id="inventoryNote"
+        type="text"
+        placeholder="Optional note"
+      >
+
+    </div>
+
+
+
+    <div class="modal-actions">
+
+      <button
+        class="button secondary"
+        onclick="closeInventoryModal()"
+      >
+        Cancel
+      </button>
+
+
+      <button
+        class="button"
+        id="inventorySaveButton"
+        onclick="saveInventoryChange()"
+      >
+        Save
+      </button>
+
+    </div>
+
+
+  </div>
+
+</div>
+
+
+
+<footer>
+  Colorful Coffee Bean · Admin
+</footer>
+
 
 <script>
-const SUPABASE_URL = 'https://xzvomecpkgztozvnylfz.supabase.co';
-const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_YZyVqJsWa5j8Hxt8BCqFgg_inirk0Hd';
+const SUPABASE_URL =
+  "https://zdsvsmtphqwjlskkphnu.supabase.co";
+
+
+const SUPABASE_KEY =
+  "sb_publishable_BxQZ5lBBYcKuIF6_bVScFw_W8tWxnwZ";
+
+
 let accessToken = null;
+
 let cachedOrders = [];
+
 let cachedItems = [];
 
-function headers(auth=true) {
-  const h = { "apikey": SUPABASE_PUBLISHABLE_KEY, "Content-Type": "application/json" };
-  if (auth && accessToken) h["Authorization"] = "Bearer " + accessToken;
-  return h;
+let cachedInventory = [];
+
+let cachedInventoryTransactions = [];
+
+let inventoryModalMode = null;
+
+let inventoryModalProductId = null;
+
+
+
+// ==========================================
+// PRODUCT NAMES
+// ==========================================
+
+const PRODUCT_NAMES = {
+
+  costarica:
+    "Costa Rican Tarrazu",
+
+  ethiopia:
+    "Ethiopia Yirgacheffe",
+
+  guatemala:
+    "Guatemalan Huehuetenango"
+
+};
+
+
+
+// ==========================================
+// HEADERS
+// ==========================================
+
+function headers() {
+
+  return {
+
+    "apikey":
+      SUPABASE_KEY,
+
+    "Authorization":
+      "Bearer " + accessToken,
+
+    "Content-Type":
+      "application/json"
+
+  };
+
 }
 
-function escapeHtml(value) {
-  return String(value ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
-}
+
+
+// ==========================================
+// LOGIN
+// ==========================================
 
 async function login() {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-  const error = document.getElementById("error");
+
+  const email =
+    document
+      .getElementById("email")
+      .value
+      .trim();
+
+
+  const password =
+    document
+      .getElementById("password")
+      .value;
+
+
+  const error =
+    document
+      .getElementById("error");
+
+
+  const button =
+    document
+      .getElementById("loginButton");
+
+
   error.textContent = "";
-  if (!email || !password) { error.textContent = "Enter your email and password."; return; }
 
-  const btn = document.getElementById("loginButton");
-  btn.disabled = true; btn.textContent = "Signing In...";
+
+  button.disabled = true;
+
+  button.textContent =
+    "Signing in...";
+
+
   try {
-    const r = await fetch(SUPABASE_URL + "/auth/v1/token?grant_type=password", {
-      method:"POST", headers:headers(false), body:JSON.stringify({email,password})
-    });
-    const data = await r.json();
-    if (!r.ok || !data.access_token) throw new Error(data.error_description || data.msg || "Login failed.");
-    accessToken = data.access_token;
 
-    // RLS is the real admin authorization check.
-    const test = await fetch(SUPABASE_URL + "/rest/v1/orders?select=id&limit=1", {headers:headers()});
-    if (!test.ok) throw new Error("This account is not authorized to view orders.");
+    const r =
+      await fetch(
 
-    document.getElementById("loginView").classList.add("hidden");
-    document.getElementById("dashboardView").classList.remove("hidden");
+        SUPABASE_URL +
+        "/auth/v1/token?grant_type=password",
+
+        {
+
+          method: "POST",
+
+          headers: {
+
+            "apikey":
+              SUPABASE_KEY,
+
+            "Content-Type":
+              "application/json"
+
+          },
+
+          body:
+            JSON.stringify({
+
+              email:
+                email,
+
+              password:
+                password
+
+            })
+
+        }
+
+      );
+
+
+    const data =
+      await r.json();
+
+
+    if (!r.ok) {
+
+      throw new Error(
+        data.error_description ||
+        data.msg ||
+        "Login failed."
+      );
+
+    }
+
+
+    accessToken =
+      data.access_token;
+
+
+    document
+      .getElementById("loginView")
+      .classList
+      .add("hidden");
+
+
+    document
+      .getElementById("dashboardView")
+      .classList
+      .remove("hidden");
+
+
     await loadOrders();
-  } catch(e) {
-    accessToken = null;
-    error.textContent = e.message;
-  } finally {
-    btn.disabled = false; btn.textContent = "Sign In";
+
+    await loadInventory();
+
   }
+
+  catch (e) {
+
+    error.textContent =
+      e.message;
+
+  }
+
+  finally {
+
+    button.disabled = false;
+
+    button.textContent =
+      "Sign In";
+
+  }
+
 }
 
-async function logout() {
-  if (accessToken) {
-    try { await fetch(SUPABASE_URL + "/auth/v1/logout", {method:"POST",headers:headers()}); } catch(e) {}
-  }
+
+
+// ==========================================
+// LOGOUT
+// ==========================================
+
+function logout() {
+
   accessToken = null;
-  document.getElementById("orders").innerHTML = "";
-  document.getElementById("dashboardView").classList.add("hidden");
-  document.getElementById("loginView").classList.remove("hidden");
-  document.getElementById("password").value = "";
+
+  cachedOrders = [];
+
+  cachedItems = [];
+
+  cachedInventory = [];
+
+  cachedInventoryTransactions = [];
+
+
+  document
+    .getElementById("dashboardView")
+    .classList
+    .add("hidden");
+
+
+  document
+    .getElementById("loginView")
+    .classList
+    .remove("hidden");
+
+
+  document
+    .getElementById("orders")
+    .innerHTML = "";
+
+
+  document
+    .getElementById("inventoryList")
+    .innerHTML = "";
+
+
+  document
+    .getElementById("password")
+    .value = "";
+
 }
 
-function startOfWeek() {
-  const d = new Date();
-  const day = d.getDay();
-  const diff = day === 0 ? -6 : 1 - day;
-  d.setDate(d.getDate() + diff);
-  d.setHours(0,0,0,0);
-  return d;
-}
+
+
+// ==========================================
+// LOAD ORDERS
+// ==========================================
 
 async function loadOrders() {
-  const loading = document.getElementById("loading");
-  loading.classList.remove("hidden");
+
+  const loading =
+    document
+      .getElementById("loading");
+
+
+  loading
+    .classList
+    .remove("hidden");
+
+
   try {
-    const orderRes = await fetch(
-      SUPABASE_URL + "/rest/v1/orders?select=*&order=created_at.desc",
-      {headers:headers()}
-    );
-    if (!orderRes.ok) throw new Error("Could not load orders.");
-    const orders = await orderRes.json();
 
-    const itemRes = await fetch(
-      SUPABASE_URL + "/rest/v1/order_items?select=*&order=order_code.asc",
-      {headers:headers()}
-    );
-    if (!itemRes.ok) throw new Error("Could not load order items.");
-    const items = await itemRes.json();
+    const ordersResponse =
+      await fetch(
 
-    const weekStart = startOfWeek();
-    const activeThisWeek = orders.filter(o =>
-      new Date(o.created_at) >= weekStart && o.status !== "cancelled"
-    ).length;
-    document.getElementById("weekStats").textContent =
-      "This Week: " + activeThisWeek + " / 3 Orders";
+        SUPABASE_URL +
+        "/rest/v1/orders" +
+        "?select=*" +
+        "&order=created_at.desc",
 
-    cachedOrders = orders;
-    cachedItems = items;
+        {
+          headers:
+            headers()
+        }
+
+      );
+
+
+    if (!ordersResponse.ok) {
+
+      const text =
+        await ordersResponse.text();
+
+      throw new Error(
+        text ||
+        "Could not load orders."
+      );
+
+    }
+
+
+    cachedOrders =
+      await ordersResponse.json();
+
+
+
+    const itemsResponse =
+      await fetch(
+
+        SUPABASE_URL +
+        "/rest/v1/order_items" +
+        "?select=*" +
+        "&order=created_at.asc",
+
+        {
+          headers:
+            headers()
+        }
+
+      );
+
+
+    if (!itemsResponse.ok) {
+
+      const text =
+        await itemsResponse.text();
+
+      throw new Error(
+        text ||
+        "Could not load order items."
+      );
+
+    }
+
+
+    cachedItems =
+      await itemsResponse.json();
+
+
+
+    updateWeekStats();
+
     applyFilters();
-  } catch(e) {
-    document.getElementById("orders").innerHTML =
-      '<div class="card"><strong>Error:</strong> ' + escapeHtml(e.message) + '</div>';
-  } finally {
-    loading.classList.add("hidden");
+
   }
+
+  catch (e) {
+
+    document
+      .getElementById("orders")
+      .innerHTML =
+
+        '<div class="card">' +
+
+        '<strong>Error:</strong> ' +
+
+        escapeHtml(e.message) +
+
+        '</div>';
+
+  }
+
+  finally {
+
+    loading
+      .classList
+      .add("hidden");
+
+  }
+
 }
+
+
+
+// ==========================================
+// WEEKLY ORDER STATS
+// ==========================================
+
+function updateWeekStats() {
+
+  const now =
+    new Date();
+
+
+  const start =
+    startOfWeek(now);
+
+
+  const end =
+    new Date(start);
+
+
+  end.setDate(
+    end.getDate() + 7
+  );
+
+
+  const count =
+    cachedOrders
+      .filter(order => {
+
+        const created =
+          new Date(
+            order.created_at
+          );
+
+
+        const status =
+          order.status ||
+          "new";
+
+
+        return (
+          created >= start &&
+          created < end &&
+          status !== "cancelled"
+        );
+
+      })
+      .length;
+
+
+  document
+    .getElementById("weekStats")
+    .textContent =
+
+      "This Week: " +
+      count +
+      " / 3 Orders";
+
+}
+
+
+
+// ==========================================
+// START OF WEEK
+// Monday = first day
+// ==========================================
+
+function startOfWeek(date) {
+
+  const d =
+    new Date(date);
+
+
+  d.setHours(
+    0,
+    0,
+    0,
+    0
+  );
+
+
+  const day =
+    d.getDay();
+
+
+  const diff =
+    day === 0
+      ? -6
+      : 1 - day;
+
+
+  d.setDate(
+    d.getDate() + diff
+  );
+
+
+  return d;
+
+}
+
+
+
+// ==========================================
+// APPLY ORDER FILTERS
+// ==========================================
 
 function applyFilters() {
-  const searchEl = document.getElementById("orderSearch");
-  const statusEl = document.getElementById("statusFilter");
-  const fulfillmentEl = document.getElementById("fulfillmentFilter");
-  const weekEl = document.getElementById("weekFilter");
 
-  if (!searchEl || !statusEl || !fulfillmentEl || !weekEl) {
-    renderOrders(cachedOrders, cachedItems);
-    return;
-  }
+  const search =
+    document
+      .getElementById("orderSearch")
+      .value
+      .trim()
+      .toLowerCase();
 
-  const q = searchEl.value.trim().toLowerCase();
-  const status = statusEl.value;
-  const fulfillment = fulfillmentEl.value;
-  const week = weekEl.value;
-  const weekStart = startOfWeek();
-  const nextWeekStart = new Date(weekStart);
-  nextWeekStart.setDate(nextWeekStart.getDate() + 7);
 
-  const lastWeekStart = new Date(weekStart);
-  lastWeekStart.setDate(lastWeekStart.getDate() - 7);
+  const status =
+    document
+      .getElementById("statusFilter")
+      .value;
 
-  const monthStart = new Date();
-  monthStart.setDate(1);
-  monthStart.setHours(0,0,0,0);
 
-  const nextMonthStart = new Date(monthStart);
-  nextMonthStart.setMonth(nextMonthStart.getMonth() + 1);
+  const fulfillment =
+    document
+      .getElementById("fulfillmentFilter")
+      .value;
 
-  const filtered = cachedOrders.filter(o => {
-    const created = new Date(o.created_at);
 
-    if (week === "this_week" && (created < weekStart || created >= nextWeekStart)) return false;
-    if (week === "last_week" && (created < lastWeekStart || created >= weekStart)) return false;
-    if (week === "this_month" && (created < monthStart || created >= nextMonthStart)) return false;
-    if (status !== "all" && String(o.status || "").toLowerCase() !== status) return false;
-    if (fulfillment !== "all" && o.fulfillment !== fulfillment) return false;
+  const week =
+    document
+      .getElementById("weekFilter")
+      .value;
 
-    if (q) {
-      const haystack = [
-        o.order_code, o.order_number, o.customer_name, o.email, o.phone
-      ].filter(Boolean).join(" ").toLowerCase();
-      if (!haystack.includes(q)) return false;
-    }
-    return true;
-  });
 
-  renderOrders(filtered, cachedItems);
-}
+  const now =
+    new Date();
 
-function renderOrders(orders, items) {
-  const box = document.getElementById("orders");
-  if (!orders.length) {
-    box.innerHTML = '<div class="card">No orders yet.</div>';
-    return;
-  }
 
-  box.innerHTML = orders.map(o => {
-    const its = items.filter(i => i.order_id === o.id);
-    const itemHtml = its.map(i =>
-      '<div class="item"><strong>' + escapeHtml(i.coffee_name) + '</strong><br>' +
-      escapeHtml(i.size) + ' · ' + escapeHtml(i.roast_level) +
-      '<br>$' + Number(i.unit_price).toFixed(2) + '</div>'
-    ).join("");
+  const thisWeekStart =
+    startOfWeek(now);
 
-    const pickupLocations = {
-      applebees_germantown:
-        "Local Pickup<br><strong>Applebee's</strong><br>21048 Frederick Rd<br>Germantown, MD 20876",
-      royal_farms_gaithersburg:
-        "Local Pickup<br><strong>Royal Farms</strong><br>690 Watkins Mill Rd<br>Gaithersburg, MD 20879"
-    };
 
-    const fulfillmentHtml = o.fulfillment === "shipping"
-      ? "Shipping<br>" +
-        [o.address_line1,o.address_line2,o.city,o.state,o.postal_code]
-          .filter(Boolean)
-          .map(escapeHtml)
-          .join(", ")
-      : (pickupLocations[o.pickup_location] || "Local Pickup");
-
-    const code = escapeHtml(o.order_code || o.order_number);
-    const status = String(o.status || "new").toLowerCase();
-    const statusLabels = {
-      new: "New",
-      roasting: "Roasting",
-      quality_check: "Quality Check",
-      ready: "Ready",
-      shipped: "Shipped",
-      completed: "Completed",
-      cancelled: "Cancelled"
-    };
-
-    const options = Object.keys(statusLabels)
-      .map(s => '<option value="' + s + '"' + (s===status?' selected':'') + '>' +
-        statusLabels[s] + '</option>').join("");
-
-    const subdued = (status === "completed" || status === "cancelled") ? " completed-order" : "";
-    return '<div class="card order' + subdued + '">' +
-      '<div class="order-head"><div><div class="order-code">Order #' + code + '</div>' +
-      '<div class="muted">' + new Date(o.created_at).toLocaleString() + '</div></div>' +
-      '<div><strong>' + escapeHtml(statusLabels[status] || status.replaceAll("_", " ")) + '</strong></div></div>' +
-      '<div class="grid">' +
-        '<div><strong>Customer</strong><br>' + escapeHtml(o.customer_name) +
-        '<br>' + escapeHtml(o.email) + (o.phone ? '<br>'+escapeHtml(o.phone) : '') + '</div>' +
-        '<div><strong>Fulfillment</strong><br>' + fulfillmentHtml + '</div>' +
-        '<div><strong>Amount</strong><br>Subtotal: $' + Number(o.subtotal).toFixed(2) +
-        '<br>Shipping: $' + Number(o.shipping_cost).toFixed(2) +
-        '<br><span class="money">Total: $' + Number(o.total).toFixed(2) + '</span></div>' +
-      '</div>' +
-      '<div><h3>Items</h3>' + itemHtml + '</div>' +
-      '<div class="status-row"><strong>Status:</strong><select id="status-' + escapeHtml(o.id) + '">' +
-      options + '</select><button class="button" onclick="updateStatus(\'' + escapeHtml(o.id) + '\')">Save Status</button></div>' +
-    '</div>';
-  }).join("");
-}
-
-async function updateStatus(orderId) {
-  const select = document.getElementById("status-" + orderId);
-  const status = select.value;
-  try {
-    const r = await fetch(
-      SUPABASE_URL + "/rest/v1/orders?id=eq." + encodeURIComponent(orderId),
-      {
-        method:"PATCH",
-        headers:{...headers(), "Prefer":"return=minimal"},
-        body:JSON.stringify({status})
-      }
+  const nextWeekStart =
+    new Date(
+      thisWeekStart
     );
-    if (!r.ok) {
-      const e = await r.text();
-      throw new Error(e || "Could not update status.");
-    }
-    await loadOrders();
-    alert("Order status updated.");
-  } catch(e) {
-    alert("Status could not be updated.\n\n" + e.message);
-  }
+
+
+  nextWeekStart.setDate(
+    nextWeekStart.getDate() + 7
+  );
+
+
+  const lastWeekStart =
+    new Date(
+      thisWeekStart
+    );
+
+
+  lastWeekStart.setDate(
+    lastWeekStart.getDate() - 7
+  );
+
+
+  const monthStart =
+    new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      1
+    );
+
+
+  const filtered =
+    cachedOrders
+      .filter(order => {
+
+        const created =
+          new Date(
+            order.created_at
+          );
+
+
+        const orderStatus =
+          order.status ||
+          "new";
+
+
+        const orderFulfillment =
+          order.fulfillment ||
+          "";
+
+
+        const searchable =
+          [
+
+            order.order_code,
+
+            order.customer_name,
+
+            order.email,
+
+            order.phone
+
+          ]
+
+          .filter(Boolean)
+
+          .join(" ")
+
+          .toLowerCase();
+
+
+
+        if (
+          search &&
+          !searchable.includes(search)
+        ) {
+
+          return false;
+
+        }
+
+
+
+        if (
+          status !== "all" &&
+          orderStatus !== status
+        ) {
+
+          return false;
+
+        }
+
+
+
+        if (
+          fulfillment !== "all" &&
+          orderFulfillment !== fulfillment
+        ) {
+
+          return false;
+
+        }
+
+
+
+        if (week === "this_week") {
+
+          if (
+            created < thisWeekStart ||
+            created >= nextWeekStart
+          ) {
+
+            return false;
+
+          }
+
+        }
+
+
+
+        if (week === "last_week") {
+
+          if (
+            created < lastWeekStart ||
+            created >= thisWeekStart
+          ) {
+
+            return false;
+
+          }
+
+        }
+
+
+
+        if (week === "this_month") {
+
+          if (
+            created < monthStart
+          ) {
+
+            return false;
+
+          }
+
+        }
+
+
+        return true;
+
+      });
+
+
+  renderOrders(
+    filtered
+  );
+
 }
 
-document.getElementById("password").addEventListener("keydown", e => {
-  if (e.key === "Enter") login();
-});
+
+
+// ==========================================
+// RENDER ORDERS
+// ==========================================
+
+function renderOrders(orders) {
+
+  const box =
+    document
+      .getElementById("orders");
+
+
+  if (!orders.length) {
+
+    box.innerHTML =
+
+      '<div class="card">' +
+      'No orders found.' +
+      '</div>';
+
+
+    return;
+
+  }
+
+
+
+  box.innerHTML =
+    orders
+      .map(order => {
+
+        const code =
+          escapeHtml(
+            order.order_code ||
+            ""
+          );
+
+
+        const orderStatus =
+          order.status ||
+          "new";
+
+
+        const items =
+          cachedItems
+            .filter(item =>
+              item.order_id ===
+              order.id
+            );
+
+
+        const itemHtml =
+          items.length
+
+            ? items
+                .map(item =>
+
+                  '<div class="item">' +
+
+                    '<strong>' +
+                    escapeHtml(
+                      item.coffee_name ||
+                      ""
+                    ) +
+                    '</strong>' +
+
+                    '<br>' +
+
+                    escapeHtml(
+                      item.size ||
+                      ""
+                    ) +
+
+                    ' · ' +
+
+                    escapeHtml(
+                      item.roast_level ||
+                      ""
+                    ) +
+
+                    '<br>' +
+
+                    '<span class="money">$' +
+                    Number(
+                      item.unit_price || 0
+                    ).toFixed(2) +
+                    '</span>' +
+
+                  '</div>'
+
+                )
+                .join("")
+
+            : '<div class="item">No items found.</div>';
+
+
+
+        const options =
+          [
+
+            "new",
+
+            "roasting",
+
+            "quality_check",
+
+            "ready",
+
+            "shipped",
+
+            "completed",
+
+            "cancelled"
+
+          ]
+
+          .map(value => {
+
+            const label =
+              value
+                .replaceAll(
+                  "_",
+                  " "
+                )
+                .replace(
+                  /\b\w/g,
+                  letter =>
+                    letter.toUpperCase()
+                );
+
+
+            return (
+
+              '<option value="' +
+              value +
+              '"' +
+
+              (
+                orderStatus === value
+                  ? " selected"
+                  : ""
+              ) +
+
+              '>' +
+
+              label +
+
+              '</option>'
+
+            );
+
+          })
+
+          .join("");
+
+
+
+        const fulfillment =
+          order.fulfillment ===
+          "shipping"
+
+            ? "Shipping"
+
+            : "Local Pickup";
+
+
+
+        let fulfillmentDetails =
+          "";
+
+
+        if (
+          order.fulfillment ===
+          "shipping"
+        ) {
+
+          fulfillmentDetails =
+
+            escapeHtml(
+              order.address_line1 ||
+              ""
+            ) +
+
+            "<br>" +
+
+            escapeHtml(
+              order.address_line2 ||
+              ""
+            ) +
+
+            (
+              order.address_line2
+                ? "<br>"
+                : ""
+            ) +
+
+            escapeHtml(
+              order.city ||
+              ""
+            ) +
+
+            ", " +
+
+            escapeHtml(
+              order.state ||
+              ""
+            ) +
+
+            " " +
+
+            escapeHtml(
+              order.postal_code ||
+              ""
+            );
+
+        }
+
+        else {
+
+          fulfillmentDetails =
+            escapeHtml(
+              order.pickup_location ||
+              ""
+            );
+
+        }
+
+
+
+        const completedClass =
+          orderStatus === "completed"
+            ? " completed-order"
+            : "";
+
+
+
+        return (
+
+          '<div class="card order' +
+          completedClass +
+          '">' +
+
+
+            '<div class="order-head">' +
+
+
+              '<div>' +
+
+                '<div class="order-code">' +
+
+                  'Order #' +
+                  code +
+
+                '</div>' +
+
+
+                '<div class="muted">' +
+
+                  new Date(
+                    order.created_at
+                  ).toLocaleString() +
+
+                '</div>' +
+
+              '</div>' +
+
+
+              '<div>' +
+
+                '<strong>' +
+                escapeHtml(
+                  order.customer_name ||
+                  ""
+                ) +
+                '</strong>' +
+
+                '<br>' +
+
+                escapeHtml(
+                  order.email ||
+                  ""
+                ) +
+
+                '<br>' +
+
+                escapeHtml(
+                  order.phone ||
+                  ""
+                ) +
+
+              '</div>' +
+
+
+            '</div>' +
+
+
+
+            '<div class="grid">' +
+
+
+              '<div>' +
+
+                '<strong>Fulfillment</strong>' +
+
+                '<br>' +
+
+                fulfillment +
+
+                '<br>' +
+
+                '<span class="muted">' +
+                fulfillmentDetails +
+                '</span>' +
+
+              '</div>' +
+
+
+
+              '<div>' +
+
+                '<strong>Subtotal</strong>' +
+
+                '<br>' +
+
+                '$' +
+                Number(
+                  order.subtotal || 0
+                ).toFixed(2) +
+
+              '</div>' +
+
+
+
+              '<div>' +
+
+                '<strong>Shipping</strong>' +
+
+                '<br>' +
+
+                '$' +
+                Number(
+                  order.shipping_cost || 0
+                ).toFixed(2) +
+
+              '</div>' +
+
+
+
+              '<div>' +
+
+                '<strong>Total</strong>' +
+
+                '<br>' +
+
+                '<span class="money">$' +
+
+                Number(
+                  order.total || 0
+                ).toFixed(2) +
+
+                '</span>' +
+
+              '</div>' +
+
+
+            '</div>' +
+
+
+
+            '<div style="margin-top:18px;">' +
+
+              '<strong>Items</strong>' +
+
+              itemHtml +
+
+            '</div>' +
+
+
+
+            '<div class="status-row">' +
+
+              '<strong>Status:</strong>' +
+
+              '<select id="status-' +
+              escapeHtml(
+                order.id
+              ) +
+              '">' +
+
+                options +
+
+              '</select>' +
+
+              '<button class="button" ' +
+
+                'onclick="updateStatus(\\'' +
+                escapeHtml(
+                  order.id
+                ) +
+                '\\')">' +
+
+                'Save Status' +
+
+              '</button>' +
+
+            '</div>' +
+
+
+
+            '<div class="delete-area">' +
+
+              '<button ' +
+                'class="button delete-button" ' +
+                'onclick="showDeleteConfirm(\\'' +
+                escapeHtml(
+                  order.id
+                ) +
+                '\\')">' +
+
+                'Delete' +
+
+              '</button>' +
+
+            '</div>' +
+
+
+
+            '<div ' +
+
+              'id="delete-confirm-' +
+              escapeHtml(
+                order.id
+              ) +
+              '" ' +
+
+              'class="confirm-box hidden">' +
+
+
+              '<strong>' +
+                'Delete this order?' +
+              '</strong>' +
+
+              '<br>' +
+
+              '<span class="muted">' +
+
+                'This permanently deletes Order #' +
+                code +
+                ' and its order items from Supabase.' +
+
+              '</span>' +
+
+
+              '<div class="confirm-actions">' +
+
+                '<button ' +
+                  'class="button secondary" ' +
+                  'onclick="hideDeleteConfirm(\\'' +
+                  escapeHtml(
+                    order.id
+                  ) +
+                  '\\')">' +
+
+                  'No' +
+
+                '</button>' +
+
+
+                '<button ' +
+                  'class="button delete-button" ' +
+                  'onclick="deleteOrder(\\'' +
+                  escapeHtml(
+                    order.id
+                  ) +
+                  '\\')">' +
+
+                  'Yes, Delete' +
+
+                '</button>' +
+
+              '</div>' +
+
+
+            '</div>' +
+
+
+          '</div>'
+
+        );
+
+      })
+
+      .join("");
+
+}
+
+
+
+// ==========================================
+// UPDATE ORDER STATUS
+// ==========================================
+
+async function updateStatus(
+  orderId
+) {
+
+  const select =
+    document
+      .getElementById(
+        "status-" +
+        orderId
+      );
+
+
+  const newStatus =
+    select.value;
+
+
+  try {
+
+    const response =
+      await fetch(
+
+        SUPABASE_URL +
+        "/rest/v1/orders" +
+        "?id=eq." +
+        encodeURIComponent(
+          orderId
+        ),
+
+        {
+
+          method:
+            "PATCH",
+
+          headers: {
+            ...headers(),
+
+            "Prefer":
+              "return=minimal"
+          },
+
+          body:
+            JSON.stringify({
+
+              status:
+                newStatus
+
+            })
+
+        }
+
+      );
+
+
+    if (!response.ok) {
+
+      const message =
+        await response.text();
+
+
+      throw new Error(
+        message ||
+        "Could not update status."
+      );
+
+    }
+
+
+    await loadOrders();
+
+
+    alert(
+      "Order status updated."
+    );
+
+  }
+
+  catch (e) {
+
+    alert(
+      "Status could not be updated.\n\n" +
+      e.message
+    );
+
+  }
+
+}
+
+
+
+// ==========================================
+// ADMIN TABS
+// ==========================================
+
+function showTab(tab) {
+
+  const inventoryMode =
+    tab === "inventory";
+
+
+  document
+    .getElementById("ordersTab")
+    .classList
+    .toggle(
+      "hidden",
+      inventoryMode
+    );
+
+
+  document
+    .getElementById("inventoryTab")
+    .classList
+    .toggle(
+      "hidden",
+      !inventoryMode
+    );
+
+
+  document
+    .getElementById("ordersTabButton")
+    .classList
+    .toggle(
+      "active",
+      !inventoryMode
+    );
+
+
+  document
+    .getElementById("inventoryTabButton")
+    .classList
+    .toggle(
+      "active",
+      inventoryMode
+    );
+
+
+  if (inventoryMode) {
+
+    loadInventory();
+
+  }
+
+}
+
+
+
+// ==========================================
+// DELETE CONFIRMATION
+// ==========================================
+
+function showDeleteConfirm(
+  orderId
+) {
+
+  document
+    .getElementById(
+      "delete-confirm-" +
+      orderId
+    )
+    .classList
+    .remove("hidden");
+
+}
+
+
+
+function hideDeleteConfirm(
+  orderId
+) {
+
+  document
+    .getElementById(
+      "delete-confirm-" +
+      orderId
+    )
+    .classList
+    .add("hidden");
+
+}
+
+
+
+// ==========================================
+// DELETE ORDER
+// ==========================================
+
+async function deleteOrder(
+  orderId
+) {
+
+  try {
+
+    const response =
+      await fetch(
+
+        SUPABASE_URL +
+        "/rest/v1/rpc/admin_delete_order",
+
+        {
+
+          method:
+            "POST",
+
+          headers:
+            headers(),
+
+          body:
+            JSON.stringify({
+
+              p_order_id:
+                orderId
+
+            })
+
+        }
+
+      );
+
+
+    if (!response.ok) {
+
+      const message =
+        await response.text();
+
+
+      throw new Error(
+        message ||
+        "Could not delete order."
+      );
+
+    }
+
+
+    await loadOrders();
+
+
+    alert(
+      "Order deleted."
+    );
+
+  }
+
+  catch (e) {
+
+    alert(
+
+      "Order could not be deleted.\n\n" +
+      e.message
+
+    );
+
+  }
+
+}
+
+  // ==========================================
+// LOAD INVENTORY
+// ==========================================
+
+async function loadInventory() {
+
+  const loading =
+    document
+      .getElementById("inventoryLoading");
+
+
+  loading
+    .classList
+    .remove("hidden");
+
+
+  try {
+
+    // --------------------------------------
+    // LOAD CURRENT INVENTORY
+    // --------------------------------------
+
+    const inventoryResponse =
+      await fetch(
+
+        SUPABASE_URL +
+        "/rest/v1/inventory" +
+        "?select=*" +
+        "&order=product_id.asc",
+
+        {
+          headers:
+            headers()
+        }
+
+      );
+
+
+    if (!inventoryResponse.ok) {
+
+      const message =
+        await inventoryResponse.text();
+
+
+      throw new Error(
+        message ||
+        "Could not load inventory."
+      );
+
+    }
+
+
+
+    // --------------------------------------
+    // LOAD INVENTORY HISTORY
+    // --------------------------------------
+
+    const historyResponse =
+      await fetch(
+
+        SUPABASE_URL +
+        "/rest/v1/inventory_transactions" +
+        "?select=*" +
+        "&order=created_at.desc" +
+        "&limit=100",
+
+        {
+          headers:
+            headers()
+        }
+
+      );
+
+
+    if (!historyResponse.ok) {
+
+      const message =
+        await historyResponse.text();
+
+
+      throw new Error(
+        message ||
+        "Could not load inventory history."
+      );
+
+    }
+
+
+
+    cachedInventory =
+      await inventoryResponse.json();
+
+
+    cachedInventoryTransactions =
+      await historyResponse.json();
+
+
+
+    renderInventory();
+
+  }
+
+  catch (e) {
+
+    document
+      .getElementById("inventoryList")
+      .innerHTML =
+
+        '<div class="card">' +
+
+          '<strong>Error:</strong> ' +
+
+          escapeHtml(
+            e.message
+          ) +
+
+        '</div>';
+
+  }
+
+  finally {
+
+    loading
+      .classList
+      .add("hidden");
+
+  }
+
+}
+
+
+
+// ==========================================
+// RENDER INVENTORY
+// ==========================================
+
+function renderInventory() {
+
+  const box =
+    document
+      .getElementById("inventoryList");
+
+
+  if (!cachedInventory.length) {
+
+    box.innerHTML =
+
+      '<div class="card">' +
+        'No inventory records found.' +
+      '</div>';
+
+
+    return;
+
+  }
+
+
+
+  box.innerHTML =
+    cachedInventory
+      .map(inventory => {
+
+
+        // ----------------------------------
+        // CURRENT GREEN COFFEE
+        // ----------------------------------
+
+        const green =
+          Number(
+            inventory.green_weight_oz ||
+            0
+          );
+
+
+
+        // ----------------------------------
+        // ROAST YIELD
+        // ----------------------------------
+
+        const yieldPercent =
+          Number(
+            inventory.roast_yield_percent ||
+            0
+          );
+
+
+
+        // ----------------------------------
+        // ESTIMATED ROASTED COFFEE
+        // ----------------------------------
+
+        const roasted =
+          green *
+          yieldPercent /
+          100;
+
+
+
+        // ----------------------------------
+        // POSSIBLE BAGS
+        // ----------------------------------
+
+        const bags6 =
+          Math.floor(
+            roasted / 6
+          );
+
+
+        const bags12 =
+          Math.floor(
+            roasted / 12
+          );
+
+
+
+        // ----------------------------------
+        // LOW STOCK
+        // ----------------------------------
+
+        const threshold =
+          Number(
+            inventory.low_stock_threshold_oz ||
+            0
+          );
+
+
+        const isLow =
+          green <= threshold;
+
+
+
+        // ----------------------------------
+        // COFFEE NAME
+        // ----------------------------------
+
+        const name =
+          PRODUCT_NAMES[
+            inventory.product_id
+          ] ||
+          inventory.product_id;
+
+
+
+        // ----------------------------------
+        // INVENTORY HISTORY
+        // Only show latest 8 for this coffee
+        // ----------------------------------
+
+        const history =
+          cachedInventoryTransactions
+
+            .filter(transaction =>
+              transaction.product_id ===
+              inventory.product_id
+            )
+
+            .slice(
+              0,
+              8
+            );
+
+
+
+        let historyHtml;
+
+
+
+        if (history.length) {
+
+          historyHtml =
+            history
+              .map(transaction => {
+
+
+                const change =
+                  Number(
+                    transaction.weight_change_oz ||
+                    0
+                  );
+
+
+                const sign =
+                  change > 0
+                    ? "+"
+                    : "";
+
+
+                const type =
+                  String(
+                    transaction.transaction_type ||
+                    ""
+                  )
+                  .replaceAll(
+                    "_",
+                    " "
+                  );
+
+
+                return (
+
+                  '<div class="history-row">' +
+
+
+                    '<div>' +
+
+                      new Date(
+                        transaction.created_at
+                      ).toLocaleString() +
+
+                    '</div>' +
+
+
+                    '<div>' +
+
+                      '<strong>' +
+
+                        sign +
+
+                        change.toFixed(2) +
+
+                        ' oz' +
+
+                      '</strong>' +
+
+                    '</div>' +
+
+
+                    '<div>' +
+
+                      escapeHtml(
+                        type
+                      ) +
+
+                      (
+                        transaction.note
+
+                          ? ' · ' +
+                            escapeHtml(
+                              transaction.note
+                            )
+
+                          : ''
+                      ) +
+
+                    '</div>' +
+
+
+                  '</div>'
+
+                );
+
+              })
+
+              .join("");
+
+        }
+
+        else {
+
+          historyHtml =
+
+            '<div class="muted">' +
+              'No inventory history yet.' +
+            '</div>';
+
+        }
+
+
+
+        // ----------------------------------
+        // INVENTORY CARD
+        // ----------------------------------
+
+        return (
+
+          '<div class="card inventory-card">' +
+
+
+            '<div class="inventory-head">' +
+
+
+              '<div>' +
+
+                '<div class="inventory-title">' +
+
+                  escapeHtml(
+                    name
+                  ) +
+
+                '</div>' +
+
+
+                '<div class="muted">' +
+
+                  'Product ID: ' +
+
+                  escapeHtml(
+                    inventory.product_id
+                  ) +
+
+                '</div>' +
+
+              '</div>' +
+
+
+
+              '<div class="' +
+
+                (
+                  isLow
+                    ? 'low-stock'
+                    : 'stock-ok'
+                ) +
+
+              '">' +
+
+                (
+                  isLow
+                    ? '⚠ Low Stock'
+                    : 'In Stock'
+                ) +
+
+              '</div>' +
+
+
+            '</div>' +
+
+
+
+            '<div class="inventory-stats">' +
+
+
+              '<div class="inventory-stat">' +
+
+                'Green Coffee' +
+
+                '<strong>' +
+
+                  green.toFixed(2) +
+
+                  ' oz' +
+
+                '</strong>' +
+
+              '</div>' +
+
+
+
+              '<div class="inventory-stat">' +
+
+                'Roast Yield' +
+
+                '<strong>' +
+
+                  yieldPercent.toFixed(2) +
+
+                  '%' +
+
+                '</strong>' +
+
+              '</div>' +
+
+
+
+              '<div class="inventory-stat">' +
+
+                'Estimated Roasted' +
+
+                '<strong>' +
+
+                  roasted.toFixed(2) +
+
+                  ' oz' +
+
+                '</strong>' +
+
+              '</div>' +
+
+
+
+              '<div class="inventory-stat">' +
+
+                '6 oz Bags Possible' +
+
+                '<strong>' +
+
+                  bags6 +
+
+                '</strong>' +
+
+              '</div>' +
+
+
+
+              '<div class="inventory-stat">' +
+
+                '12 oz Bags Possible' +
+
+                '<strong>' +
+
+                  bags12 +
+
+                '</strong>' +
+
+              '</div>' +
+
+
+
+              '<div class="inventory-stat">' +
+
+                'Low Stock At' +
+
+                '<strong>' +
+
+                  threshold.toFixed(2) +
+
+                  ' oz' +
+
+                '</strong>' +
+
+              '</div>' +
+
+
+            '</div>' +
+
+
+
+            '<div class="inventory-actions">' +
+
+
+              '<button ' +
+
+                'class="button" ' +
+
+                'onclick="openAddInventory(\\'' +
+
+                escapeHtml(
+                  inventory.product_id
+                ) +
+
+                '\\')">' +
+
+                '+ Add Stock' +
+
+              '</button>' +
+
+
+
+              '<button ' +
+
+                'class="button secondary" ' +
+
+                'onclick="openAdjustInventory(\\'' +
+
+                escapeHtml(
+                  inventory.product_id
+                ) +
+
+                '\\',' +
+
+                green +
+
+                ')">' +
+
+                'Adjust Inventory' +
+
+              '</button>' +
+
+
+            '</div>' +
+
+
+
+            '<div class="history">' +
+
+              '<strong>' +
+                'Recent Inventory History' +
+              '</strong>' +
+
+              historyHtml +
+
+            '</div>' +
+
+
+          '</div>'
+
+        );
+
+      })
+
+      .join("");
+
+}
+
+
+
+// ==========================================
+// OPEN ADD INVENTORY WINDOW
+// ==========================================
+
+function openAddInventory(
+  productId
+) {
+
+  inventoryModalMode =
+    "add";
+
+
+  inventoryModalProductId =
+    productId;
+
+
+
+  document
+    .getElementById(
+      "inventoryModalTitle"
+    )
+    .textContent =
+      "Add Green Coffee";
+
+
+
+  document
+    .getElementById(
+      "inventoryModalCoffee"
+    )
+    .textContent =
+
+      PRODUCT_NAMES[
+        productId
+      ] ||
+      productId;
+
+
+
+  document
+    .getElementById(
+      "inventoryAmount"
+    )
+    .value = "";
+
+
+
+  document
+    .getElementById(
+      "inventoryAmount"
+    )
+    .min = "0.01";
+
+
+
+  document
+    .getElementById(
+      "inventoryUnit"
+    )
+    .value = "oz";
+
+
+
+  document
+    .getElementById(
+      "inventoryUnitGroup"
+    )
+    .classList
+    .remove("hidden");
+
+
+
+  document
+    .getElementById(
+      "inventoryNote"
+    )
+    .value = "";
+
+
+
+  document
+    .getElementById(
+      "inventorySaveButton"
+    )
+    .textContent =
+      "Add Inventory";
+
+
+
+  document
+    .getElementById(
+      "inventoryModal"
+    )
+    .classList
+    .remove("hidden");
+
+}
+
+
+
+// ==========================================
+// OPEN ADJUST INVENTORY WINDOW
+// ==========================================
+
+function openAdjustInventory(
+  productId,
+  currentWeight
+) {
+
+  inventoryModalMode =
+    "adjust";
+
+
+  inventoryModalProductId =
+    productId;
+
+
+
+  document
+    .getElementById(
+      "inventoryModalTitle"
+    )
+    .textContent =
+      "Adjust Inventory";
+
+
+
+  document
+    .getElementById(
+      "inventoryModalCoffee"
+    )
+    .textContent =
+
+      (
+        PRODUCT_NAMES[
+          productId
+        ] ||
+        productId
+      ) +
+
+      " · Enter actual current green weight in oz.";
+
+
+
+  document
+    .getElementById(
+      "inventoryAmount"
+    )
+    .value =
+
+      Number(
+        currentWeight
+      ).toFixed(2);
+
+
+
+  document
+    .getElementById(
+      "inventoryAmount"
+    )
+    .min = "0";
+
+
+
+  document
+    .getElementById(
+      "inventoryUnitGroup"
+    )
+    .classList
+    .add("hidden");
+
+
+
+  document
+    .getElementById(
+      "inventoryNote"
+    )
+    .value = "";
+
+
+
+  document
+    .getElementById(
+      "inventorySaveButton"
+    )
+    .textContent =
+      "Save Adjustment";
+
+
+
+  document
+    .getElementById(
+      "inventoryModal"
+    )
+    .classList
+    .remove("hidden");
+
+}
+
+
+
+// ==========================================
+// CLOSE INVENTORY WINDOW
+// ==========================================
+
+function closeInventoryModal() {
+
+  document
+    .getElementById(
+      "inventoryModal"
+    )
+    .classList
+    .add("hidden");
+
+
+  inventoryModalMode =
+    null;
+
+
+  inventoryModalProductId =
+    null;
+
+}
+
+
+
+// ==========================================
+// SAVE INVENTORY CHANGE
+// ==========================================
+
+async function saveInventoryChange() {
+
+  const amount =
+    Number(
+
+      document
+        .getElementById(
+          "inventoryAmount"
+        )
+        .value
+
+    );
+
+
+  const note =
+    document
+      .getElementById(
+        "inventoryNote"
+      )
+      .value
+      .trim();
+
+
+  const button =
+    document
+      .getElementById(
+        "inventorySaveButton"
+      );
+
+
+
+  // ----------------------------------------
+  // VALIDATION
+  // ----------------------------------------
+
+  if (
+    !Number.isFinite(
+      amount
+    )
+  ) {
+
+    alert(
+      "Enter a valid amount."
+    );
+
+    return;
+
+  }
+
+
+
+  if (
+    inventoryModalMode === "add" &&
+    amount <= 0
+  ) {
+
+    alert(
+      "Amount must be greater than 0."
+    );
+
+    return;
+
+  }
+
+
+
+  if (
+    inventoryModalMode === "adjust" &&
+    amount < 0
+  ) {
+
+    alert(
+      "Inventory cannot be negative."
+    );
+
+    return;
+
+  }
+
+
+
+  button.disabled =
+    true;
+
+
+  const oldText =
+    button.textContent;
+
+
+  button.textContent =
+    "Saving...";
+
+
+
+  try {
+
+    let endpoint;
+
+    let body;
+
+
+
+    // --------------------------------------
+    // ADD NEW STOCK
+    // --------------------------------------
+
+    if (
+      inventoryModalMode ===
+      "add"
+    ) {
+
+      const unit =
+        document
+          .getElementById(
+            "inventoryUnit"
+          )
+          .value;
+
+
+
+      // 1 lb = 16 oz
+
+      const weightOz =
+        unit === "lb"
+
+          ? amount * 16
+
+          : amount;
+
+
+
+      endpoint =
+        "/rest/v1/rpc/add_inventory";
+
+
+
+      body = {
+
+        p_product_id:
+          inventoryModalProductId,
+
+        p_weight_oz:
+          weightOz,
+
+        p_note:
+          note || null
+
+      };
+
+    }
+
+
+
+    // --------------------------------------
+    // ADJUST CURRENT STOCK
+    // --------------------------------------
+
+    else {
+
+      endpoint =
+        "/rest/v1/rpc/adjust_inventory";
+
+
+
+      body = {
+
+        p_product_id:
+          inventoryModalProductId,
+
+        p_new_weight_oz:
+          amount,
+
+        p_note:
+          note || null
+
+      };
+
+    }
+
+
+
+    // --------------------------------------
+    // SEND TO SUPABASE
+    // --------------------------------------
+
+    const response =
+      await fetch(
+
+        SUPABASE_URL +
+        endpoint,
+
+        {
+
+          method:
+            "POST",
+
+          headers:
+            headers(),
+
+          body:
+            JSON.stringify(
+              body
+            )
+
+        }
+
+      );
+
+
+
+    if (!response.ok) {
+
+      const message =
+        await response.text();
+
+
+      throw new Error(
+
+        message ||
+        "Inventory could not be updated."
+
+      );
+
+    }
+
+
+
+    // --------------------------------------
+    // SUCCESS
+    // --------------------------------------
+
+    closeInventoryModal();
+
+
+    await loadInventory();
+
+
+    alert(
+      "Inventory updated."
+    );
+
+  }
+
+  catch (e) {
+
+    alert(
+
+      "Inventory could not be updated.\n\n" +
+      e.message
+
+    );
+
+  }
+
+  finally {
+
+    button.disabled =
+      false;
+
+
+    button.textContent =
+      oldText;
+
+  }
+
+}
+
+
+
+// ==========================================
+// ESCAPE HTML
+// ==========================================
+
+function escapeHtml(
+  value
+) {
+
+  return String(
+    value ?? ""
+  )
+
+  .replaceAll(
+    "&",
+    "&amp;"
+  )
+
+  .replaceAll(
+    "<",
+    "&lt;"
+  )
+
+  .replaceAll(
+    ">",
+    "&gt;"
+  )
+
+  .replaceAll(
+    '"',
+    "&quot;"
+  )
+
+  .replaceAll(
+    "'",
+    "&#039;"
+  );
+
+}
+
+
+
+// ==========================================
+// ENTER KEY LOGIN
+// ==========================================
+
+document
+  .getElementById("password")
+  .addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key ===
+        "Enter"
+      ) {
+
+        login();
+
+      }
+
+    }
+  );
+
+
 </script>
+
+
 </body>
+
 </html>
