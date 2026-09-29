@@ -121,6 +121,8 @@
     .button.secondary {
       background: #76675b;
     }
+    .button.danger { background:#9b2c2c; }
+    .button.danger:hover { background:#7f1f1f; }
 
 
     .topbar {
@@ -987,6 +989,71 @@
 
 
 
+
+<!-- EDIT COFFEE MODAL -->
+<div id="editCoffeeModal" class="modal-backdrop hidden">
+  <div class="modal">
+    <h3>Edit Coffee</h3>
+    <input id="editCoffeeOriginalId" type="hidden">
+
+    <div class="form-group">
+      <label for="editCoffeeName">Coffee Name</label>
+      <input id="editCoffeeName" type="text">
+    </div>
+
+    <div class="form-group">
+      <label for="editCoffeeProductId">Product ID</label>
+      <input id="editCoffeeProductId" type="text" disabled>
+      <div class="muted" style="margin-top:6px;">Product ID stays fixed so existing inventory and orders remain linked.</div>
+    </div>
+
+    <div class="grid">
+      <div class="form-group">
+        <label for="editCoffeeOrigin">Origin</label>
+        <input id="editCoffeeOrigin" type="text">
+      </div>
+      <div class="form-group">
+        <label for="editCoffeeRegion">Region / Coffee Name</label>
+        <input id="editCoffeeRegion" type="text">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="editCoffeeProcess">Process</label>
+      <input id="editCoffeeProcess" type="text">
+    </div>
+
+    <div class="form-group">
+      <label for="editCoffeeTastingNotes">Tasting Notes</label>
+      <input id="editCoffeeTastingNotes" type="text">
+    </div>
+
+    <div class="grid">
+      <div class="form-group">
+        <label for="editCoffeePrice6">6 oz Price ($)</label>
+        <input id="editCoffeePrice6" type="number" min="0" step="0.01">
+      </div>
+      <div class="form-group">
+        <label for="editCoffeePrice12">12 oz Price ($)</label>
+        <input id="editCoffeePrice12" type="number" min="0" step="0.01">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label style="display:flex;align-items:center;gap:10px;font-weight:normal;">
+        <input id="editCoffeeActive" type="checkbox" style="width:auto;">
+        Active on Customer Website
+      </label>
+    </div>
+
+    <div id="editCoffeeError" class="low-stock" style="min-height:20px;"></div>
+
+    <div class="modal-actions">
+      <button class="button secondary" onclick="closeEditCoffeeModal()">Cancel</button>
+      <button class="button" id="editCoffeeSaveButton" onclick="saveCoffeeEdits()">Save Changes</button>
+    </div>
+  </div>
+</div>
 
 <!-- ==========================================
      ADD COFFEE MODAL
@@ -3229,7 +3296,22 @@ function renderInventory() {
               '</button>' +
 
 
-            '</div>' +
+            
+              '<button class="button secondary" ' +
+                'onclick="openEditCoffeeModal(\'' +
+                escapeHtml(inventory.product_id) +
+                '\')">' +
+                'Edit Coffee' +
+              '</button>' +
+
+              '<button class="button danger" ' +
+                'onclick="removeCoffeeFromStore(\'' +
+                escapeHtml(inventory.product_id) +
+                '\')">' +
+                'Remove from Store' +
+              '</button>' +
+
+'</div>' +
 
 
 
@@ -3753,6 +3835,149 @@ async function saveInventoryChange() {
 
 }
 
+
+
+// ==========================================
+// EDIT / REMOVE COFFEE
+// ==========================================
+
+async function openEditCoffeeModal(productId) {
+  const errorBox = document.getElementById("editCoffeeError");
+  errorBox.textContent = "";
+
+  try {
+    const response = await fetch(
+      SUPABASE_URL +
+      "/rest/v1/products?id=eq." +
+      encodeURIComponent(productId) +
+      "&select=id,name,origin,region,process,tasting_notes,price_6oz,price_12oz,active",
+      { headers: headers() }
+    );
+
+    if (!response.ok) {
+      throw new Error(await response.text() || "Could not load coffee information.");
+    }
+
+    const rows = await response.json();
+    if (!rows.length) throw new Error("Coffee was not found.");
+
+    const p = rows[0];
+    document.getElementById("editCoffeeOriginalId").value = p.id;
+    document.getElementById("editCoffeeProductId").value = p.id;
+    document.getElementById("editCoffeeName").value = p.name || "";
+    document.getElementById("editCoffeeOrigin").value = p.origin || "";
+    document.getElementById("editCoffeeRegion").value = p.region || "";
+    document.getElementById("editCoffeeProcess").value = p.process || "";
+    document.getElementById("editCoffeeTastingNotes").value = p.tasting_notes || "";
+    document.getElementById("editCoffeePrice6").value = p.price_6oz ?? "";
+    document.getElementById("editCoffeePrice12").value = p.price_12oz ?? "";
+    document.getElementById("editCoffeeActive").checked = p.active === true;
+    document.getElementById("editCoffeeModal").classList.remove("hidden");
+  }
+  catch (e) {
+    alert(e.message);
+  }
+}
+
+function closeEditCoffeeModal() {
+  document.getElementById("editCoffeeModal").classList.add("hidden");
+}
+
+async function saveCoffeeEdits() {
+  const productId = document.getElementById("editCoffeeOriginalId").value;
+  const name = document.getElementById("editCoffeeName").value.trim();
+  const origin = document.getElementById("editCoffeeOrigin").value.trim();
+  const region = document.getElementById("editCoffeeRegion").value.trim();
+  const process = document.getElementById("editCoffeeProcess").value.trim();
+  const tastingNotes = document.getElementById("editCoffeeTastingNotes").value.trim();
+  const price6 = Number(document.getElementById("editCoffeePrice6").value);
+  const price12 = Number(document.getElementById("editCoffeePrice12").value);
+  const active = document.getElementById("editCoffeeActive").checked;
+  const errorBox = document.getElementById("editCoffeeError");
+  const button = document.getElementById("editCoffeeSaveButton");
+
+  errorBox.textContent = "";
+
+  if (!name || !origin || !region || !process || !tastingNotes) {
+    errorBox.textContent = "Enter Coffee Name, Origin, Region, Process, and Tasting Notes.";
+    return;
+  }
+
+  if (!Number.isFinite(price6) || price6 < 0 || !Number.isFinite(price12) || price12 < 0) {
+    errorBox.textContent = "Enter valid 6 oz and 12 oz prices.";
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Saving...";
+
+  try {
+    const response = await fetch(
+      SUPABASE_URL + "/rest/v1/products?id=eq." + encodeURIComponent(productId),
+      {
+        method: "PATCH",
+        headers: { ...headers(), "Prefer": "return=minimal" },
+        body: JSON.stringify({
+          name,
+          origin,
+          region,
+          process,
+          tasting_notes: tastingNotes,
+          price_6oz: price6,
+          price_12oz: price12,
+          active
+        })
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(await response.text() || "Could not update coffee.");
+    }
+
+    PRODUCT_NAMES[productId] = name;
+    closeEditCoffeeModal();
+    await loadInventory();
+    alert(name + " was updated successfully.");
+  }
+  catch (e) {
+    errorBox.textContent = e.message;
+  }
+  finally {
+    button.disabled = false;
+    button.textContent = "Save Changes";
+  }
+}
+
+async function removeCoffeeFromStore(productId) {
+  const productName = PRODUCT_NAMES[productId] || productId;
+
+  if (!confirm(
+    "Remove " + productName + " from the customer website?\n\n" +
+    "This does NOT delete the coffee, inventory, or order history. " +
+    "You can make it active again later with Edit Coffee."
+  )) return;
+
+  try {
+    const response = await fetch(
+      SUPABASE_URL + "/rest/v1/products?id=eq." + encodeURIComponent(productId),
+      {
+        method: "PATCH",
+        headers: { ...headers(), "Prefer": "return=minimal" },
+        body: JSON.stringify({ active: false })
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(await response.text() || "Could not remove coffee from store.");
+    }
+
+    await loadInventory();
+    alert(productName + " was removed from the customer website. Inventory and order history were kept.");
+  }
+  catch (e) {
+    alert("Coffee could not be removed.\n\n" + e.message);
+  }
+}
 
 
 // ==========================================
