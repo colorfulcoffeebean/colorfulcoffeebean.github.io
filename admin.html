@@ -833,12 +833,21 @@
         </div>
 
 
-        <button
-          class="button secondary"
-          onclick="loadInventory()"
-        >
-          Refresh Inventory
-        </button>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button
+            class="button"
+            onclick="openAddCoffeeModal()"
+          >
+            + Add Coffee
+          </button>
+
+          <button
+            class="button secondary"
+            onclick="loadInventory()"
+          >
+            Refresh Inventory
+          </button>
+        </div>
 
       </div>
 
@@ -976,6 +985,105 @@
 
 </div>
 
+
+
+
+<!-- ==========================================
+     ADD COFFEE MODAL
+     ========================================== -->
+
+<div
+  id="addCoffeeModal"
+  class="modal-backdrop hidden"
+>
+  <div class="modal">
+
+    <h3>Add New Coffee</h3>
+
+    <div class="form-group">
+      <label for="newCoffeeName">Coffee Name</label>
+      <input
+        id="newCoffeeName"
+        type="text"
+        placeholder="Example: Colombia Huila"
+        oninput="updateNewCoffeeProductId()"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="newCoffeeProductId">Product ID</label>
+      <input
+        id="newCoffeeProductId"
+        type="text"
+        placeholder="colombia-huila"
+      >
+      <div class="muted" style="margin-top:6px;">
+        Generated automatically. Lowercase letters, numbers, and hyphens only.
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="form-group">
+        <label for="newCoffeePrice6">6 oz Price ($)</label>
+        <input id="newCoffeePrice6" type="number" min="0" step="0.01">
+      </div>
+
+      <div class="form-group">
+        <label for="newCoffeePrice12">12 oz Price ($)</label>
+        <input id="newCoffeePrice12" type="number" min="0" step="0.01">
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="form-group">
+        <label for="newCoffeeGreenWeight">Starting Green Coffee (oz)</label>
+        <input id="newCoffeeGreenWeight" type="number" min="0" step="0.01" value="0">
+      </div>
+
+      <div class="form-group">
+        <label for="newCoffeeYield">Roast Yield (%)</label>
+        <input id="newCoffeeYield" type="number" min="1" max="100" step="0.01" value="75">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="newCoffeeLowStock">Low Stock Alert (oz)</label>
+      <input id="newCoffeeLowStock" type="number" min="0" step="0.01" value="16">
+    </div>
+
+    <div class="form-group">
+      <label style="display:flex; align-items:center; gap:10px; font-weight:normal;">
+        <input
+          id="newCoffeeActive"
+          type="checkbox"
+          checked
+          style="width:auto;"
+        >
+        Active on Customer Website
+      </label>
+    </div>
+
+    <div id="addCoffeeError" class="low-stock" style="min-height:20px;"></div>
+
+    <div class="modal-actions">
+      <button
+        class="button secondary"
+        onclick="closeAddCoffeeModal()"
+      >
+        Cancel
+      </button>
+
+      <button
+        class="button"
+        id="addCoffeeSaveButton"
+        onclick="saveNewCoffee()"
+      >
+        Add Coffee
+      </button>
+    </div>
+
+  </div>
+</div>
 
 
 <footer>
@@ -2500,6 +2608,39 @@ async function loadInventory() {
   try {
 
     // --------------------------------------
+    // LOAD PRODUCT NAMES
+    // --------------------------------------
+
+    const productsResponse =
+      await fetch(
+        SUPABASE_URL +
+        "/rest/v1/products?select=id,name&order=name.asc",
+        {
+          headers:
+            headers()
+        }
+      );
+
+    if (!productsResponse.ok) {
+      const message =
+        await productsResponse.text();
+
+      throw new Error(
+        message ||
+        "Could not load products."
+      );
+    }
+
+    const products =
+      await productsResponse.json();
+
+    products.forEach(product => {
+      PRODUCT_NAMES[product.id] =
+        product.name;
+    });
+
+
+    // --------------------------------------
     // LOAD CURRENT INVENTORY
     // --------------------------------------
 
@@ -3569,6 +3710,338 @@ async function saveInventoryChange() {
 
     button.textContent =
       oldText;
+
+  }
+
+}
+
+
+
+// ==========================================
+// ADD NEW COFFEE
+// ==========================================
+
+function openAddCoffeeModal() {
+
+  document
+    .getElementById("newCoffeeName")
+    .value = "";
+
+  document
+    .getElementById("newCoffeeProductId")
+    .value = "";
+
+  document
+    .getElementById("newCoffeePrice6")
+    .value = "";
+
+  document
+    .getElementById("newCoffeePrice12")
+    .value = "";
+
+  document
+    .getElementById("newCoffeeGreenWeight")
+    .value = "0";
+
+  document
+    .getElementById("newCoffeeYield")
+    .value = "75";
+
+  document
+    .getElementById("newCoffeeLowStock")
+    .value = "16";
+
+  document
+    .getElementById("newCoffeeActive")
+    .checked = true;
+
+  document
+    .getElementById("addCoffeeError")
+    .textContent = "";
+
+  document
+    .getElementById("addCoffeeModal")
+    .classList
+    .remove("hidden");
+
+  document
+    .getElementById("newCoffeeName")
+    .focus();
+
+}
+
+
+function closeAddCoffeeModal() {
+
+  document
+    .getElementById("addCoffeeModal")
+    .classList
+    .add("hidden");
+
+}
+
+
+function makeProductId(name) {
+
+  return String(name || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+}
+
+
+function updateNewCoffeeProductId() {
+
+  const name =
+    document
+      .getElementById("newCoffeeName")
+      .value;
+
+  document
+    .getElementById("newCoffeeProductId")
+    .value =
+      makeProductId(name);
+
+}
+
+
+async function saveNewCoffee() {
+
+  const name =
+    document
+      .getElementById("newCoffeeName")
+      .value
+      .trim();
+
+  const productId =
+    document
+      .getElementById("newCoffeeProductId")
+      .value
+      .trim()
+      .toLowerCase();
+
+  const price6 =
+    Number(
+      document
+        .getElementById("newCoffeePrice6")
+        .value
+    );
+
+  const price12 =
+    Number(
+      document
+        .getElementById("newCoffeePrice12")
+        .value
+    );
+
+  const greenWeight =
+    Number(
+      document
+        .getElementById("newCoffeeGreenWeight")
+        .value
+    );
+
+  const yieldPercent =
+    Number(
+      document
+        .getElementById("newCoffeeYield")
+        .value
+    );
+
+  const lowStock =
+    Number(
+      document
+        .getElementById("newCoffeeLowStock")
+        .value
+    );
+
+  const active =
+    document
+      .getElementById("newCoffeeActive")
+      .checked;
+
+  const errorBox =
+    document
+      .getElementById("addCoffeeError");
+
+  const button =
+    document
+      .getElementById("addCoffeeSaveButton");
+
+  errorBox.textContent = "";
+
+
+  if (!name) {
+    errorBox.textContent =
+      "Enter a coffee name.";
+    return;
+  }
+
+  if (
+    !productId ||
+    !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(productId)
+  ) {
+    errorBox.textContent =
+      "Product ID must use lowercase letters, numbers, and hyphens only.";
+    return;
+  }
+
+  if (
+    !Number.isFinite(price6) ||
+    price6 < 0 ||
+    !Number.isFinite(price12) ||
+    price12 < 0
+  ) {
+    errorBox.textContent =
+      "Enter valid 6 oz and 12 oz prices.";
+    return;
+  }
+
+  if (
+    !Number.isFinite(greenWeight) ||
+    greenWeight < 0
+  ) {
+    errorBox.textContent =
+      "Starting green coffee cannot be negative.";
+    return;
+  }
+
+  if (
+    !Number.isFinite(yieldPercent) ||
+    yieldPercent <= 0 ||
+    yieldPercent > 100
+  ) {
+    errorBox.textContent =
+      "Roast yield must be greater than 0 and no more than 100.";
+    return;
+  }
+
+  if (
+    !Number.isFinite(lowStock) ||
+    lowStock < 0
+  ) {
+    errorBox.textContent =
+      "Low stock alert cannot be negative.";
+    return;
+  }
+
+
+  button.disabled = true;
+  button.textContent = "Adding...";
+
+  let productCreated = false;
+
+  try {
+
+    const productResponse =
+      await fetch(
+        SUPABASE_URL +
+        "/rest/v1/products",
+        {
+          method: "POST",
+          headers: {
+            ...headers(),
+            "Prefer": "return=minimal"
+          },
+          body:
+            JSON.stringify({
+              id: productId,
+              name: name,
+              price_6oz: price6,
+              price_12oz: price12,
+              active: active
+            })
+        }
+      );
+
+    if (!productResponse.ok) {
+      const message =
+        await productResponse.text();
+
+      throw new Error(
+        message ||
+        "Could not create product."
+      );
+    }
+
+    productCreated = true;
+
+
+    const inventoryResponse =
+      await fetch(
+        SUPABASE_URL +
+        "/rest/v1/inventory",
+        {
+          method: "POST",
+          headers: {
+            ...headers(),
+            "Prefer": "return=minimal"
+          },
+          body:
+            JSON.stringify({
+              product_id: productId,
+              green_weight_oz: greenWeight,
+              roast_yield_percent: yieldPercent,
+              low_stock_threshold_oz: lowStock
+            })
+        }
+      );
+
+    if (!inventoryResponse.ok) {
+
+      const inventoryMessage =
+        await inventoryResponse.text();
+
+      // Best-effort cleanup so a failed inventory insert
+      // does not leave a half-created product.
+      if (productCreated) {
+        await fetch(
+          SUPABASE_URL +
+          "/rest/v1/products?id=eq." +
+          encodeURIComponent(productId),
+          {
+            method: "DELETE",
+            headers: headers()
+          }
+        ).catch(() => {});
+      }
+
+      throw new Error(
+        inventoryMessage ||
+        "Product was created, but inventory could not be created."
+      );
+    }
+
+
+    PRODUCT_NAMES[productId] =
+      name;
+
+    closeAddCoffeeModal();
+
+    await loadInventory();
+
+    alert(
+      name +
+      " was added successfully."
+    );
+
+  }
+
+  catch (e) {
+
+    errorBox.textContent =
+      e.message;
+
+  }
+
+  finally {
+
+    button.disabled = false;
+    button.textContent = "Add Coffee";
 
   }
 
