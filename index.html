@@ -1,19 +1,26 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
   <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
 
-  <title>Colorful Coffee Bean | Admin</title>
 
+
+  <title>
+    Colorful Coffee Bean | Specialty Coffee
+  </title>
 
   <style>
+
+    /* =========================================================
+       BASIC PAGE STYLE
+       ========================================================= */
 
     body {
       margin: 0;
@@ -30,86 +37,76 @@
     }
 
 
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
     header {
       text-align: center;
-      padding: 45px 20px 25px;
+      padding: 60px 20px 40px;
     }
 
+
+    /* Logo + Business Name */
 
     .brand {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 16px;
+      gap: 18px;
+      margin-bottom: 15px;
     }
 
 
     .brand-logo {
-      width: 110px;
-      height: 110px;
+      width: 200px;
+      height: 200px;
       object-fit: contain;
+      flex-shrink: 0;
     }
 
 
-    h1 {
+    .brand h1 {
+      font-size: 5rem;
       margin: 0;
-      font-size: 2.6rem;
     }
 
 
-    h2 {
-      border-bottom: 1px solid #d6cabc;
-      padding-bottom: 10px;
+    header p {
+      max-width: 650px;
+      margin: auto;
+      line-height: 1.7;
+      color: #66584c;
     }
 
 
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 3px 12px rgba(0,0,0,.08);
-      margin-bottom: 20px;
-    }
 
+    /* =========================================================
+       BUTTONS
+       ========================================================= */
 
-    .login {
-      max-width: 480px;
-      margin: 20px auto;
-    }
-
-
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-
-    label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 7px;
-    }
-
-
-    input,
-    select {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-      background: white;
+    .buttons {
+      margin-top: 25px;
     }
 
 
     .button {
-      padding: 12px 20px;
-      border: 0;
-      border-radius: 8px;
+      display: inline-block;
+      padding: 13px 22px;
+      margin: 5px;
+
       background: #38291f;
       color: white;
+
+      text-decoration: none;
+
+      border: none;
+      border-radius: 8px;
+
       cursor: pointer;
-      font-size: 15px;
+      font-size: 16px;
+      font-family: Arial, sans-serif;
     }
 
 
@@ -118,370 +115,440 @@
     }
 
 
-    .button.secondary {
-      background: #76675b;
+
+    /* =========================================================
+       SECTIONS
+       ========================================================= */
+
+    section {
+      margin: 60px 0;
     }
 
 
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      flex-wrap: wrap;
+    h2 {
+      font-size: 2rem;
+      border-bottom: 1px solid #d6cabc;
+      padding-bottom: 10px;
     }
 
 
-    .stats {
-      font-size: 1.15rem;
-      font-weight: bold;
-    }
 
+    /* =========================================================
+       SEARCH BOX
+       ========================================================= */
 
-    .order {
-      border-left: 4px solid #8a5b35;
-    }
-
-
-    .order-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-      flex-wrap: wrap;
-      align-items: flex-start;
-    }
-
-
-    .order-code {
-      font-size: 1.35rem;
-      font-weight: bold;
-    }
-
-
-    .muted {
-      color: #66584c;
-    }
-
-
-    .grid {
-      display: grid;
-      grid-template-columns:
-        repeat(auto-fit, minmax(220px, 1fr));
-      gap: 15px;
-      margin-top: 18px;
-    }
-
-
-    .item {
-      background: #f7f3eb;
-      padding: 13px;
-      border-radius: 8px;
-      margin-top: 10px;
-    }
-
-
-    .money {
-      font-weight: bold;
-    }
-
-
-    .status-row {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      margin-top: 18px;
-      flex-wrap: wrap;
-    }
-
-
-    .status-row select {
-      width: auto;
-      min-width: 180px;
-    }
-
-
-    #error {
-      color: #9b2c2c;
-      margin-top: 12px;
-      white-space: pre-wrap;
-    }
-
-
-    #loading {
-      text-align: center;
-      padding: 30px;
-    }
-
-
-    .hidden {
-      display: none !important;
-    }
-
-
-    .filters {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-
-    .filters input,
-    .filters select {
+    #search {
       width: 100%;
-    }
+      box-sizing: border-box;
 
+      padding: 14px;
+      margin-bottom: 25px;
 
-    .order.completed-order {
-      opacity: .78;
-    }
+      font-size: 16px;
 
-
-    footer {
-      text-align: center;
-      padding: 35px;
-      color: #777;
-    }
-
-
-    /* ==========================================
-       ADMIN TABS
-       ========================================== */
-
-    .tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-
-    .tab-button {
-      padding: 12px 20px;
-      border: 1px solid #d6cabc;
+      border: 1px solid #ccc;
       border-radius: 8px;
-      background: white;
-      color: #38291f;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-
-    .tab-button.active {
-      background: #38291f;
-      color: white;
     }
 
 
 
-    /* ==========================================
-       INVENTORY
-       ========================================== */
+    /* =========================================================
+       COFFEE GRID
+       ========================================================= */
 
-    .inventory-card {
-      border-left: 4px solid #5f7a4f;
-    }
-
-
-    .inventory-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-      align-items: flex-start;
-      flex-wrap: wrap;
-    }
-
-
-    .inventory-title {
-      font-size: 1.25rem;
-      font-weight: bold;
-    }
-
-
-    .inventory-stats {
+    .coffee-grid {
       display: grid;
+
       grid-template-columns:
-        repeat(auto-fit, minmax(160px, 1fr));
-      gap: 12px;
-      margin-top: 18px;
+        repeat(auto-fit, minmax(300px, 1fr));
+
+      gap: 20px;
     }
 
 
-    .inventory-stat {
-      background: #f7f3eb;
-      padding: 14px;
-      border-radius: 8px;
-    }
 
+    /* =========================================================
+       COFFEE CARD
+       ========================================================= */
 
-    .inventory-stat strong {
-      display: block;
-      font-size: 1.15rem;
-      margin-top: 4px;
-    }
-
-
-    .low-stock {
-      color: #9b2c2c;
-      font-weight: bold;
-    }
-
-
-    .stock-ok {
-      color: #3f6b3f;
-      font-weight: bold;
-    }
-
-
-    .inventory-actions {
+    .coffee-card {
       display: flex;
-      gap: 10px;
-      margin-top: 18px;
-      flex-wrap: wrap;
-    }
+      flex-direction: column;
 
-
-
-    /* ==========================================
-       INVENTORY HISTORY
-       ========================================== */
-
-    .history {
-      margin-top: 18px;
-      border-top: 1px solid #e1d8cc;
-      padding-top: 14px;
-    }
-
-
-    .history-row {
-      display: grid;
-      grid-template-columns: 150px 110px 1fr;
-      gap: 10px;
-      padding: 8px 0;
-      border-bottom: 1px solid #eee7df;
-      font-size: .94rem;
-    }
-
-
-
-    /* ==========================================
-       DELETE ORDER
-       ========================================== */
-
-    .delete-area {
-      margin-top: 18px;
-      display: flex;
-      justify-content: flex-end;
-    }
-
-
-    .delete-button {
-      background: #9b2c2c;
-    }
-
-
-    .delete-button:hover {
-      background: #7f1f1f;
-    }
-
-
-    .confirm-box {
-      margin-top: 12px;
-      padding: 14px;
-      background: #fff4f4;
-      border: 1px solid #e4b9b9;
-      border-radius: 8px;
-    }
-
-
-    .confirm-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 12px;
-      justify-content: flex-end;
-    }
-
-
-
-    /* ==========================================
-       INVENTORY MODAL
-       ========================================== */
-
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.45);
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      padding: 20px;
-
-      z-index: 999;
-    }
-
-
-    .modal {
       background: white;
-      width: min(520px, 100%);
+
       border-radius: 12px;
-      padding: 24px;
+
+      padding: 22px;
 
       box-shadow:
-        0 12px 40px rgba(0,0,0,.25);
+        0 3px 12px rgba(0, 0, 0, 0.08);
     }
 
 
-    .modal h3 {
+    .coffee-card h3 {
       margin-top: 0;
     }
 
 
-    .modal-actions {
+    .origin {
+      color: #8a5b35;
+      font-weight: bold;
+    }
+
+
+
+    /* =========================================================
+       COFFEE ORDER OPTIONS
+       ========================================================= */
+
+    .coffee-options {
+      margin-top: auto;
+      padding-top: 20px;
+    }
+
+
+    .coffee-option {
+      display: grid;
+
+      grid-template-columns:
+        22px 55px 1fr 55px;
+
+      align-items: center;
+
+      gap: 8px;
+
+      margin-bottom: 12px;
+    }
+
+
+    .coffee-option input[type="radio"] {
+      width: auto;
+      margin: 0;
+      cursor: pointer;
+    }
+
+
+    .coffee-option label {
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+
+    .coffee-option select {
+      width: 100%;
+
+      padding: 8px;
+
+      border: 1px solid #ccc;
+      border-radius: 6px;
+
+      background: white;
+
+      font-size: 14px;
+    }
+
+
+    .option-price {
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-align: right;
+    }
+
+
+    .card-order-button {
+      text-align: right;
+      margin-top: 15px;
+    }
+
+
+
+    /* =========================================================
+       ORDER LIMIT MESSAGE
+       ========================================================= */
+
+    .order-limit {
+      margin: 20px 0;
+
+      padding: 18px;
+
+      background: #f7f3eb;
+
+      border-left: 4px solid #8a5b35;
+
+      border-radius: 6px;
+    }
+
+
+    .order-limit p {
+      margin-bottom: 0;
+
+      line-height: 1.6;
+
+      color: #66584c;
+    }
+
+
+
+    /* =========================================================
+       ORDER SECTION
+       ========================================================= */
+
+    .order-form {
+      max-width: 750px;
+
+      background: white;
+
+      padding: 25px;
+
+      border-radius: 12px;
+
+      box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.08);
+    }
+
+
+
+    /* =========================================================
+       SHOPPING CART
+       ========================================================= */
+
+    .order-summary {
+      padding: 20px;
+
+      background: #f7f3eb;
+
+      border-radius: 10px;
+
+      margin-bottom: 30px;
+    }
+
+
+    .order-summary h3 {
+      margin-top: 0;
+    }
+
+
+    .cart-empty {
+      color: #66584c;
+    }
+
+
+    .cart-item {
+      background: white;
+
+      padding: 15px;
+
+      margin-bottom: 12px;
+
+      border-radius: 8px;
+    }
+
+
+    .cart-item-title {
+      font-size: 1.05rem;
+      font-weight: bold;
+
+      margin-bottom: 6px;
+    }
+
+
+    .cart-item-details {
+      color: #66584c;
+      line-height: 1.6;
+    }
+
+
+    .cart-item-bottom {
       display: flex;
-      justify-content: flex-end;
+
+      justify-content: space-between;
+      align-items: center;
+
+      margin-top: 10px;
+    }
+
+
+    .remove-button {
+      background: none;
+
+      border: none;
+
+      color: #8a5b35;
+
+      font-weight: bold;
+
+      cursor: pointer;
+    }
+
+
+    .summary-line {
+      margin: 8px 0;
+    }
+
+
+    .summary-divider {
+      border-top: 1px solid #d6cabc;
+
+      margin: 15px 0;
+    }
+
+
+    .bag-count {
+      color: #8a5b35;
+      font-weight: bold;
+    }
+
+
+    .total {
+      margin-top: 15px;
+
+      padding-top: 15px;
+
+      border-top: 1px solid #d6cabc;
+
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+
+
+    /* =========================================================
+       CUSTOMER INFORMATION
+       ========================================================= */
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+
+    .form-group label {
+      display: block;
+
+      font-weight: bold;
+
+      margin-bottom: 7px;
+    }
+
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="tel"],
+    .form-group select {
+
+      width: 100%;
+
+      box-sizing: border-box;
+
+      padding: 13px;
+
+      font-size: 16px;
+
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+
+
+    /* =========================================================
+       SHIPPING
+       ========================================================= */
+
+    .shipping-option {
+      display: flex !important;
+
+      align-items: center;
+
       gap: 10px;
-      margin-top: 20px;
+
+      font-weight: normal !important;
+
+      cursor: pointer;
+    }
+
+
+    .shipping-option input {
+      width: auto;
+      margin: 0;
+    }
+
+
+    .shipping-info {
+      color: #66584c;
+
+      font-size: 0.9rem;
+
+      line-height: 1.6;
+
+      margin-top: 8px;
     }
 
 
 
-    /* ==========================================
+    /* =========================================================
        MOBILE
-       ========================================== */
+       ========================================================= */
 
-    @media(max-width: 750px) {
+    @media (max-width: 600px) {
 
-      .filters {
-        grid-template-columns: 1fr;
+      header {
+        padding-top: 40px;
       }
 
-    }
 
-
-    @media(max-width: 650px) {
-
-      .history-row {
-        grid-template-columns: 1fr;
-        gap: 3px;
-      }
-
-    }
-
-
-    @media(max-width: 600px) {
-
-      h1 {
-        font-size: 1.8rem;
+      .brand {
+        gap: 12px;
       }
 
 
       .brand-logo {
-        width: 80px;
-        height: 80px;
+        width: 120px;
+        height: 120px;
       }
 
+
+      .brand h1 {
+        font-size: 2rem;
+      }
+
+
+      .coffee-option {
+        grid-template-columns:
+          20px 48px 1fr 45px;
+
+        gap: 5px;
+      }
+
+
+      .coffee-option select {
+        font-size: 13px;
+        padding: 7px;
+      }
+
+
+      .option-price {
+        font-size: 1rem;
+      }
+
+
+      .order-button {
+        width: 100%;
+      }
+
+    }
+
+
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    footer {
+      text-align: center;
+
+      padding: 40px;
+
+      color: #777;
     }
 
   </style>
@@ -492,3717 +559,2184 @@
 
 <body>
 
+  <!-- =========================================================
+       HEADER
+       ========================================================= -->
 
-<!-- ==========================================
-     HEADER
-     ========================================== -->
+  <header>
 
-<header>
+<div class="brand">
 
-  <div class="brand">
-
-    <img
-      src="images/colorful-coffee-bean-logo.png"
-      alt="Colorful Coffee Bean Logo"
-      class="brand-logo"
-    >
-
-    <h1>
-      Colorful Coffee Bean
-    </h1>
-
-  </div>
-
-
-  <p class="muted">
-    Private Order Dashboard
-  </p>
-
-</header>
-
-
-
-<div class="container">
-
-
-  <!-- ==========================================
-       LOGIN
-       ========================================== -->
-
-  <section
-    id="loginView"
-    class="card login"
+  <img
+    src="images/colorful-coffee-bean-logo.png"
+    alt="Colorful Coffee Bean Logo"
+    class="brand-logo"
   >
 
-    <h2>
-      Admin Login
-    </h2>
-
-
-    <div class="form-group">
-
-      <label for="email">
-        Email
-      </label>
-
-      <input
-        id="email"
-        type="email"
-        autocomplete="username"
-      >
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label for="password">
-        Password
-      </label>
-
-      <input
-        id="password"
-        type="password"
-        autocomplete="current-password"
-      >
-
-    </div>
-
-
-    <button
-      class="button"
-      id="loginButton"
-      onclick="login()"
-    >
-      Sign In
-    </button>
-
-
-    <div style="margin-top:16px; text-align:center;">
-      <a
-        href="#"
-        onclick="forgotPassword(event)"
-        style="color:#38291f; text-decoration:underline;"
-      >
-        Forgot Password?
-      </a>
-    </div>
-
-
-    <div id="error"></div>
-
-  </section>
-
-
-
-  <!-- ==========================================
-       DASHBOARD
-       ========================================== -->
-
-  <section
-    id="dashboardView"
-    class="hidden"
-  >
-
-
-    <!-- ADMIN TABS -->
-
-    <div class="tabs">
-
-      <button
-        id="ordersTabButton"
-        class="tab-button active"
-        onclick="showTab('orders')"
-      >
-        Orders
-      </button>
-
-
-      <button
-        id="inventoryTabButton"
-        class="tab-button"
-        onclick="showTab('inventory')"
-      >
-        Inventory
-      </button>
-
-    </div>
-
-
-
-    <!-- ==========================================
-         ORDERS TAB
-         ========================================== -->
-
-    <div id="ordersTab">
-
-
-      <div class="card topbar">
-
-        <div>
-
-          <div
-            class="stats"
-            id="weekStats"
-          >
-            This Week: — / 3 Orders
-          </div>
-
-
-          <div class="muted">
-            Cancelled orders do not count toward weekly capacity.
-          </div>
-
-        </div>
-
-
-        <div>
-
-          <button
-            class="button secondary"
-            onclick="loadOrders()"
-          >
-            Refresh
-          </button>
-
-
-          <button
-            class="button"
-            onclick="logout()"
-          >
-            Sign Out
-          </button>
-
-        </div>
-
-      </div>
-
-
-
-      <!-- ORDER FILTERS -->
-
-      <div class="card">
-
-        <strong>
-          Find Orders
-        </strong>
-
-
-        <div class="filters">
-
-
-          <input
-            id="orderSearch"
-            type="text"
-            placeholder="Search order #, customer, email..."
-            oninput="applyFilters()"
-          >
-
-
-          <select
-            id="statusFilter"
-            onchange="applyFilters()"
-          >
-
-            <option value="all">
-              All Statuses
-            </option>
-
-            <option value="new">
-              New
-            </option>
-
-            <option value="roasting">
-              Roasting
-            </option>
-
-            <option value="quality_check">
-              Quality Check
-            </option>
-
-            <option value="ready">
-              Ready
-            </option>
-
-            <option value="shipped">
-              Shipped
-            </option>
-
-            <option value="completed">
-              Completed
-            </option>
-
-            <option value="cancelled">
-              Cancelled
-            </option>
-
-          </select>
-
-
-
-          <select
-            id="fulfillmentFilter"
-            onchange="applyFilters()"
-          >
-
-            <option value="all">
-              Pickup + Shipping
-            </option>
-
-            <option value="pickup">
-              Local Pickup
-            </option>
-
-            <option value="shipping">
-              Shipping
-            </option>
-
-          </select>
-
-
-
-          <select
-            id="weekFilter"
-            onchange="applyFilters()"
-          >
-
-            <option value="this_week">
-              This Week
-            </option>
-
-            <option value="last_week">
-              Last Week
-            </option>
-
-            <option value="this_month">
-              This Month
-            </option>
-
-            <option value="all">
-              All Orders
-            </option>
-
-          </select>
-
-
-        </div>
-
-      </div>
-
-
-
-      <div
-        id="loading"
-        class="hidden"
-      >
-        Loading orders...
-      </div>
-
-
-      <div id="orders"></div>
-
-
-    </div>
-
-
-
-    <!-- ==========================================
-         INVENTORY TAB
-         ========================================== -->
-
-    <div
-      id="inventoryTab"
-      class="hidden"
-    >
-
-
-      <div class="card topbar">
-
-        <div>
-
-          <div class="stats">
-            Green Coffee Inventory
-          </div>
-
-
-          <div class="muted">
-            Green weight, estimated roasted yield,
-            and bag availability.
-          </div>
-
-        </div>
-
-
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <button
-            class="button"
-            onclick="openAddCoffeeModal()"
-          >
-            + Add Coffee
-          </button>
-
-          <button
-            class="button secondary"
-            onclick="loadInventory()"
-          >
-            Refresh Inventory
-          </button>
-        </div>
-
-      </div>
-
-
-
-      <div
-        id="inventoryLoading"
-        class="hidden"
-      >
-        Loading inventory...
-      </div>
-
-
-      <div id="inventoryList"></div>
-
-
-    </div>
-
-
-  </section>
-
+  <h1>
+    Colorful Coffee Bean
+  </h1>
 
 </div>
 
 
-
-<!-- ==========================================
-     INVENTORY MODAL
-     ========================================== -->
-
-<div
-  id="inventoryModal"
-  class="modal-backdrop hidden"
->
-
-  <div class="modal">
+<p>
+  Freshly roasted specialty coffee featuring carefully
+  selected single-origin beans from around the world.
+</p>
 
 
-    <h3 id="inventoryModalTitle">
-      Inventory
+<div class="buttons">
+
+  <a
+    class="button"
+    href="#coffee"
+  >
+    Shop Coffee
+  </a>
+
+
+  <a
+    class="button"
+    href="#order"
+  >
+    View Order
+  </a>
+
+
+  <a
+    class="button"
+    href="status.html"
+  >
+    Check Order Status
+  </a>
+
+</div>
+
+  </header>
+
+
+
+  <!-- =========================================================
+       MAIN CONTENT
+       ========================================================= -->
+
+  <div class="container">
+
+
+
+<!-- =======================================================
+     FRESH ROASTED COFFEE
+     ======================================================= -->
+
+<section>
+
+  <h2>
+    Fresh Roasted Coffee
+  </h2>
+
+
+  <p>
+    Every coffee is roasted fresh in small batches
+    and available in 6 oz and 12 oz sizes.
+    Explore our current selection and find your
+    next favorite cup.
+  </p>
+
+</section>
+
+
+
+<!-- =======================================================
+     OUR COFFEE
+     ======================================================= -->
+
+<section id="coffee">
+
+
+  <h2>
+    Our Coffee
+  </h2>
+
+
+  <!-- SEARCH -->
+
+  <input
+    type="text"
+    id="search"
+    placeholder="Search origin, flavor, process..."
+    onkeyup="filterCoffee()"
+  >
+
+
+
+  <!-- COFFEE GRID -->
+
+  <div
+    class="coffee-grid"
+    id="coffeeGrid"
+  >
+
+
+
+    <!-- ===================================================
+         GUATEMALAN
+         =================================================== -->
+
+    <div class="coffee-card">
+
+      <div class="origin">
+        Guatemalan
+      </div>
+
+
+      <h3>
+        Huehuetenango
+      </h3>
+
+
+      <p>
+        <strong>Process:</strong>
+        Washed
+      </p>
+
+
+      <p>
+        <strong>Roast:</strong>
+        Light - Dark
+      </p>
+
+
+      <p>
+        <strong>Tasting Notes:</strong>
+        <br>
+        Orange/Nutty/Caramel/Malty
+      </p>
+
+
+
+      <!-- GUATEMALA ORDER OPTIONS -->
+
+      <div class="coffee-options">
+
+
+        <!-- 6 OZ -->
+
+        <div class="coffee-option">
+
+          <input
+            type="radio"
+            name="guatemala-size"
+            id="guatemala-6"
+            value="6"
+            checked
+          >
+
+          <label for="guatemala-6">
+            6 oz
+          </label>
+
+
+          <select id="guatemala-roast-6">
+
+            <option value="Light">
+              Light
+            </option>
+
+            <option value="Medium-Light">
+              Medium-Light
+            </option>
+
+            <option value="Medium" selected>
+              Medium
+            </option>
+
+            <option value="Medium-Dark">
+              Medium-Dark
+            </option>
+
+            <option value="Dark">
+              Dark
+            </option>
+
+          </select>
+
+
+          <span class="option-price">
+            $13
+          </span>
+
+        </div>
+
+
+
+        <!-- 12 OZ -->
+
+        <div class="coffee-option">
+
+          <input
+            type="radio"
+            name="guatemala-size"
+            id="guatemala-12"
+            value="12"
+          >
+
+          <label for="guatemala-12">
+            12 oz
+          </label>
+
+
+          <select id="guatemala-roast-12">
+
+            <option value="Light">
+              Light
+            </option>
+
+            <option value="Medium-Light">
+              Medium-Light
+            </option>
+
+            <option value="Medium" selected>
+              Medium
+            </option>
+
+            <option value="Medium-Dark">
+              Medium-Dark
+            </option>
+
+            <option value="Dark">
+              Dark
+            </option>
+
+          </select>
+
+
+          <span class="option-price">
+            $25
+          </span>
+
+        </div>
+
+
+
+        <!-- ADD GUATEMALA -->
+
+        <div class="card-order-button">
+
+          <button
+            type="button"
+            class="button"
+            onclick="addCoffeeToOrder('guatemala')"
+          >
+            Add to Order
+          </button>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+
+    <!-- ===================================================
+         ETHIOPIA
+         =================================================== -->
+
+    <div class="coffee-card">
+
+      <div class="origin">
+        Ethiopia
+      </div>
+
+
+      <h3>
+        Yirgacheffe
+      </h3>
+
+
+      <p>
+        <strong>Process:</strong>
+        Supernatural Anaerobic
+      </p>
+
+
+      <p>
+        <strong>Roast:</strong>
+        Light - Dark
+      </p>
+
+
+      <p>
+        <strong>Tasting Notes:</strong>
+        <br>
+        Lemon/Floral/Cherry/Strawberry/Candy-like sweet/Milk-Chocolate
+      </p>
+
+
+
+      <!-- ETHIOPIA ORDER OPTIONS -->
+
+      <div class="coffee-options">
+
+
+        <!-- 6 OZ -->
+
+        <div class="coffee-option">
+
+          <input
+            type="radio"
+            name="ethiopia-size"
+            id="ethiopia-6"
+            value="6"
+            checked
+          >
+
+          <label for="ethiopia-6">
+            6 oz
+          </label>
+
+
+          <select id="ethiopia-roast-6">
+
+            <option value="Light">
+              Light
+            </option>
+
+            <option value="Medium-Light">
+              Medium-Light
+            </option>
+
+            <option value="Medium" selected>
+              Medium
+            </option>
+
+            <option value="Medium-Dark">
+              Medium-Dark
+            </option>
+
+            <option value="Dark">
+              Dark
+            </option>
+
+          </select>
+
+
+          <span class="option-price">
+            $15
+          </span>
+
+        </div>
+
+
+
+        <!-- 12 OZ -->
+
+        <div class="coffee-option">
+
+          <input
+            type="radio"
+            name="ethiopia-size"
+            id="ethiopia-12"
+            value="12"
+          >
+
+          <label for="ethiopia-12">
+            12 oz
+          </label>
+
+
+          <select id="ethiopia-roast-12">
+
+            <option value="Light">
+              Light
+            </option>
+
+            <option value="Medium-Light">
+              Medium-Light
+            </option>
+
+            <option value="Medium" selected>
+              Medium
+            </option>
+
+            <option value="Medium-Dark">
+              Medium-Dark
+            </option>
+
+            <option value="Dark">
+              Dark
+            </option>
+
+          </select>
+
+
+          <span class="option-price">
+            $28
+          </span>
+
+        </div>
+
+
+
+        <!-- ADD ETHIOPIA -->
+
+        <div class="card-order-button">
+
+          <button
+            type="button"
+            class="button"
+            onclick="addCoffeeToOrder('ethiopia')"
+          >
+            Add to Order
+          </button>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+
+    <!-- ===================================================
+         COSTA RICA
+         =================================================== -->
+
+    <div class="coffee-card">
+
+      <div class="origin">
+        Costa Rican
+      </div>
+
+
+      <h3>
+        Tarrazu
+      </h3>
+
+
+      <p>
+        <strong>Process:</strong>
+        Washed
+      </p>
+
+
+      <p>
+        <strong>Roast:</strong>
+        Light - Dark
+      </p>
+
+
+      <p>
+        <strong>Tasting Notes:</strong>
+        <br>
+        Floral/Nutty/Chocolate/Sweet
+      </p>
+
+
+
+      <!-- COSTA RICA ORDER OPTIONS -->
+
+      <div class="coffee-options">
+
+
+        <!-- 6 OZ -->
+
+        <div class="coffee-option">
+
+          <input
+            type="radio"
+            name="costarica-size"
+            id="costarica-6"
+            value="6"
+            checked
+          >
+
+          <label for="costarica-6">
+            6 oz
+          </label>
+
+
+          <select id="costarica-roast-6">
+
+            <option value="Light">
+              Light
+            </option>
+
+            <option value="Medium-Light">
+              Medium-Light
+            </option>
+
+            <option value="Medium" selected>
+              Medium
+            </option>
+
+            <option value="Medium-Dark">
+              Medium-Dark
+            </option>
+
+            <option value="Dark">
+              Dark
+            </option>
+
+          </select>
+
+
+          <span class="option-price">
+            $13
+          </span>
+
+        </div>
+
+
+
+        <!-- 12 OZ -->
+
+        <div class="coffee-option">
+
+          <input
+            type="radio"
+            name="costarica-size"
+            id="costarica-12"
+            value="12"
+          >
+
+          <label for="costarica-12">
+            12 oz
+          </label>
+
+
+          <select id="costarica-roast-12">
+
+            <option value="Light">
+              Light
+            </option>
+
+            <option value="Medium-Light">
+              Medium-Light
+            </option>
+
+            <option value="Medium" selected>
+              Medium
+            </option>
+
+            <option value="Medium-Dark">
+              Medium-Dark
+            </option>
+
+            <option value="Dark">
+              Dark
+            </option>
+
+          </select>
+
+
+          <span class="option-price">
+            $25
+          </span>
+
+        </div>
+
+
+
+        <!-- ADD COSTA RICA -->
+
+        <div class="card-order-button">
+
+          <button
+            type="button"
+            class="button"
+            onclick="addCoffeeToOrder('costarica')"
+          >
+            Add to Order
+          </button>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- =======================================================
+     ABOUT
+     ======================================================= -->
+
+<section>
+
+  <h2>
+    About Colorful Coffee Bean
+  </h2>
+
+
+  <p>
+    We believe great coffee starts with great beans.
+    Our coffees are carefully sourced and roasted
+    in small batches to highlight the unique character
+    of each origin.
+  </p>
+
+</section>
+
+
+
+<!-- =======================================================
+     HOW TO ORDER
+     ======================================================= -->
+
+<section id="order">
+
+
+  <h2>
+    How to Order
+  </h2>
+
+
+  <p>
+    Choose your coffee, size, and roast level above,
+    then click <strong>Add to Order</strong>.
+    You may mix different coffees up to a total of 3 bags.
+  </p>
+
+
+
+  <div class="order-form">
+
+
+
+    <!-- ===================================================
+         YOUR ORDER / SHOPPING CART
+         =================================================== -->
+
+    <div class="order-summary">
+
+
+      <h3>
+        Your Order
+      </h3>
+
+
+      <div id="cartItems">
+
+        <p class="cart-empty">
+          Your order is currently empty.
+        </p>
+
+      </div>
+
+
+
+      <div class="summary-divider"></div>
+
+
+
+      <div class="summary-line">
+
+        <strong>
+          Total Bags:
+        </strong>
+
+        <span
+          id="totalBags"
+          class="bag-count"
+        >
+          0
+        </span>
+
+        / 3
+
+      </div>
+
+
+
+      <div class="summary-line">
+
+        <strong>
+          Coffee Total:
+        </strong>
+
+        $<span id="coffeeTotal">
+          0.00
+        </span>
+
+      </div>
+
+
+
+      <div class="summary-line">
+
+        <strong>
+          Delivery:
+        </strong>
+
+        <span id="deliveryMethod">
+          Local Pickup
+        </span>
+
+      </div>
+
+
+
+      <div class="summary-line">
+
+        <strong>
+          Shipping:
+        </strong>
+
+        <span id="shippingCost">
+          $0.00
+        </span>
+
+      </div>
+
+
+
+      <div class="total">
+
+        Total:
+
+        $<span id="grandTotal">
+          0.00
+        </span>
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- ===================================================
+         DELIVERY METHOD
+         =================================================== -->
+
+    <div class="form-group">
+
+      <label>
+        Delivery Method
+      </label>
+
+
+      <label class="shipping-option">
+
+        <input
+          type="checkbox"
+          id="shippingCheckbox"
+          onchange="toggleShippingAddress(); updateOrderSummary()"
+        >
+
+        Shipping
+
+      </label>
+
+
+      <p class="shipping-info">
+
+        Leave unchecked for
+        <strong>Local Pickup</strong>.
+
+        <br>
+
+        Shipping:
+        1 bag $7 •
+        2 bags $8 •
+        3 bags $9
+
+      </p>
+
+    </div>
+
+
+    <!-- LOCAL PICKUP LOCATION: shown only when Shipping is not selected -->
+    <div id="pickupLocationFields">
+
+      <div class="form-group">
+        <label for="pickupLocation">Pickup Location *</label>
+
+        <select id="pickupLocation">
+          <option value="">Select a pickup location...</option>
+          <option value="applebees_germantown">
+            Applebee's — 21048 Frederick Rd, Germantown, MD 20876
+          </option>
+          <option value="royal_farms_gaithersburg">
+            Royal Farms — 690 Watkins Mill Rd, Gaithersburg, MD 20879
+          </option>
+        </select>
+
+        <p class="shipping-info">
+          Please choose where you would like to pick up your coffee.
+        </p>
+      </div>
+
+    </div>
+
+
+    <!-- SHIPPING ADDRESS: shown only when Shipping is selected -->
+    <div id="shippingAddressFields" style="display: none;">
+
+      <h3>Shipping Address</h3>
+
+      <div class="form-group">
+        <label for="addressLine1">Street Address *</label>
+        <input type="text" id="addressLine1" placeholder="Street address">
+      </div>
+
+      <div class="form-group">
+        <label for="addressLine2">Apartment / Unit</label>
+        <input type="text" id="addressLine2" placeholder="Apartment, suite, unit (optional)">
+      </div>
+
+      <div class="form-group">
+        <label for="shippingCity">City *</label>
+        <input type="text" id="shippingCity" placeholder="City">
+      </div>
+
+      <div class="form-group">
+        <label for="shippingState">State *</label>
+        <input type="text" id="shippingState" placeholder="State">
+      </div>
+
+      <div class="form-group">
+        <label for="shippingZip">ZIP Code *</label>
+        <input type="text" id="shippingZip" placeholder="ZIP Code">
+      </div>
+
+    </div>
+
+
+
+    <!-- ===================================================
+         ORDER LIMIT
+         =================================================== -->
+
+    <div class="order-limit">
+
+      <strong>
+        Order Limit: Maximum 3 bags per order.
+      </strong>
+
+
+      <p>
+        Colorful Coffee Bean is a small-batch passion project
+        alongside my full-time job.
+
+        To ensure every order receives the time and attention
+        needed for the best possible roast quality,
+        orders are limited to 3 bags at a time.
+      </p>
+
+    </div>
+
+
+
+    <!-- ===================================================
+         CUSTOMER INFORMATION
+         =================================================== -->
+
+    <h3>
+      Customer Information
     </h3>
 
 
-    <div
-      id="inventoryModalCoffee"
-      class="muted"
-      style="margin-bottom:18px;"
-    ></div>
-
-
 
     <div class="form-group">
 
-      <label for="inventoryAmount">
-        Amount
+      <label for="customerName">
+        Your Name *
       </label>
 
 
       <input
-        id="inventoryAmount"
-        type="number"
-        min="0"
-        step="0.01"
-      >
-
-    </div>
-
-
-
-    <div
-      id="inventoryUnitGroup"
-      class="form-group"
-    >
-
-      <label for="inventoryUnit">
-        Unit
-      </label>
-
-
-      <select id="inventoryUnit">
-
-        <option value="oz">
-          oz
-        </option>
-
-        <option value="lb">
-          lb
-        </option>
-
-      </select>
-
-    </div>
-
-
-
-    <div class="form-group">
-
-      <label for="inventoryNote">
-        Note
-      </label>
-
-
-      <input
-        id="inventoryNote"
         type="text"
-        placeholder="Optional note"
+        id="customerName"
+        placeholder="Your name"
       >
 
     </div>
 
 
 
-    <div class="modal-actions">
+    <div class="form-group">
+
+      <label for="customerEmail">
+        Email
+      </label>
+
+
+      <input
+        type="email"
+        id="customerEmail"
+        placeholder="your@email.com"
+      >
+
+    </div>
+
+
+
+    <div class="form-group">
+
+      <label for="customerPhone">
+        Phone
+      </label>
+
+
+      <input
+        type="tel"
+        id="customerPhone"
+        placeholder="(240) 555-1234"
+      >
+
+    </div>
+
+
+
+    <!-- ===================================================
+         PLACE ORDER
+         =================================================== -->
+
+    <div class="buttons">
 
       <button
-        class="button secondary"
-        onclick="closeInventoryModal()"
+        type="button"
+        class="button order-button"
+        id="placeOrderButton"
+        onclick="placeOrder()"
       >
-        Cancel
-      </button>
-
-
-      <button
-        class="button"
-        id="inventorySaveButton"
-        onclick="saveInventoryChange()"
-      >
-        Save
+        Place Order
       </button>
 
     </div>
+
 
 
   </div>
 
-</div>
-
-
-
-
-<!-- ==========================================
-     ADD COFFEE MODAL
-     ========================================== -->
-
-<div
-  id="addCoffeeModal"
-  class="modal-backdrop hidden"
->
-  <div class="modal">
-
-    <h3>Add New Coffee</h3>
-
-    <div class="form-group">
-      <label for="newCoffeeName">Coffee Name</label>
-      <input
-        id="newCoffeeName"
-        type="text"
-        placeholder="Example: Colombia Huila"
-        oninput="updateNewCoffeeProductId()"
-      >
-    </div>
-
-    <div class="form-group">
-      <label for="newCoffeeProductId">Product ID</label>
-      <input
-        id="newCoffeeProductId"
-        type="text"
-        placeholder="colombia-huila"
-      >
-      <div class="muted" style="margin-top:6px;">
-        Generated automatically. Lowercase letters, numbers, and hyphens only.
-      </div>
-    </div>
-
-    <div class="grid">
-      <div class="form-group">
-        <label for="newCoffeeOrigin">Origin</label>
-        <input
-          id="newCoffeeOrigin"
-          type="text"
-          placeholder="Example: Colombia"
-        >
-      </div>
-
-      <div class="form-group">
-        <label for="newCoffeeRegion">Region / Coffee Name</label>
-        <input
-          id="newCoffeeRegion"
-          type="text"
-          placeholder="Example: Huila"
-        >
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="newCoffeeProcess">Process</label>
-      <input
-        id="newCoffeeProcess"
-        type="text"
-        placeholder="Example: Washed"
-      >
-    </div>
-
-    <div class="form-group">
-      <label for="newCoffeeTastingNotes">Tasting Notes</label>
-      <input
-        id="newCoffeeTastingNotes"
-        type="text"
-        placeholder="Example: Chocolate / Caramel / Citrus"
-      >
-    </div>
-
-    <div class="grid">
-      <div class="form-group">
-        <label for="newCoffeePrice6">6 oz Price ($)</label>
-        <input id="newCoffeePrice6" type="number" min="0" step="0.01">
-      </div>
-
-      <div class="form-group">
-        <label for="newCoffeePrice12">12 oz Price ($)</label>
-        <input id="newCoffeePrice12" type="number" min="0" step="0.01">
-      </div>
-    </div>
-
-    <div class="grid">
-      <div class="form-group">
-        <label for="newCoffeeGreenWeight">Starting Green Coffee (oz)</label>
-        <input id="newCoffeeGreenWeight" type="number" min="0" step="0.01" value="0">
-      </div>
-
-      <div class="form-group">
-        <label for="newCoffeeYield">Roast Yield (%)</label>
-        <input id="newCoffeeYield" type="number" min="1" max="100" step="0.01" value="75">
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="newCoffeeLowStock">Low Stock Alert (oz)</label>
-      <input id="newCoffeeLowStock" type="number" min="0" step="0.01" value="16">
-    </div>
-
-    <div class="form-group">
-      <label style="display:flex; align-items:center; gap:10px; font-weight:normal;">
-        <input
-          id="newCoffeeActive"
-          type="checkbox"
-          checked
-          style="width:auto;"
-        >
-        Active on Customer Website
-      </label>
-    </div>
-
-    <div id="addCoffeeError" class="low-stock" style="min-height:20px;"></div>
-
-    <div class="modal-actions">
-      <button
-        class="button secondary"
-        onclick="closeAddCoffeeModal()"
-      >
-        Cancel
-      </button>
-
-      <button
-        class="button"
-        id="addCoffeeSaveButton"
-        onclick="saveNewCoffee()"
-      >
-        Add Coffee
-      </button>
-    </div>
+</section>
 
   </div>
-</div>
 
 
-<footer>
-  Colorful Coffee Bean · Admin
-</footer>
 
+  <!-- =========================================================
+       FOOTER
+       ========================================================= -->
 
-<script>
-const SUPABASE_URL =
-  "https://xzvomecpkgztozvnylfz.supabase.co";
+  <footer>
+    10% of the profits from every order will be donated to charity. Thank you for enjoying great coffee while helping us give back.
+     © 2026 Colorful Coffee Bean
 
+  </footer>
 
-const SUPABASE_KEY =
-  "sb_publishable_YZyVqJsWa5j8Hxt8BCqFgg_inirk0Hd";
 
 
-let accessToken = null;
+  <!-- =========================================================
+       JAVASCRIPT
+       ========================================================= -->
 
-let cachedOrders = [];
+  <script>
 
-let cachedItems = [];
+    /* =========================================================
+       SUPABASE CONNECTION
+       Replace ONLY the two values below.
+       Use Project URL + Publishable key.
+       NEVER put a service_role / secret key here.
+       ========================================================= */
 
-let cachedInventory = [];
+    const SUPABASE_URL = "https://xzvomecpkgztozvnylfz.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_YZyVqJsWa5j8Hxt8BCqFgg_inirk0Hd";
 
-let cachedInventoryTransactions = [];
 
-let inventoryModalMode = null;
 
-let inventoryModalProductId = null;
+    /* =========================================================
+       SHOPPING CART
 
+       Every time someone clicks "Add to Order",
+       one bag is added here.
+       ========================================================= */
 
+    let orderItems = [];
 
-// ==========================================
-// PRODUCT NAMES
-// ==========================================
 
-const PRODUCT_NAMES = {
 
-  costarica:
-    "Costa Rican Tarrazu",
+    /* =========================================================
+       COFFEE INFORMATION
 
-  ethiopia:
-    "Ethiopia Yirgacheffe",
+       This tells JavaScript:
+       - Coffee name
+       - 6 oz price
+       - 12 oz price
+       ========================================================= */
 
-  guatemala:
-    "Guatemalan Huehuetenango"
+    const coffeeData = {
 
-};
+      guatemala: {
+        name: "Guatemalan Huehuetenango",
+        price6: 13,
+        price12: 25
+      },
 
 
+      ethiopia: {
+        name: "Ethiopia Yirgacheffe",
+        price6: 15,
+        price12: 28
+      },
 
-// ==========================================
-// HEADERS
-// ==========================================
 
-function headers() {
+      costarica: {
+        name: "Costa Rican Tarrazu",
+        price6: 13,
+        price12: 25
+      }
 
-  return {
+    };
 
-    "apikey":
-      SUPABASE_KEY,
 
-    "Authorization":
-      "Bearer " + accessToken,
 
-    "Content-Type":
-      "application/json"
+    /* =========================================================
+       SEARCH COFFEE
+       ========================================================= */
 
-  };
+    function filterCoffee() {
 
-}
 
-
-
-// ==========================================
-// FORGOT PASSWORD
-// ==========================================
-
-async function forgotPassword(event) {
-
-  event.preventDefault();
-
-  const email =
-    document
-      .getElementById("email")
-      .value
-      .trim();
-
-  const error =
-    document
-      .getElementById("error");
-
-  error.textContent = "";
-  error.style.color = "#9b2c2c";
-
-  if (!email) {
-    error.textContent =
-      "Enter your admin email address first, then click Forgot Password?";
-    return;
-  }
-
-  try {
-
-    const redirectUrl =
-      "https://colorfulcoffeebean.com/reset-password.html";
-
-    const response =
-      await fetch(
-        SUPABASE_URL +
-        "/auth/v1/recover?redirect_to=" +
-        encodeURIComponent(redirectUrl),
-        {
-          method: "POST",
-          headers: {
-            "apikey": SUPABASE_KEY,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            email: email
-          })
-        }
-      );
-
-    const data =
-      await response.json()
-        .catch(() => ({}));
-
-    if (!response.ok) {
-      throw new Error(
-        data.msg ||
-        data.error_description ||
-        data.message ||
-        "Could not send password reset email."
-      );
-    }
-
-    error.style.color = "#3f6b3f";
-    error.textContent =
-      "Password reset email sent. Check your inbox.";
-
-  }
-  catch (e) {
-    error.style.color = "#9b2c2c";
-    error.textContent = e.message;
-  }
-}
-
-
-
-// ==========================================
-// LOGIN
-// ==========================================
-
-async function login() {
-
-  const email =
-    document
-      .getElementById("email")
-      .value
-      .trim();
-
-
-  const password =
-    document
-      .getElementById("password")
-      .value;
-
-
-  const error =
-    document
-      .getElementById("error");
-
-
-  const button =
-    document
-      .getElementById("loginButton");
-
-
-  error.textContent = "";
-  error.style.color = "#9b2c2c";
-
-
-  button.disabled = true;
-
-  button.textContent =
-    "Signing in...";
-
-
-  try {
-
-    const r =
-      await fetch(
-
-        SUPABASE_URL +
-        "/auth/v1/token?grant_type=password",
-
-        {
-
-          method: "POST",
-
-          headers: {
-
-            "apikey":
-              SUPABASE_KEY,
-
-            "Content-Type":
-              "application/json"
-
-          },
-
-          body:
-            JSON.stringify({
-
-              email:
-                email,
-
-              password:
-                password
-
-            })
-
-        }
-
-      );
-
-
-    const data =
-      await r.json();
-
-
-    if (!r.ok) {
-
-      throw new Error(
-        data.error_description ||
-        data.msg ||
-        "Login failed."
-      );
-
-    }
-
-
-    accessToken =
-      data.access_token;
-
-
-    document
-      .getElementById("loginView")
-      .classList
-      .add("hidden");
-
-
-    document
-      .getElementById("dashboardView")
-      .classList
-      .remove("hidden");
-
-
-    await loadOrders();
-
-    await loadInventory();
-
-  }
-
-  catch (e) {
-
-    error.textContent =
-      e.message;
-
-  }
-
-  finally {
-
-    button.disabled = false;
-
-    button.textContent =
-      "Sign In";
-
-  }
-
-}
-
-
-
-// ==========================================
-// LOGOUT
-// ==========================================
-
-function logout() {
-
-  accessToken = null;
-
-  cachedOrders = [];
-
-  cachedItems = [];
-
-  cachedInventory = [];
-
-  cachedInventoryTransactions = [];
-
-
-  document
-    .getElementById("dashboardView")
-    .classList
-    .add("hidden");
-
-
-  document
-    .getElementById("loginView")
-    .classList
-    .remove("hidden");
-
-
-  document
-    .getElementById("orders")
-    .innerHTML = "";
-
-
-  document
-    .getElementById("inventoryList")
-    .innerHTML = "";
-
-
-  document
-    .getElementById("password")
-    .value = "";
-
-}
-
-
-
-// ==========================================
-// LOAD ORDERS
-// ==========================================
-
-async function loadOrders() {
-
-  const loading =
-    document
-      .getElementById("loading");
-
-
-  loading
-    .classList
-    .remove("hidden");
-
-
-  try {
-
-    const ordersResponse =
-      await fetch(
-
-        SUPABASE_URL +
-        "/rest/v1/orders" +
-        "?select=*" +
-        "&order=created_at.desc",
-
-        {
-          headers:
-            headers()
-        }
-
-      );
-
-
-    if (!ordersResponse.ok) {
-
-      const text =
-        await ordersResponse.text();
-
-      throw new Error(
-        text ||
-        "Could not load orders."
-      );
-
-    }
-
-
-    cachedOrders =
-      await ordersResponse.json();
-
-
-
-    const itemsResponse =
-      await fetch(
-
-        SUPABASE_URL +
-        "/rest/v1/order_items" +
-        "?select=*" +
-        "&order=created_at.asc",
-
-        {
-          headers:
-            headers()
-        }
-
-      );
-
-
-    if (!itemsResponse.ok) {
-
-      const text =
-        await itemsResponse.text();
-
-      throw new Error(
-        text ||
-        "Could not load order items."
-      );
-
-    }
-
-
-    cachedItems =
-      await itemsResponse.json();
-
-
-
-    updateWeekStats();
-
-    applyFilters();
-
-  }
-
-  catch (e) {
-
-    document
-      .getElementById("orders")
-      .innerHTML =
-
-        '<div class="card">' +
-
-        '<strong>Error:</strong> ' +
-
-        escapeHtml(e.message) +
-
-        '</div>';
-
-  }
-
-  finally {
-
-    loading
-      .classList
-      .add("hidden");
-
-  }
-
-}
-
-
-
-// ==========================================
-// WEEKLY ORDER STATS
-// ==========================================
-
-function updateWeekStats() {
-
-  const now =
-    new Date();
-
-
-  const start =
-    startOfWeek(now);
-
-
-  const end =
-    new Date(start);
-
-
-  end.setDate(
-    end.getDate() + 7
-  );
-
-
-  const count =
-    cachedOrders
-      .filter(order => {
-
-        const created =
-          new Date(
-            order.created_at
-          );
-
-
-        const status =
-          order.status ||
-          "new";
-
-
-        return (
-          created >= start &&
-          created < end &&
-          status !== "cancelled"
-        );
-
-      })
-      .length;
-
-
-  document
-    .getElementById("weekStats")
-    .textContent =
-
-      "This Week: " +
-      count +
-      " / 3 Orders";
-
-}
-
-
-
-// ==========================================
-// START OF WEEK
-// Monday = first day
-// ==========================================
-
-function startOfWeek(date) {
-
-  const d =
-    new Date(date);
-
-
-  d.setHours(
-    0,
-    0,
-    0,
-    0
-  );
-
-
-  const day =
-    d.getDay();
-
-
-  const diff =
-    day === 0
-      ? -6
-      : 1 - day;
-
-
-  d.setDate(
-    d.getDate() + diff
-  );
-
-
-  return d;
-
-}
-
-
-
-// ==========================================
-// APPLY ORDER FILTERS
-// ==========================================
-
-function applyFilters() {
-
-  const search =
-    document
-      .getElementById("orderSearch")
-      .value
-      .trim()
-      .toLowerCase();
-
-
-  const status =
-    document
-      .getElementById("statusFilter")
-      .value;
-
-
-  const fulfillment =
-    document
-      .getElementById("fulfillmentFilter")
-      .value;
-
-
-  const week =
-    document
-      .getElementById("weekFilter")
-      .value;
-
-
-  const now =
-    new Date();
-
-
-  const thisWeekStart =
-    startOfWeek(now);
-
-
-  const nextWeekStart =
-    new Date(
-      thisWeekStart
-    );
-
-
-  nextWeekStart.setDate(
-    nextWeekStart.getDate() + 7
-  );
-
-
-  const lastWeekStart =
-    new Date(
-      thisWeekStart
-    );
-
-
-  lastWeekStart.setDate(
-    lastWeekStart.getDate() - 7
-  );
-
-
-  const monthStart =
-    new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      1
-    );
-
-
-  const filtered =
-    cachedOrders
-      .filter(order => {
-
-        const created =
-          new Date(
-            order.created_at
-          );
-
-
-        const orderStatus =
-          order.status ||
-          "new";
-
-
-        const orderFulfillment =
-          order.fulfillment ||
-          "";
-
-
-        const searchable =
-          [
-
-            order.order_code,
-
-            order.customer_name,
-
-            order.email,
-
-            order.phone
-
-          ]
-
-          .filter(Boolean)
-
-          .join(" ")
-
+      const input =
+        document
+          .getElementById("search")
+          .value
           .toLowerCase();
 
 
-
-        if (
-          search &&
-          !searchable.includes(search)
-        ) {
-
-          return false;
-
-        }
+      const cards =
+        document
+          .querySelectorAll(".coffee-card");
 
 
-
-        if (
-          status !== "all" &&
-          orderStatus !== status
-        ) {
-
-          return false;
-
-        }
+      cards.forEach(function(card) {
 
 
+        const text =
+          card
+            .innerText
+            .toLowerCase();
 
-        if (
-          fulfillment !== "all" &&
-          orderFulfillment !== fulfillment
-        ) {
 
-          return false;
+        if (text.includes(input)) {
+
+          card.style.display = "flex";
 
         }
 
+        else {
 
-
-        if (week === "this_week") {
-
-          if (
-            created < thisWeekStart ||
-            created >= nextWeekStart
-          ) {
-
-            return false;
-
-          }
+          card.style.display = "none";
 
         }
 
-
-
-        if (week === "last_week") {
-
-          if (
-            created < lastWeekStart ||
-            created >= thisWeekStart
-          ) {
-
-            return false;
-
-          }
-
-        }
-
-
-
-        if (week === "this_month") {
-
-          if (
-            created < monthStart
-          ) {
-
-            return false;
-
-          }
-
-        }
-
-
-        return true;
 
       });
 
 
-  renderOrders(
-    filtered
-  );
+    }
 
-}
 
 
+    /* =========================================================
+       ADD COFFEE TO ORDER
+       ========================================================= */
 
-// ==========================================
-// RENDER ORDERS
-// ==========================================
+    function addCoffeeToOrder(coffeeId) {
 
-function renderOrders(orders) {
 
-  const box =
-    document
-      .getElementById("orders");
+      /* -----------------------------------------
+         CHECK IF CART IS ALREADY FULL
+         ----------------------------------------- */
 
+      if (orderItems.length >= 3) {
 
-  if (!orders.length) {
 
-    box.innerHTML =
-
-      '<div class="card">' +
-      'No orders found.' +
-      '</div>';
-
-
-    return;
-
-  }
-
-
-
-  box.innerHTML =
-    orders
-      .map(order => {
-
-        const code =
-          escapeHtml(
-            order.order_code ||
-            ""
-          );
-
-
-        const orderStatus =
-          order.status ||
-          "new";
-
-
-        const items =
-          cachedItems
-            .filter(item =>
-              item.order_id ===
-              order.id
-            );
-
-
-        const itemHtml =
-          items.length
-
-            ? items
-                .map(item =>
-
-                  '<div class="item">' +
-
-                    '<strong>' +
-                    escapeHtml(
-                      item.coffee_name ||
-                      ""
-                    ) +
-                    '</strong>' +
-
-                    '<br>' +
-
-                    escapeHtml(
-                      item.size ||
-                      ""
-                    ) +
-
-                    ' · ' +
-
-                    escapeHtml(
-                      item.roast_level ||
-                      ""
-                    ) +
-
-                    '<br>' +
-
-                    '<span class="money">$' +
-                    Number(
-                      item.unit_price || 0
-                    ).toFixed(2) +
-                    '</span>' +
-
-                  '</div>'
-
-                )
-                .join("")
-
-            : '<div class="item">No items found.</div>';
-
-
-
-        const options =
-          [
-
-            "new",
-
-            "roasting",
-
-            "quality_check",
-
-            "ready",
-
-            "shipped",
-
-            "completed",
-
-            "cancelled"
-
-          ]
-
-          .map(value => {
-
-            const label =
-              value
-                .replaceAll(
-                  "_",
-                  " "
-                )
-                .replace(
-                  /\b\w/g,
-                  letter =>
-                    letter.toUpperCase()
-                );
-
-
-            return (
-
-              '<option value="' +
-              value +
-              '"' +
-
-              (
-                orderStatus === value
-                  ? " selected"
-                  : ""
-              ) +
-
-              '>' +
-
-              label +
-
-              '</option>'
-
-            );
-
-          })
-
-          .join("");
-
-
-
-        const fulfillment =
-          order.fulfillment ===
-          "shipping"
-
-            ? "Shipping"
-
-            : "Local Pickup";
-
-
-
-        let fulfillmentDetails =
-          "";
-
-
-        if (
-          order.fulfillment ===
-          "shipping"
-        ) {
-
-          fulfillmentDetails =
-
-            escapeHtml(
-              order.address_line1 ||
-              ""
-            ) +
-
-            "<br>" +
-
-            escapeHtml(
-              order.address_line2 ||
-              ""
-            ) +
-
-            (
-              order.address_line2
-                ? "<br>"
-                : ""
-            ) +
-
-            escapeHtml(
-              order.city ||
-              ""
-            ) +
-
-            ", " +
-
-            escapeHtml(
-              order.state ||
-              ""
-            ) +
-
-            " " +
-
-            escapeHtml(
-              order.postal_code ||
-              ""
-            );
-
-        }
-
-        else {
-
-          fulfillmentDetails =
-            escapeHtml(
-              order.pickup_location ||
-              ""
-            );
-
-        }
-
-
-
-        const completedClass =
-          orderStatus === "completed"
-            ? " completed-order"
-            : "";
-
-
-
-        return (
-
-          '<div class="card order' +
-          completedClass +
-          '">' +
-
-
-            '<div class="order-head">' +
-
-
-              '<div>' +
-
-                '<div class="order-code">' +
-
-                  'Order #' +
-                  code +
-
-                '</div>' +
-
-
-                '<div class="muted">' +
-
-                  new Date(
-                    order.created_at
-                  ).toLocaleString() +
-
-                '</div>' +
-
-              '</div>' +
-
-
-              '<div>' +
-
-                '<strong>' +
-                escapeHtml(
-                  order.customer_name ||
-                  ""
-                ) +
-                '</strong>' +
-
-                '<br>' +
-
-                escapeHtml(
-                  order.email ||
-                  ""
-                ) +
-
-                '<br>' +
-
-                escapeHtml(
-                  order.phone ||
-                  ""
-                ) +
-
-              '</div>' +
-
-
-            '</div>' +
-
-
-
-            '<div class="grid">' +
-
-
-              '<div>' +
-
-                '<strong>Fulfillment</strong>' +
-
-                '<br>' +
-
-                fulfillment +
-
-                '<br>' +
-
-                '<span class="muted">' +
-                fulfillmentDetails +
-                '</span>' +
-
-              '</div>' +
-
-
-
-              '<div>' +
-
-                '<strong>Subtotal</strong>' +
-
-                '<br>' +
-
-                '$' +
-                Number(
-                  order.subtotal || 0
-                ).toFixed(2) +
-
-              '</div>' +
-
-
-
-              '<div>' +
-
-                '<strong>Shipping</strong>' +
-
-                '<br>' +
-
-                '$' +
-                Number(
-                  order.shipping_cost || 0
-                ).toFixed(2) +
-
-              '</div>' +
-
-
-
-              '<div>' +
-
-                '<strong>Total</strong>' +
-
-                '<br>' +
-
-                '<span class="money">$' +
-
-                Number(
-                  order.total || 0
-                ).toFixed(2) +
-
-                '</span>' +
-
-              '</div>' +
-
-
-            '</div>' +
-
-
-
-            '<div style="margin-top:18px;">' +
-
-              '<strong>Items</strong>' +
-
-              itemHtml +
-
-            '</div>' +
-
-
-
-            '<div class="status-row">' +
-
-              '<strong>Status:</strong>' +
-
-              '<select id="status-' +
-              escapeHtml(
-                order.id
-              ) +
-              '">' +
-
-                options +
-
-              '</select>' +
-
-              '<button class="button" ' +
-
-                'onclick="updateStatus(\'' +
-                escapeHtml(
-                  order.id
-                ) +
-                '\')">' +
-
-                'Save Status' +
-
-              '</button>' +
-
-            '</div>' +
-
-
-
-            '<div class="delete-area">' +
-
-              '<button ' +
-                'class="button delete-button" ' +
-                'onclick="showDeleteConfirm(\'' +
-                escapeHtml(
-                  order.id
-                ) +
-                '\')">' +
-
-                'Delete' +
-
-              '</button>' +
-
-            '</div>' +
-
-
-
-            '<div ' +
-
-              'id="delete-confirm-' +
-              escapeHtml(
-                order.id
-              ) +
-              '" ' +
-
-              'class="confirm-box hidden">' +
-
-
-              '<strong>' +
-                'Delete this order?' +
-              '</strong>' +
-
-              '<br>' +
-
-              '<span class="muted">' +
-
-                'This permanently deletes Order #' +
-                code +
-                ' and its order items from Supabase.' +
-
-              '</span>' +
-
-
-              '<div class="confirm-actions">' +
-
-                '<button ' +
-                  'class="button secondary" ' +
-                  'onclick="hideDeleteConfirm(\'' +
-                  escapeHtml(
-                    order.id
-                  ) +
-                  '\')">' +
-
-                  'No' +
-
-                '</button>' +
-
-
-                '<button ' +
-                  'class="button delete-button" ' +
-                  'onclick="deleteOrder(\'' +
-                  escapeHtml(
-                    order.id
-                  ) +
-                  '\')">' +
-
-                  'Yes, Delete' +
-
-                '</button>' +
-
-              '</div>' +
-
-
-            '</div>' +
-
-
-          '</div>'
-
+        alert(
+          "Your order is full!\n\n" +
+          "Maximum order is 3 bags.\n" +
+          "Please remove an item before adding another coffee."
         );
 
-      })
 
-      .join("");
+        return;
 
-}
+      }
 
 
 
-// ==========================================
-// UPDATE ORDER STATUS
-// ==========================================
+      /* -----------------------------------------
+         GET COFFEE INFORMATION
+         ----------------------------------------- */
 
-async function updateStatus(
-  orderId
-) {
+      const coffee =
+        coffeeData[coffeeId];
 
-  const select =
-    document
-      .getElementById(
-        "status-" +
-        orderId
-      );
 
 
-  const newStatus =
-    select.value;
+      /* -----------------------------------------
+         FIND SELECTED SIZE
+         ----------------------------------------- */
 
-
-  try {
-
-    const response =
-      await fetch(
-
-        SUPABASE_URL +
-        "/rest/v1/orders" +
-        "?id=eq." +
-        encodeURIComponent(
-          orderId
-        ),
-
-        {
-
-          method:
-            "PATCH",
-
-          headers: {
-            ...headers(),
-
-            "Prefer":
-              "return=minimal"
-          },
-
-          body:
-            JSON.stringify({
-
-              status:
-                newStatus
-
-            })
-
-        }
-
-      );
-
-
-    if (!response.ok) {
-
-      const message =
-        await response.text();
-
-
-      throw new Error(
-        message ||
-        "Could not update status."
-      );
-
-    }
-
-
-    await loadOrders();
-
-
-    alert(
-      "Order status updated."
-    );
-
-  }
-
-  catch (e) {
-
-    alert(
-      "Status could not be updated.\n\n" +
-      e.message
-    );
-
-  }
-
-}
-
-
-
-// ==========================================
-// ADMIN TABS
-// ==========================================
-
-function showTab(tab) {
-
-  const inventoryMode =
-    tab === "inventory";
-
-
-  document
-    .getElementById("ordersTab")
-    .classList
-    .toggle(
-      "hidden",
-      inventoryMode
-    );
-
-
-  document
-    .getElementById("inventoryTab")
-    .classList
-    .toggle(
-      "hidden",
-      !inventoryMode
-    );
-
-
-  document
-    .getElementById("ordersTabButton")
-    .classList
-    .toggle(
-      "active",
-      !inventoryMode
-    );
-
-
-  document
-    .getElementById("inventoryTabButton")
-    .classList
-    .toggle(
-      "active",
-      inventoryMode
-    );
-
-
-  if (inventoryMode) {
-
-    loadInventory();
-
-  }
-
-}
-
-
-
-// ==========================================
-// DELETE CONFIRMATION
-// ==========================================
-
-function showDeleteConfirm(
-  orderId
-) {
-
-  document
-    .getElementById(
-      "delete-confirm-" +
-      orderId
-    )
-    .classList
-    .remove("hidden");
-
-}
-
-
-
-function hideDeleteConfirm(
-  orderId
-) {
-
-  document
-    .getElementById(
-      "delete-confirm-" +
-      orderId
-    )
-    .classList
-    .add("hidden");
-
-}
-
-
-
-// ==========================================
-// DELETE ORDER
-// ==========================================
-
-async function deleteOrder(
-  orderId
-) {
-
-  try {
-
-    const response =
-      await fetch(
-
-        SUPABASE_URL +
-        "/rest/v1/rpc/admin_delete_order",
-
-        {
-
-          method:
-            "POST",
-
-          headers:
-            headers(),
-
-          body:
-            JSON.stringify({
-
-              p_order_id:
-                orderId
-
-            })
-
-        }
-
-      );
-
-
-    if (!response.ok) {
-
-      const message =
-        await response.text();
-
-
-      throw new Error(
-        message ||
-        "Could not delete order."
-      );
-
-    }
-
-
-    await loadOrders();
-
-
-    alert(
-      "Order deleted."
-    );
-
-  }
-
-  catch (e) {
-
-    alert(
-
-      "Order could not be deleted.\n\n" +
-      e.message
-
-    );
-
-  }
-
-}
-
-  // ==========================================
-// LOAD INVENTORY
-// ==========================================
-
-async function loadInventory() {
-
-  const loading =
-    document
-      .getElementById("inventoryLoading");
-
-
-  loading
-    .classList
-    .remove("hidden");
-
-
-  try {
-
-    // --------------------------------------
-    // LOAD PRODUCT NAMES
-    // --------------------------------------
-
-    const productsResponse =
-      await fetch(
-        SUPABASE_URL +
-        "/rest/v1/products?select=id,name&order=name.asc",
-        {
-          headers:
-            headers()
-        }
-      );
-
-    if (!productsResponse.ok) {
-      const message =
-        await productsResponse.text();
-
-      throw new Error(
-        message ||
-        "Could not load products."
-      );
-    }
-
-    const products =
-      await productsResponse.json();
-
-    products.forEach(product => {
-      PRODUCT_NAMES[product.id] =
-        product.name;
-    });
-
-
-    // --------------------------------------
-    // LOAD CURRENT INVENTORY
-    // --------------------------------------
-
-    const inventoryResponse =
-      await fetch(
-
-        SUPABASE_URL +
-        "/rest/v1/inventory" +
-        "?select=*" +
-        "&order=product_id.asc",
-
-        {
-          headers:
-            headers()
-        }
-
-      );
-
-
-    if (!inventoryResponse.ok) {
-
-      const message =
-        await inventoryResponse.text();
-
-
-      throw new Error(
-        message ||
-        "Could not load inventory."
-      );
-
-    }
-
-
-
-    // --------------------------------------
-    // LOAD INVENTORY HISTORY
-    // --------------------------------------
-
-    const historyResponse =
-      await fetch(
-
-        SUPABASE_URL +
-        "/rest/v1/inventory_transactions" +
-        "?select=*" +
-        "&order=created_at.desc" +
-        "&limit=100",
-
-        {
-          headers:
-            headers()
-        }
-
-      );
-
-
-    if (!historyResponse.ok) {
-
-      const message =
-        await historyResponse.text();
-
-
-      throw new Error(
-        message ||
-        "Could not load inventory history."
-      );
-
-    }
-
-
-
-    cachedInventory =
-      await inventoryResponse.json();
-
-
-    cachedInventoryTransactions =
-      await historyResponse.json();
-
-
-
-    renderInventory();
-
-  }
-
-  catch (e) {
-
-    document
-      .getElementById("inventoryList")
-      .innerHTML =
-
-        '<div class="card">' +
-
-          '<strong>Error:</strong> ' +
-
-          escapeHtml(
-            e.message
-          ) +
-
-        '</div>';
-
-  }
-
-  finally {
-
-    loading
-      .classList
-      .add("hidden");
-
-  }
-
-}
-
-
-
-// ==========================================
-// RENDER INVENTORY
-// ==========================================
-
-function renderInventory() {
-
-  const box =
-    document
-      .getElementById("inventoryList");
-
-
-  if (!cachedInventory.length) {
-
-    box.innerHTML =
-
-      '<div class="card">' +
-        'No inventory records found.' +
-      '</div>';
-
-
-    return;
-
-  }
-
-
-
-  box.innerHTML =
-    cachedInventory
-      .map(inventory => {
-
-
-        // ----------------------------------
-        // CURRENT GREEN COFFEE
-        // ----------------------------------
-
-        const green =
-          Number(
-            inventory.green_weight_oz ||
-            0
-          );
-
-
-
-        // ----------------------------------
-        // ROAST YIELD
-        // ----------------------------------
-
-        const yieldPercent =
-          Number(
-            inventory.roast_yield_percent ||
-            0
-          );
-
-
-
-        // ----------------------------------
-        // ESTIMATED ROASTED COFFEE
-        // ----------------------------------
-
-        const roasted =
-          green *
-          yieldPercent /
-          100;
-
-
-
-        // ----------------------------------
-        // POSSIBLE BAGS
-        // ----------------------------------
-
-        const bags6 =
-          Math.floor(
-            roasted / 6
-          );
-
-
-        const bags12 =
-          Math.floor(
-            roasted / 12
-          );
-
-
-
-        // ----------------------------------
-        // LOW STOCK
-        // ----------------------------------
-
-        const threshold =
-          Number(
-            inventory.low_stock_threshold_oz ||
-            0
-          );
-
-
-        const isLow =
-          green <= threshold;
-
-
-
-        // ----------------------------------
-        // COFFEE NAME
-        // ----------------------------------
-
-        const name =
-          PRODUCT_NAMES[
-            inventory.product_id
-          ] ||
-          inventory.product_id;
-
-
-
-        // ----------------------------------
-        // INVENTORY HISTORY
-        // Only show latest 8 for this coffee
-        // ----------------------------------
-
-        const history =
-          cachedInventoryTransactions
-
-            .filter(transaction =>
-              transaction.product_id ===
-              inventory.product_id
-            )
-
-            .slice(
-              0,
-              8
-            );
-
-
-
-        let historyHtml;
-
-
-
-        if (history.length) {
-
-          historyHtml =
-            history
-              .map(transaction => {
-
-
-                const change =
-                  Number(
-                    transaction.weight_change_oz ||
-                    0
-                  );
-
-
-                const sign =
-                  change > 0
-                    ? "+"
-                    : "";
-
-
-                const type =
-                  String(
-                    transaction.transaction_type ||
-                    ""
-                  )
-                  .replaceAll(
-                    "_",
-                    " "
-                  );
-
-
-                return (
-
-                  '<div class="history-row">' +
-
-
-                    '<div>' +
-
-                      new Date(
-                        transaction.created_at
-                      ).toLocaleString() +
-
-                    '</div>' +
-
-
-                    '<div>' +
-
-                      '<strong>' +
-
-                        sign +
-
-                        change.toFixed(2) +
-
-                        ' oz' +
-
-                      '</strong>' +
-
-                    '</div>' +
-
-
-                    '<div>' +
-
-                      escapeHtml(
-                        type
-                      ) +
-
-                      (
-                        transaction.note
-
-                          ? ' · ' +
-                            escapeHtml(
-                              transaction.note
-                            )
-
-                          : ''
-                      ) +
-
-                    '</div>' +
-
-
-                  '</div>'
-
-                );
-
-              })
-
-              .join("");
-
-        }
-
-        else {
-
-          historyHtml =
-
-            '<div class="muted">' +
-              'No inventory history yet.' +
-            '</div>';
-
-        }
-
-
-
-        // ----------------------------------
-        // INVENTORY CARD
-        // ----------------------------------
-
-        return (
-
-          '<div class="card inventory-card">' +
-
-
-            '<div class="inventory-head">' +
-
-
-              '<div>' +
-
-                '<div class="inventory-title">' +
-
-                  escapeHtml(
-                    name
-                  ) +
-
-                '</div>' +
-
-
-                '<div class="muted">' +
-
-                  'Product ID: ' +
-
-                  escapeHtml(
-                    inventory.product_id
-                  ) +
-
-                '</div>' +
-
-              '</div>' +
-
-
-
-              '<div class="' +
-
-                (
-                  isLow
-                    ? 'low-stock'
-                    : 'stock-ok'
-                ) +
-
-              '">' +
-
-                (
-                  isLow
-                    ? '⚠ Low Stock'
-                    : 'In Stock'
-                ) +
-
-              '</div>' +
-
-
-            '</div>' +
-
-
-
-            '<div class="inventory-stats">' +
-
-
-              '<div class="inventory-stat">' +
-
-                'Green Coffee' +
-
-                '<strong>' +
-
-                  green.toFixed(2) +
-
-                  ' oz' +
-
-                '</strong>' +
-
-              '</div>' +
-
-
-
-              '<div class="inventory-stat">' +
-
-                'Roast Yield' +
-
-                '<strong>' +
-
-                  yieldPercent.toFixed(2) +
-
-                  '%' +
-
-                '</strong>' +
-
-              '</div>' +
-
-
-
-              '<div class="inventory-stat">' +
-
-                'Estimated Roasted' +
-
-                '<strong>' +
-
-                  roasted.toFixed(2) +
-
-                  ' oz' +
-
-                '</strong>' +
-
-              '</div>' +
-
-
-
-              '<div class="inventory-stat">' +
-
-                '6 oz Bags Possible' +
-
-                '<strong>' +
-
-                  bags6 +
-
-                '</strong>' +
-
-              '</div>' +
-
-
-
-              '<div class="inventory-stat">' +
-
-                '12 oz Bags Possible' +
-
-                '<strong>' +
-
-                  bags12 +
-
-                '</strong>' +
-
-              '</div>' +
-
-
-
-              '<div class="inventory-stat">' +
-
-                'Low Stock At' +
-
-                '<strong>' +
-
-                  threshold.toFixed(2) +
-
-                  ' oz' +
-
-                '</strong>' +
-
-              '</div>' +
-
-
-            '</div>' +
-
-
-
-            '<div class="inventory-actions">' +
-
-
-              '<button ' +
-
-                'class="button" ' +
-
-                'onclick="openAddInventory(\'' +
-
-                escapeHtml(
-                  inventory.product_id
-                ) +
-
-                '\')">' +
-
-                '+ Add Stock' +
-
-              '</button>' +
-
-
-
-              '<button ' +
-
-                'class="button secondary" ' +
-
-                'onclick="openAdjustInventory(\'' +
-
-                escapeHtml(
-                  inventory.product_id
-                ) +
-
-                '\',' +
-
-                green +
-
-                ')">' +
-
-                'Adjust Inventory' +
-
-              '</button>' +
-
-
-            '</div>' +
-
-
-
-            '<div class="history">' +
-
-              '<strong>' +
-                'Recent Inventory History' +
-              '</strong>' +
-
-              historyHtml +
-
-            '</div>' +
-
-
-          '</div>'
-
+      const selectedSize =
+        document.querySelector(
+          'input[name="' +
+          coffeeId +
+          '-size"]:checked'
         );
 
-      })
 
-      .join("");
+      if (!selectedSize) {
 
-}
+        alert(
+          "Please select a coffee size."
+        );
 
+        return;
 
+      }
 
-// ==========================================
-// OPEN ADD INVENTORY WINDOW
-// ==========================================
 
-function openAddInventory(
-  productId
-) {
+      const size =
+        selectedSize.value;
 
-  inventoryModalMode =
-    "add";
 
 
-  inventoryModalProductId =
-    productId;
+      /* -----------------------------------------
+         FIND ROAST LEVEL
 
+         The roast dropdown depends on which
+         size radio button was selected.
+         ----------------------------------------- */
 
-
-  document
-    .getElementById(
-      "inventoryModalTitle"
-    )
-    .textContent =
-      "Add Green Coffee";
-
-
-
-  document
-    .getElementById(
-      "inventoryModalCoffee"
-    )
-    .textContent =
-
-      PRODUCT_NAMES[
-        productId
-      ] ||
-      productId;
-
-
-
-  document
-    .getElementById(
-      "inventoryAmount"
-    )
-    .value = "";
-
-
-
-  document
-    .getElementById(
-      "inventoryAmount"
-    )
-    .min = "0.01";
-
-
-
-  document
-    .getElementById(
-      "inventoryUnit"
-    )
-    .value = "oz";
-
-
-
-  document
-    .getElementById(
-      "inventoryUnitGroup"
-    )
-    .classList
-    .remove("hidden");
-
-
-
-  document
-    .getElementById(
-      "inventoryNote"
-    )
-    .value = "";
-
-
-
-  document
-    .getElementById(
-      "inventorySaveButton"
-    )
-    .textContent =
-      "Add Inventory";
-
-
-
-  document
-    .getElementById(
-      "inventoryModal"
-    )
-    .classList
-    .remove("hidden");
-
-}
-
-
-
-// ==========================================
-// OPEN ADJUST INVENTORY WINDOW
-// ==========================================
-
-function openAdjustInventory(
-  productId,
-  currentWeight
-) {
-
-  inventoryModalMode =
-    "adjust";
-
-
-  inventoryModalProductId =
-    productId;
-
-
-
-  document
-    .getElementById(
-      "inventoryModalTitle"
-    )
-    .textContent =
-      "Adjust Inventory";
-
-
-
-  document
-    .getElementById(
-      "inventoryModalCoffee"
-    )
-    .textContent =
-
-      (
-        PRODUCT_NAMES[
-          productId
-        ] ||
-        productId
-      ) +
-
-      " · Enter actual current green weight in oz.";
-
-
-
-  document
-    .getElementById(
-      "inventoryAmount"
-    )
-    .value =
-
-      Number(
-        currentWeight
-      ).toFixed(2);
-
-
-
-  document
-    .getElementById(
-      "inventoryAmount"
-    )
-    .min = "0";
-
-
-
-  document
-    .getElementById(
-      "inventoryUnitGroup"
-    )
-    .classList
-    .add("hidden");
-
-
-
-  document
-    .getElementById(
-      "inventoryNote"
-    )
-    .value = "";
-
-
-
-  document
-    .getElementById(
-      "inventorySaveButton"
-    )
-    .textContent =
-      "Save Adjustment";
-
-
-
-  document
-    .getElementById(
-      "inventoryModal"
-    )
-    .classList
-    .remove("hidden");
-
-}
-
-
-
-// ==========================================
-// CLOSE INVENTORY WINDOW
-// ==========================================
-
-function closeInventoryModal() {
-
-  document
-    .getElementById(
-      "inventoryModal"
-    )
-    .classList
-    .add("hidden");
-
-
-  inventoryModalMode =
-    null;
-
-
-  inventoryModalProductId =
-    null;
-
-}
-
-
-
-// ==========================================
-// SAVE INVENTORY CHANGE
-// ==========================================
-
-async function saveInventoryChange() {
-
-  const amount =
-    Number(
-
-      document
-        .getElementById(
-          "inventoryAmount"
-        )
-        .value
-
-    );
-
-
-  const note =
-    document
-      .getElementById(
-        "inventoryNote"
-      )
-      .value
-      .trim();
-
-
-  const button =
-    document
-      .getElementById(
-        "inventorySaveButton"
-      );
-
-
-
-  // ----------------------------------------
-  // VALIDATION
-  // ----------------------------------------
-
-  if (
-    !Number.isFinite(
-      amount
-    )
-  ) {
-
-    alert(
-      "Enter a valid amount."
-    );
-
-    return;
-
-  }
-
-
-
-  if (
-    inventoryModalMode === "add" &&
-    amount <= 0
-  ) {
-
-    alert(
-      "Amount must be greater than 0."
-    );
-
-    return;
-
-  }
-
-
-
-  if (
-    inventoryModalMode === "adjust" &&
-    amount < 0
-  ) {
-
-    alert(
-      "Inventory cannot be negative."
-    );
-
-    return;
-
-  }
-
-
-
-  button.disabled =
-    true;
-
-
-  const oldText =
-    button.textContent;
-
-
-  button.textContent =
-    "Saving...";
-
-
-
-  try {
-
-    let endpoint;
-
-    let body;
-
-
-
-    // --------------------------------------
-    // ADD NEW STOCK
-    // --------------------------------------
-
-    if (
-      inventoryModalMode ===
-      "add"
-    ) {
-
-      const unit =
+      const roast =
         document
           .getElementById(
-            "inventoryUnit"
+            coffeeId +
+            "-roast-" +
+            size
           )
           .value;
 
 
 
-      // 1 lb = 16 oz
+      /* -----------------------------------------
+         FIND PRICE
+         ----------------------------------------- */
 
-      const weightOz =
-        unit === "lb"
+      let price;
 
-          ? amount * 16
 
-          : amount;
+      if (size === "6") {
 
+        price =
+          coffee.price6;
 
-
-      endpoint =
-        "/rest/v1/rpc/add_inventory";
-
-
-
-      body = {
-
-        p_product_id:
-          inventoryModalProductId,
-
-        p_weight_oz:
-          weightOz,
-
-        p_note:
-          note || null
-
-      };
-
-    }
-
-
-
-    // --------------------------------------
-    // ADJUST CURRENT STOCK
-    // --------------------------------------
-
-    else {
-
-      endpoint =
-        "/rest/v1/rpc/adjust_inventory";
-
-
-
-      body = {
-
-        p_product_id:
-          inventoryModalProductId,
-
-        p_new_weight_oz:
-          amount,
-
-        p_note:
-          note || null
-
-      };
-
-    }
-
-
-
-    // --------------------------------------
-    // SEND TO SUPABASE
-    // --------------------------------------
-
-    const response =
-      await fetch(
-
-        SUPABASE_URL +
-        endpoint,
-
-        {
-
-          method:
-            "POST",
-
-          headers:
-            headers(),
-
-          body:
-            JSON.stringify(
-              body
-            )
-
-        }
-
-      );
-
-
-
-    if (!response.ok) {
-
-      const message =
-        await response.text();
-
-
-      throw new Error(
-
-        message ||
-        "Inventory could not be updated."
-
-      );
-
-    }
-
-
-
-    // --------------------------------------
-    // SUCCESS
-    // --------------------------------------
-
-    closeInventoryModal();
-
-
-    await loadInventory();
-
-
-    alert(
-      "Inventory updated."
-    );
-
-  }
-
-  catch (e) {
-
-    alert(
-
-      "Inventory could not be updated.\n\n" +
-      e.message
-
-    );
-
-  }
-
-  finally {
-
-    button.disabled =
-      false;
-
-
-    button.textContent =
-      oldText;
-
-  }
-
-}
-
-
-
-// ==========================================
-// ADD NEW COFFEE
-// ==========================================
-
-function openAddCoffeeModal() {
-
-  document
-    .getElementById("newCoffeeName")
-    .value = "";
-
-  document
-    .getElementById("newCoffeeProductId")
-    .value = "";
-
-  document
-    .getElementById("newCoffeeOrigin")
-    .value = "";
-
-  document
-    .getElementById("newCoffeeRegion")
-    .value = "";
-
-  document
-    .getElementById("newCoffeeProcess")
-    .value = "";
-
-  document
-    .getElementById("newCoffeeTastingNotes")
-    .value = "";
-
-  document
-    .getElementById("newCoffeePrice6")
-    .value = "";
-
-  document
-    .getElementById("newCoffeePrice12")
-    .value = "";
-
-  document
-    .getElementById("newCoffeeGreenWeight")
-    .value = "0";
-
-  document
-    .getElementById("newCoffeeYield")
-    .value = "75";
-
-  document
-    .getElementById("newCoffeeLowStock")
-    .value = "16";
-
-  document
-    .getElementById("newCoffeeActive")
-    .checked = true;
-
-  document
-    .getElementById("addCoffeeError")
-    .textContent = "";
-
-  document
-    .getElementById("addCoffeeModal")
-    .classList
-    .remove("hidden");
-
-  document
-    .getElementById("newCoffeeName")
-    .focus();
-
-}
-
-
-function closeAddCoffeeModal() {
-
-  document
-    .getElementById("addCoffeeModal")
-    .classList
-    .add("hidden");
-
-}
-
-
-function makeProductId(name) {
-
-  return String(name || "")
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-
-}
-
-
-function updateNewCoffeeProductId() {
-
-  const name =
-    document
-      .getElementById("newCoffeeName")
-      .value;
-
-  document
-    .getElementById("newCoffeeProductId")
-    .value =
-      makeProductId(name);
-
-}
-
-
-async function saveNewCoffee() {
-
-  const name =
-    document
-      .getElementById("newCoffeeName")
-      .value
-      .trim();
-
-  const productId =
-    document
-      .getElementById("newCoffeeProductId")
-      .value
-      .trim()
-      .toLowerCase();
-
-  const origin =
-    document
-      .getElementById("newCoffeeOrigin")
-      .value
-      .trim();
-
-  const region =
-    document
-      .getElementById("newCoffeeRegion")
-      .value
-      .trim();
-
-  const process =
-    document
-      .getElementById("newCoffeeProcess")
-      .value
-      .trim();
-
-  const tastingNotes =
-    document
-      .getElementById("newCoffeeTastingNotes")
-      .value
-      .trim();
-
-  const price6 =
-    Number(
-      document
-        .getElementById("newCoffeePrice6")
-        .value
-    );
-
-  const price12 =
-    Number(
-      document
-        .getElementById("newCoffeePrice12")
-        .value
-    );
-
-  const greenWeight =
-    Number(
-      document
-        .getElementById("newCoffeeGreenWeight")
-        .value
-    );
-
-  const yieldPercent =
-    Number(
-      document
-        .getElementById("newCoffeeYield")
-        .value
-    );
-
-  const lowStock =
-    Number(
-      document
-        .getElementById("newCoffeeLowStock")
-        .value
-    );
-
-  const active =
-    document
-      .getElementById("newCoffeeActive")
-      .checked;
-
-  const errorBox =
-    document
-      .getElementById("addCoffeeError");
-
-  const button =
-    document
-      .getElementById("addCoffeeSaveButton");
-
-  errorBox.textContent = "";
-
-
-  if (!name) {
-    errorBox.textContent =
-      "Enter a coffee name.";
-    return;
-  }
-
-  if (
-    !productId ||
-    !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(productId)
-  ) {
-    errorBox.textContent =
-      "Product ID must use lowercase letters, numbers, and hyphens only.";
-    return;
-  }
-
-  if (!origin || !region || !process || !tastingNotes) {
-    errorBox.textContent =
-      "Enter Origin, Region, Process, and Tasting Notes.";
-    return;
-  }
-
-  if (
-    !Number.isFinite(price6) ||
-    price6 < 0 ||
-    !Number.isFinite(price12) ||
-    price12 < 0
-  ) {
-    errorBox.textContent =
-      "Enter valid 6 oz and 12 oz prices.";
-    return;
-  }
-
-  if (
-    !Number.isFinite(greenWeight) ||
-    greenWeight < 0
-  ) {
-    errorBox.textContent =
-      "Starting green coffee cannot be negative.";
-    return;
-  }
-
-  if (
-    !Number.isFinite(yieldPercent) ||
-    yieldPercent <= 0 ||
-    yieldPercent > 100
-  ) {
-    errorBox.textContent =
-      "Roast yield must be greater than 0 and no more than 100.";
-    return;
-  }
-
-  if (
-    !Number.isFinite(lowStock) ||
-    lowStock < 0
-  ) {
-    errorBox.textContent =
-      "Low stock alert cannot be negative.";
-    return;
-  }
-
-
-  button.disabled = true;
-  button.textContent = "Adding...";
-
-  let productCreated = false;
-
-  try {
-
-    const productResponse =
-      await fetch(
-        SUPABASE_URL +
-        "/rest/v1/products",
-        {
-          method: "POST",
-          headers: {
-            ...headers(),
-            "Prefer": "return=minimal"
-          },
-          body:
-            JSON.stringify({
-              id: productId,
-              name: name,
-              origin: origin,
-              region: region,
-              process: process,
-              tasting_notes: tastingNotes,
-              price_6oz: price6,
-              price_12oz: price12,
-              active: active
-            })
-        }
-      );
-
-    if (!productResponse.ok) {
-      const message =
-        await productResponse.text();
-
-      throw new Error(
-        message ||
-        "Could not create product."
-      );
-    }
-
-    productCreated = true;
-
-
-    const inventoryResponse =
-      await fetch(
-        SUPABASE_URL +
-        "/rest/v1/inventory",
-        {
-          method: "POST",
-          headers: {
-            ...headers(),
-            "Prefer": "return=minimal"
-          },
-          body:
-            JSON.stringify({
-              product_id: productId,
-              green_weight_oz: greenWeight,
-              roast_yield_percent: yieldPercent,
-              low_stock_threshold_oz: lowStock
-            })
-        }
-      );
-
-    if (!inventoryResponse.ok) {
-
-      const inventoryMessage =
-        await inventoryResponse.text();
-
-      // Best-effort cleanup so a failed inventory insert
-      // does not leave a half-created product.
-      if (productCreated) {
-        await fetch(
-          SUPABASE_URL +
-          "/rest/v1/products?id=eq." +
-          encodeURIComponent(productId),
-          {
-            method: "DELETE",
-            headers: headers()
-          }
-        ).catch(() => {});
       }
 
-      throw new Error(
-        inventoryMessage ||
-        "Product was created, but inventory could not be created."
+      else {
+
+        price =
+          coffee.price12;
+
+      }
+
+
+
+      /* -----------------------------------------
+         CREATE ORDER ITEM
+         ----------------------------------------- */
+
+      const item = {
+
+        productId: coffeeId,
+
+        coffee: coffee.name,
+
+        size: size,
+
+        roast: roast,
+
+        price: price
+
+      };
+
+
+
+      /* -----------------------------------------
+         ADD ONE BAG TO CART
+         ----------------------------------------- */
+
+      orderItems.push(item);
+
+
+
+      /* -----------------------------------------
+         UPDATE CART DISPLAY
+         ----------------------------------------- */
+
+      updateOrderSummary();
+
+
+
+      /* -----------------------------------------
+         LET CUSTOMER KNOW IT WAS ADDED
+         ----------------------------------------- */
+
+      alert(
+        coffee.name +
+        "\n" +
+        size +
+        " oz • " +
+        roast +
+        "\n\n" +
+        "Added to your order.\n\n" +
+        "Total Bags: " +
+        orderItems.length +
+        " / 3"
       );
+
+
     }
 
 
-    PRODUCT_NAMES[productId] =
-      name;
 
-    closeAddCoffeeModal();
+    /* =========================================================
+       REMOVE COFFEE FROM ORDER
+       ========================================================= */
 
-    await loadInventory();
+    function removeOrderItem(index) {
 
-    alert(
-      name +
-      " was added successfully."
-    );
 
-  }
+      orderItems.splice(
+        index,
+        1
+      );
 
-  catch (e) {
 
-    errorBox.textContent =
-      e.message;
+      updateOrderSummary();
 
-  }
 
-  finally {
-
-    button.disabled = false;
-    button.textContent = "Add Coffee";
-
-  }
-
-}
+    }
 
 
 
-// ==========================================
-// ESCAPE HTML
-// ==========================================
+    /* =========================================================
+       SHOW / HIDE SHIPPING ADDRESS
+       ========================================================= */
 
-function escapeHtml(
-  value
-) {
+    function toggleShippingAddress() {
 
-  return String(
-    value ?? ""
-  )
+      const shippingSelected =
+        document.getElementById("shippingCheckbox").checked;
 
-  .replaceAll(
-    "&",
-    "&amp;"
-  )
+      document.getElementById("shippingAddressFields").style.display =
+        shippingSelected ? "block" : "none";
 
-  .replaceAll(
-    "<",
-    "&lt;"
-  )
+      document.getElementById("pickupLocationFields").style.display =
+        shippingSelected ? "none" : "block";
 
-  .replaceAll(
-    ">",
-    "&gt;"
-  )
-
-  .replaceAll(
-    '"',
-    "&quot;"
-  )
-
-  .replaceAll(
-    "'",
-    "&#039;"
-  );
-
-}
+    }
 
 
 
-// ==========================================
-// ENTER KEY LOGIN
-// ==========================================
+    /* =========================================================
+       CALCULATE SHIPPING
+       ========================================================= */
 
-document
-  .getElementById("password")
-  .addEventListener(
-    "keydown",
-    event => {
+    function calculateShipping() {
+
+
+      const shippingSelected =
+        document
+          .getElementById("shippingCheckbox")
+          .checked;
+
+
+      const totalBags =
+        orderItems.length;
+
+
+
+      /* -----------------------------------------
+         LOCAL PICKUP
+         ----------------------------------------- */
+
+      if (!shippingSelected) {
+
+        return 0;
+
+      }
+
+
+
+      /* -----------------------------------------
+         1 BAG
+         ----------------------------------------- */
+
+      if (totalBags === 1) {
+
+        return 7;
+
+      }
+
+
+
+      /* -----------------------------------------
+         2 BAGS
+         ----------------------------------------- */
+
+      if (totalBags === 2) {
+
+        return 8;
+
+      }
+
+
+
+      /* -----------------------------------------
+         3 BAGS = FREE SHIPPING
+         ----------------------------------------- */
+
+      if (totalBags === 3) {
+
+        return 9;
+
+      }
+
+
+
+      return 0;
+
+
+    }
+
+
+
+    /* =========================================================
+       UPDATE ORDER SUMMARY
+       ========================================================= */
+
+    function updateOrderSummary() {
+
+
+      const cartItems =
+        document
+          .getElementById("cartItems");
+
+
+      cartItems.innerHTML = "";
+
+
+
+      /* -----------------------------------------
+         COFFEE TOTAL
+         ----------------------------------------- */
+
+      let coffeeTotal = 0;
+
+
+
+      /* -----------------------------------------
+         EMPTY CART
+         ----------------------------------------- */
+
+      if (orderItems.length === 0) {
+
+
+        cartItems.innerHTML =
+
+          '<p class="cart-empty">' +
+          'Your order is currently empty.' +
+          '</p>';
+
+
+      }
+
+
+      /* -----------------------------------------
+         SHOW CART ITEMS
+         ----------------------------------------- */
+
+      else {
+
+
+        orderItems.forEach(
+          function(item, index) {
+
+
+            coffeeTotal +=
+              item.price;
+
+
+
+            const itemDiv =
+              document.createElement("div");
+
+
+            itemDiv.className =
+              "cart-item";
+
+
+
+            itemDiv.innerHTML =
+
+              '<div class="cart-item-title">' +
+
+                (index + 1) +
+                '. ' +
+                item.coffee +
+
+              '</div>' +
+
+
+              '<div class="cart-item-details">' +
+
+                item.size +
+                ' oz • ' +
+                item.roast +
+
+              '</div>' +
+
+
+              '<div class="cart-item-bottom">' +
+
+                '<strong>' +
+
+                  '$' +
+                  item.price.toFixed(2) +
+
+                '</strong>' +
+
+
+                '<button ' +
+                  'type="button" ' +
+                  'class="remove-button" ' +
+                  'onclick="removeOrderItem(' +
+                  index +
+                  ')">' +
+
+                  'Remove' +
+
+                '</button>' +
+
+              '</div>';
+
+
+
+            cartItems.appendChild(
+              itemDiv
+            );
+
+
+          }
+        );
+
+
+      }
+
+
+
+      /* -----------------------------------------
+         SHIPPING
+         ----------------------------------------- */
+
+      const shippingSelected =
+        document
+          .getElementById("shippingCheckbox")
+          .checked;
+
+
+      const shippingCost =
+        calculateShipping();
+
+
+
+      /* -----------------------------------------
+         GRAND TOTAL
+         ----------------------------------------- */
+
+      const grandTotal =
+        coffeeTotal +
+        shippingCost;
+
+
+
+      /* -----------------------------------------
+         DELIVERY TEXT
+         ----------------------------------------- */
+
+      let deliveryText =
+        "Local Pickup";
+
+
+      let shippingText =
+        "$0.00";
+
+
+
+      if (shippingSelected) {
+
+
+        deliveryText =
+          "Shipping";
+
+
+        shippingText =
+          "$" +
+          shippingCost.toFixed(2);
+
+
+      }
+
+
+
+      /* -----------------------------------------
+         UPDATE SCREEN
+         ----------------------------------------- */
+
+      document
+        .getElementById("totalBags")
+        .textContent =
+          orderItems.length;
+
+
+      document
+        .getElementById("coffeeTotal")
+        .textContent =
+          coffeeTotal.toFixed(2);
+
+
+      document
+        .getElementById("deliveryMethod")
+        .textContent =
+          deliveryText;
+
+
+      document
+        .getElementById("shippingCost")
+        .textContent =
+          shippingText;
+
+
+      document
+        .getElementById("grandTotal")
+        .textContent =
+          grandTotal.toFixed(2);
+
+
+    }
+
+
+
+    /* =========================================================
+       CUSTOMER INFORMATION
+       ========================================================= */
+
+    function getCustomerInfo() {
+
+
+      const name =
+        document
+          .getElementById("customerName")
+          .value
+          .trim();
+
+
+      const email =
+        document
+          .getElementById("customerEmail")
+          .value
+          .trim();
+
+
+      const phone =
+        document
+          .getElementById("customerPhone")
+          .value
+          .trim();
+
+
+
+      /* -----------------------------------------
+         NAME REQUIRED
+         ----------------------------------------- */
+
+      if (name === "") {
+
+
+        alert(
+          "Please enter your name."
+        );
+
+
+        return null;
+
+
+      }
+
+
+
+      /* -----------------------------------------
+         EMAIL OR PHONE REQUIRED
+         ----------------------------------------- */
 
       if (
-        event.key ===
-        "Enter"
+        email === "" &&
+        phone === ""
       ) {
 
-        login();
+
+        alert(
+          "Please enter your email or phone number."
+        );
+
+
+        return null;
+
 
       }
 
+
+
+      /* -----------------------------------------
+         ORDER REQUIRED
+         ----------------------------------------- */
+
+      if (orderItems.length === 0) {
+
+
+        alert(
+          "Please add at least one coffee to your order."
+        );
+
+
+        return null;
+
+
+      }
+
+
+
+      const shippingSelected =
+        document.getElementById("shippingCheckbox").checked;
+
+      let shippingAddress = null;
+      let pickupLocation = null;
+
+      if (!shippingSelected) {
+        pickupLocation =
+          document.getElementById("pickupLocation").value;
+
+        if (!pickupLocation) {
+          alert("Please select a pickup location.");
+          return null;
+        }
+      }
+
+      if (shippingSelected) {
+
+        const addressLine1 = document.getElementById("addressLine1").value.trim();
+        const addressLine2 = document.getElementById("addressLine2").value.trim();
+        const city = document.getElementById("shippingCity").value.trim();
+        const state = document.getElementById("shippingState").value.trim();
+        const postalCode = document.getElementById("shippingZip").value.trim();
+
+        if (!addressLine1 || !city || !state || !postalCode) {
+          alert("Please complete the required shipping address fields.");
+          return null;
+        }
+
+        shippingAddress = {
+          addressLine1: addressLine1,
+          addressLine2: addressLine2,
+          city: city,
+          state: state,
+          postalCode: postalCode
+        };
+      }
+
+      return {
+
+        name: name,
+
+        email: email,
+
+        phone: phone,
+
+        shippingAddress: shippingAddress,
+
+        pickupLocation: pickupLocation
+
+      };
+
+
     }
-  );
 
 
-</script>
 
+    /* =========================================================
+       CREATE ORDER MESSAGE
+       ========================================================= */
+
+    function createOrderMessage() {
+
+
+      const customer =
+        getCustomerInfo();
+
+
+      if (!customer) {
+
+        return null;
+
+      }
+
+
+
+      /* -----------------------------------------
+         CREATE COFFEE LIST
+         ----------------------------------------- */
+
+      let orderDetails = "";
+
+
+      let coffeeTotal = 0;
+
+
+
+      orderItems.forEach(
+        function(item, index) {
+
+
+          coffeeTotal +=
+            item.price;
+
+
+
+          orderDetails +=
+
+            "\n" +
+            (index + 1) +
+            ". " +
+            item.coffee +
+
+            "\nSize: " +
+            item.size +
+            " oz" +
+
+            "\nRoast: " +
+            item.roast +
+
+            "\nPrice: $" +
+            item.price.toFixed(2) +
+
+            "\n";
+
+
+        }
+      );
+
+
+
+      /* -----------------------------------------
+         SHIPPING
+         ----------------------------------------- */
+
+      const shippingSelected =
+        document
+          .getElementById("shippingCheckbox")
+          .checked;
+
+
+      const shippingCost =
+        calculateShipping();
+
+
+
+      let deliveryText =
+        "Local Pickup";
+
+
+      let shippingText =
+        "$0.00";
+
+
+
+      if (shippingSelected) {
+
+
+        deliveryText =
+          "Shipping";
+
+
+        shippingText =
+          "$" +
+          shippingCost.toFixed(2);
+
+
+      }
+
+
+
+      /* -----------------------------------------
+         GRAND TOTAL
+         ----------------------------------------- */
+
+      const grandTotal =
+        coffeeTotal +
+        shippingCost;
+
+
+
+      /* -----------------------------------------
+         FINAL MESSAGE
+         ----------------------------------------- */
+
+      const message =
+
+`Hello Colorful Coffee Bean!
+
+I would like to place an order.
+
+ORDER
+${orderDetails}
+Total Bags: ${orderItems.length}
+
+Coffee Total: $${coffeeTotal.toFixed(2)}
+Delivery Method: ${deliveryText}
+Shipping: ${shippingText}
+
+TOTAL: $${grandTotal.toFixed(2)}
+
+CUSTOMER INFORMATION
+
+Name: ${customer.name}
+Email: ${customer.email || "Not provided"}
+Phone: ${customer.phone || "Not provided"}
+
+Thank you!`;
+
+
+
+      return {
+
+        message: message,
+
+        customer: customer
+
+      };
+
+
+    }
+
+
+
+    /* =========================================================
+       PLACE ORDER WITH SUPABASE
+       ========================================================= */
+
+    async function placeOrder() {
+
+      if (
+        SUPABASE_URL.includes("YOUR_SUPABASE") ||
+        SUPABASE_PUBLISHABLE_KEY.includes("YOUR_SUPABASE")
+      ) {
+        alert("Please add your Supabase Project URL and Publishable key to index.html first.");
+        return;
+      }
+
+      const customer = getCustomerInfo();
+
+      if (!customer) {
+        return;
+      }
+
+      // The database requires an email for every order.
+      if (!customer.email) {
+        alert("Please enter your email address.");
+        return;
+      }
+
+      const shippingSelected =
+        document.getElementById("shippingCheckbox").checked;
+
+      const address = customer.shippingAddress || {};
+
+      const items = orderItems.map(function(item) {
+        return {
+          product_id: item.productId,
+          size: item.size + "oz",
+          roast: item.roast
+        };
+      });
+
+      const payload = {
+        p_customer_name: customer.name,
+        p_email: customer.email,
+        p_phone: customer.phone || "",
+        p_fulfillment: shippingSelected ? "shipping" : "pickup",
+        p_address_line1: address.addressLine1 || "",
+        p_address_line2: address.addressLine2 || "",
+        p_city: address.city || "",
+        p_state: address.state || "",
+        p_postal_code: address.postalCode || "",
+        p_pickup_location: shippingSelected ? null : customer.pickupLocation,
+        p_items: items
+      };
+
+      const button = document.getElementById("placeOrderButton");
+      button.disabled = true;
+      button.textContent = "Placing Order...";
+
+      try {
+
+        const response = await fetch(
+          SUPABASE_URL + "/rest/v1/rpc/place_order",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "apikey": SUPABASE_PUBLISHABLE_KEY,
+              "Authorization": "Bearer " + SUPABASE_PUBLISHABLE_KEY
+            },
+            body: JSON.stringify(payload)
+          }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+
+          const errorText =
+            (result && (result.message || result.error_description || result.hint)) ||
+            "Unable to place order.";
+
+          if (errorText.includes("WEEKLY_CAPACITY_REACHED")) {
+            alert(
+              "Sorry, this week's roasting capacity has been reached.\n\n" +
+              "Please check back next week."
+            );
+            return;
+          }
+
+          if (errorText.includes("EMAIL_REQUIRED")) {
+            alert("Please enter your email address.");
+            return;
+          }
+
+          if (errorText.includes("SHIPPING_ADDRESS_REQUIRED")) {
+            alert("Please complete the required shipping address fields.");
+            return;
+          }
+
+          if (errorText.includes("PICKUP_LOCATION_REQUIRED")) {
+            alert("Please select a pickup location.");
+            return;
+          }
+
+          throw new Error(errorText);
+        }
+
+        // Order is already safely stored in Supabase at this point.
+        // Email is intentionally best-effort: an email failure must never
+        // turn a successfully saved order into a failed customer order.
+        try {
+          const emailResponse = await fetch(
+            SUPABASE_URL + "/functions/v1/send-order-email",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "apikey": SUPABASE_PUBLISHABLE_KEY,
+                "Authorization": "Bearer " + SUPABASE_PUBLISHABLE_KEY
+              },
+              body: JSON.stringify({
+                order_code: result.order_code
+              })
+            }
+          );
+
+          const emailResult = await emailResponse.json().catch(function() {
+            return null;
+          });
+
+          if (!emailResponse.ok || !emailResult || emailResult.success !== true) {
+            console.error("Order email could not be sent:", emailResult);
+          }
+        }
+        catch (emailError) {
+          console.error("Order email could not be sent:", emailError);
+        }
+
+        alert(
+          "Order received!\n\n" +
+          "Order Number: " + result.order_code + "\n" +
+          "Bags: " + result.bags + "\n" +
+          "Coffee: $" + Number(result.subtotal).toFixed(2) + "\n" +
+          "Shipping: $" + Number(result.shipping).toFixed(2) + "\n" +
+          (!shippingSelected
+            ? "Pickup: " +
+              (customer.pickupLocation === "applebees_germantown"
+                ? "Applebee's - Germantown"
+                : "Royal Farms - Gaithersburg") + "\n"
+            : "") +
+          "Total: $" + Number(result.total).toFixed(2) + "\n\n" +
+          "A confirmation email will be sent to " + customer.email + ".\n\n" +
+          "Thank you!"
+        );
+
+        // Clear the cart only after Supabase confirms the order.
+        orderItems = [];
+        document.getElementById("shippingCheckbox").checked = false;
+        document.getElementById("pickupLocation").value = "";
+        toggleShippingAddress();
+        updateOrderSummary();
+
+      }
+      catch (error) {
+
+        console.error(error);
+
+        alert(
+          "Your order could not be submitted.\n\n" +
+          "Please try again."
+        );
+
+      }
+      finally {
+
+        button.disabled = false;
+        button.textContent = "Place Order";
+
+      }
+    }
+
+
+
+    /* =========================================================
+       SEND ORDER BY TEXT
+       ========================================================= */
+
+    function sendTextOrder() {
+
+
+      const order =
+        createOrderMessage();
+
+
+      if (!order) {
+
+        return;
+
+      }
+
+
+
+      const phoneNumber =
+        "12404494657";
+
+
+      const message =
+        encodeURIComponent(
+          order.message
+        );
+
+
+      window.location.href =
+
+        "sms:" +
+        phoneNumber +
+        "?body=" +
+        message;
+
+
+    }
+
+
+
+    /* =========================================================
+       SEND ORDER BY EMAIL
+       ========================================================= */
+
+    function sendEmailOrder() {
+
+
+      const order =
+        createOrderMessage();
+
+
+      if (!order) {
+
+        return;
+
+      }
+
+
+
+      const email =
+        "colorfulcb@gmail.com";
+
+
+      const subject =
+        encodeURIComponent(
+
+          "Coffee Order - " +
+          order.customer.name
+
+        );
+
+
+      const body =
+        encodeURIComponent(
+          order.message
+        );
+
+
+      window.location.href =
+
+        "mailto:" +
+        email +
+        "?subject=" +
+        subject +
+        "&body=" +
+        body;
+
+
+    }
+
+
+
+    /* =========================================================
+       PAGE LOAD
+       ========================================================= */
+
+    document.addEventListener(
+
+      "DOMContentLoaded",
+
+      function() {
+
+        updateOrderSummary();
+
+      }
+
+    );
+
+
+  </script>
 
 </body>
 
