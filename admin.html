@@ -2724,8 +2724,14 @@ async function loadInventory() {
         SUPABASE_URL +
         "/rest/v1/products?select=id,name,origin,region,process,tasting_notes,price_6oz,price_12oz,active&order=name.asc",
         {
-          headers:
-            headers()
+          // Product catalog is publicly readable for active products.
+          // Use the publishable key here so Inventory and Store use the same
+          // product source; authenticated headers remain used for admin writes.
+          headers: {
+            "apikey": SUPABASE_KEY,
+            "Authorization": "Bearer " + SUPABASE_KEY,
+            "Content-Type": "application/json"
+          }
         }
       );
 
@@ -3855,24 +3861,61 @@ async function openEditCoffeeModal(productId) {
   const errorBox = document.getElementById("editCoffeeError");
   errorBox.textContent = "";
 
-  const p = PRODUCT_DATA[productId];
+  let p = PRODUCT_DATA[productId];
+
+  // Fallback: fetch the exact active product using the same public
+  // credentials as the customer website.
+  if (!p) {
+    try {
+      const response = await fetch(
+        SUPABASE_URL +
+        "/rest/v1/products?id=eq." +
+        encodeURIComponent(productId) +
+        "&select=id,name,origin,region,process,tasting_notes,price_6oz,price_12oz,active",
+        {
+          headers: {
+            "apikey": SUPABASE_KEY,
+            "Authorization": "Bearer " + SUPABASE_KEY,
+            "Content-Type": "application/json"
+          }
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(await response.text() || "Could not load coffee information.");
+      }
+
+      const rows = await response.json();
+      p = rows[0];
+
+      if (p) {
+        PRODUCT_DATA[p.id] = p;
+        PRODUCT_NAMES[p.id] = p.name;
+      }
+    }
+    catch (e) {
+      alert("Could not load coffee information.\n\n" + e.message);
+      return;
+    }
+  }
 
   if (!p) {
     alert(
-      "Coffee information is not loaded yet. " +
-      "Click Refresh Inventory and try again."
+      "Coffee information could not be found. " +
+      "Refresh Inventory and try again."
     );
     return;
   }
-    document.getElementById("editCoffeeOriginalId").value = p.id;
-    document.getElementById("editCoffeeProductId").value = p.id;
-    document.getElementById("editCoffeeName").value = p.name || "";
-    document.getElementById("editCoffeeOrigin").value = p.origin || "";
-    document.getElementById("editCoffeeRegion").value = p.region || "";
-    document.getElementById("editCoffeeProcess").value = p.process || "";
-    document.getElementById("editCoffeeTastingNotes").value = p.tasting_notes || "";
-    document.getElementById("editCoffeePrice6").value = p.price_6oz ?? "";
-    document.getElementById("editCoffeePrice12").value = p.price_12oz ?? "";
+
+  document.getElementById("editCoffeeOriginalId").value = p.id;
+  document.getElementById("editCoffeeProductId").value = p.id;
+  document.getElementById("editCoffeeName").value = p.name || "";
+  document.getElementById("editCoffeeOrigin").value = p.origin || "";
+  document.getElementById("editCoffeeRegion").value = p.region || "";
+  document.getElementById("editCoffeeProcess").value = p.process || "";
+  document.getElementById("editCoffeeTastingNotes").value = p.tasting_notes || "";
+  document.getElementById("editCoffeePrice6").value = p.price_6oz ?? "";
+  document.getElementById("editCoffeePrice12").value = p.price_12oz ?? "";
   document.getElementById("editCoffeeActive").checked = p.active === true;
   document.getElementById("editCoffeeModal").classList.remove("hidden");
 }
