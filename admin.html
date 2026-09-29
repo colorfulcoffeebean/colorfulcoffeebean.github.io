@@ -3873,12 +3873,8 @@ async function openEditCoffeeModal(productId) {
     document.getElementById("editCoffeeTastingNotes").value = p.tasting_notes || "";
     document.getElementById("editCoffeePrice6").value = p.price_6oz ?? "";
     document.getElementById("editCoffeePrice12").value = p.price_12oz ?? "";
-    document.getElementById("editCoffeeActive").checked = p.active === true;
-    document.getElementById("editCoffeeModal").classList.remove("hidden");
-  }
-  catch (e) {
-    alert(e.message);
-  }
+  document.getElementById("editCoffeeActive").checked = p.active === true;
+  document.getElementById("editCoffeeModal").classList.remove("hidden");
 }
 
 function closeEditCoffeeModal() {
