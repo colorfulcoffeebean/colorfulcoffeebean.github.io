@@ -3939,8 +3939,10 @@ async function saveCoffeeEdits() {
 
   errorBox.textContent = "";
 
-  if (!name || !origin || !region || !process || !tastingNotes) {
-    errorBox.textContent = "Enter Display Name, Origin, Region, Process, and Tasting Notes.";
+  // Display details are optional. You can save after changing
+  // only one field. Existing blank fields may remain blank.
+  if (!name) {
+    errorBox.textContent = "Display Name cannot be blank.";
     return;
   }
 
