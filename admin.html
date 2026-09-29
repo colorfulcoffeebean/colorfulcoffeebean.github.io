@@ -1079,9 +1079,14 @@ async function forgotPassword(event) {
 
   try {
 
+    const redirectUrl =
+      "https://colorfulcoffeebean.com/reset-password.html";
+
     const response =
       await fetch(
-        SUPABASE_URL + "/auth/v1/recover",
+        SUPABASE_URL +
+        "/auth/v1/recover?redirect_to=" +
+        encodeURIComponent(redirectUrl),
         {
           method: "POST",
           headers: {
@@ -1089,9 +1094,7 @@ async function forgotPassword(event) {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            email: email,
-            redirect_to:
-              "https://colorfulcoffeebean.com/reset-password.html"
+            email: email
           })
         }
       );
