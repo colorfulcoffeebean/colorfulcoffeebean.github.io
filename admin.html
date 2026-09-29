@@ -997,7 +997,7 @@
     <input id="editCoffeeOriginalId" type="hidden">
 
     <div class="form-group">
-      <label for="editCoffeeName">Coffee Name</label>
+      <label for="editCoffeeName">Display Name</label>
       <input id="editCoffeeName" type="text">
     </div>
 
@@ -1068,7 +1068,7 @@
     <h3>Add New Coffee</h3>
 
     <div class="form-group">
-      <label for="newCoffeeName">Coffee Name</label>
+      <label for="newCoffeeName">Display Name</label>
       <input
         id="newCoffeeName"
         type="text"
@@ -1237,6 +1237,9 @@ const PRODUCT_NAMES = {
     "Guatemalan Huehuetenango"
 
 };
+
+// Full product records loaded with Inventory.
+const PRODUCT_DATA = {};
 
 
 
@@ -2719,7 +2722,7 @@ async function loadInventory() {
     const productsResponse =
       await fetch(
         SUPABASE_URL +
-        "/rest/v1/products?select=id,name&order=name.asc",
+        "/rest/v1/products?select=id,name,origin,region,process,tasting_notes,price_6oz,price_12oz,active&order=name.asc",
         {
           headers:
             headers()
@@ -2739,9 +2742,16 @@ async function loadInventory() {
     const products =
       await productsResponse.json();
 
+    Object.keys(PRODUCT_DATA).forEach(key => {
+      delete PRODUCT_DATA[key];
+    });
+
     products.forEach(product => {
       PRODUCT_NAMES[product.id] =
         product.name;
+
+      PRODUCT_DATA[product.id] =
+        product;
     });
 
 
@@ -3845,23 +3855,15 @@ async function openEditCoffeeModal(productId) {
   const errorBox = document.getElementById("editCoffeeError");
   errorBox.textContent = "";
 
-  try {
-    const response = await fetch(
-      SUPABASE_URL +
-      "/rest/v1/products?id=eq." +
-      encodeURIComponent(productId) +
-      "&select=id,name,origin,region,process,tasting_notes,price_6oz,price_12oz,active",
-      { headers: headers() }
+  const p = PRODUCT_DATA[productId];
+
+  if (!p) {
+    alert(
+      "Coffee information is not loaded yet. " +
+      "Click Refresh Inventory and try again."
     );
-
-    if (!response.ok) {
-      throw new Error(await response.text() || "Could not load coffee information.");
-    }
-
-    const rows = await response.json();
-    if (!rows.length) throw new Error("Coffee was not found.");
-
-    const p = rows[0];
+    return;
+  }
     document.getElementById("editCoffeeOriginalId").value = p.id;
     document.getElementById("editCoffeeProductId").value = p.id;
     document.getElementById("editCoffeeName").value = p.name || "";
@@ -3899,7 +3901,7 @@ async function saveCoffeeEdits() {
   errorBox.textContent = "";
 
   if (!name || !origin || !region || !process || !tastingNotes) {
-    errorBox.textContent = "Enter Coffee Name, Origin, Region, Process, and Tasting Notes.";
+    errorBox.textContent = "Enter Display Name, Origin, Region, Process, and Tasting Notes.";
     return;
   }
 
