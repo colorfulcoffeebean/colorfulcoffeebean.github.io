@@ -1019,6 +1019,11 @@
     </div>
 
     <div class="form-group">
+      <label for="editCoffeeElevation">Elevation</label>
+      <input id="editCoffeeElevation" type="text" placeholder="Example: 1,500 m">
+    </div>
+
+    <div class="form-group">
       <label for="editCoffeeProcess">Process</label>
       <input id="editCoffeeProcess" type="text">
     </div>
@@ -1107,6 +1112,11 @@
           placeholder="Example: Huila"
         >
       </div>
+    </div>
+
+    <div class="form-group">
+      <label for="newCoffeeElevation">Elevation</label>
+      <input id="newCoffeeElevation" type="text" placeholder="Example: 1,500 m or 1,400–1,700 m">
     </div>
 
     <div class="form-group">
@@ -2722,7 +2732,7 @@ async function loadInventory() {
     const productsResponse =
       await fetch(
         SUPABASE_URL +
-        "/rest/v1/products?select=id,name,origin,region,process,tasting_notes,price_6oz,price_12oz,active&order=name.asc",
+        "/rest/v1/products?select=id,name,origin,region,elevation,process,tasting_notes,price_6oz,price_12oz,active&order=name.asc",
         {
           // Product catalog is publicly readable for active products.
           // Use the publishable key here so Inventory and Store use the same
@@ -3871,7 +3881,7 @@ async function openEditCoffeeModal(productId) {
         SUPABASE_URL +
         "/rest/v1/products?id=eq." +
         encodeURIComponent(productId) +
-        "&select=id,name,origin,region,process,tasting_notes,price_6oz,price_12oz,active",
+        "&select=id,name,origin,region,elevation,process,tasting_notes,price_6oz,price_12oz,active",
         {
           headers: {
             "apikey": SUPABASE_KEY,
@@ -3912,6 +3922,7 @@ async function openEditCoffeeModal(productId) {
   document.getElementById("editCoffeeName").value = p.name || "";
   document.getElementById("editCoffeeOrigin").value = p.origin || "";
   document.getElementById("editCoffeeRegion").value = p.region || "";
+  document.getElementById("editCoffeeElevation").value = p.elevation || "";
   document.getElementById("editCoffeeProcess").value = p.process || "";
   document.getElementById("editCoffeeTastingNotes").value = p.tasting_notes || "";
   document.getElementById("editCoffeePrice6").value = p.price_6oz ?? "";
@@ -3929,6 +3940,7 @@ async function saveCoffeeEdits() {
   const name = document.getElementById("editCoffeeName").value.trim();
   const origin = document.getElementById("editCoffeeOrigin").value.trim();
   const region = document.getElementById("editCoffeeRegion").value.trim();
+  const elevation = document.getElementById("editCoffeeElevation").value.trim();
   const process = document.getElementById("editCoffeeProcess").value.trim();
   const tastingNotes = document.getElementById("editCoffeeTastingNotes").value.trim();
   const price6 = Number(document.getElementById("editCoffeePrice6").value);
@@ -3964,6 +3976,7 @@ async function saveCoffeeEdits() {
           name,
           origin,
           region,
+          elevation,
           process,
           tasting_notes: tastingNotes,
           price_6oz: price6,
@@ -4043,6 +4056,10 @@ function openAddCoffeeModal() {
 
   document
     .getElementById("newCoffeeRegion")
+    .value = "";
+
+  document
+    .getElementById("newCoffeeElevation")
     .value = "";
 
   document
@@ -4155,6 +4172,12 @@ async function saveNewCoffee() {
   const region =
     document
       .getElementById("newCoffeeRegion")
+      .value
+      .trim();
+
+  const elevation =
+    document
+      .getElementById("newCoffeeElevation")
       .value
       .trim();
 
@@ -4305,6 +4328,7 @@ async function saveNewCoffee() {
               name: name,
               origin: origin,
               region: region,
+              elevation: elevation,
               process: process,
               tasting_notes: tastingNotes,
               price_6oz: price6,
