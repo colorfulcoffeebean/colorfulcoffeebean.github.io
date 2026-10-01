@@ -187,6 +187,13 @@
     }
 
 
+    .payment-row {
+      margin-top: 18px; padding: 14px; background: #f7f3eb; border-radius: 8px;
+      display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+    }
+    .payment-paid { color: #3f6b3f; font-weight: bold; }
+    .payment-awaiting { color: #9b2c2c; font-weight: bold; }
+
     .status-row {
       display: flex;
       gap: 10px;
@@ -2330,6 +2337,18 @@ function renderOrders(orders) {
 
 
 
+            '<div class="payment-row">' +
+              '<strong>Payment:</strong>' +
+              '<span>Venmo</span>' +
+              '<span class="' + ((order.payment_status || "awaiting_payment") === "paid" ? "payment-paid" : "payment-awaiting") + '">' +
+              ((order.payment_status || "awaiting_payment") === "paid" ? "PAID" : "Awaiting Payment") + '</span>' +
+              ((order.payment_status || "awaiting_payment") === "paid" && order.payment_paid_at ? '<span class="muted">Paid: ' + new Date(order.payment_paid_at).toLocaleString() + '</span>' : '') +
+              '<button class="button ' + ((order.payment_status || "awaiting_payment") === "paid" ? "secondary" : "") + '" onclick="updatePaymentStatus(\'' + escapeHtml(order.id) + '\', \'' + ((order.payment_status || "awaiting_payment") === "paid" ? "awaiting_payment" : "paid") + '\')">' +
+              ((order.payment_status || "awaiting_payment") === "paid" ? "Mark as Unpaid" : "Mark as Paid") +
+              '</button>' +
+            '</div>' +
+
+
             '<div class="status-row">' +
 
               '<strong>Status:</strong>' +
@@ -2447,6 +2466,37 @@ function renderOrders(orders) {
 
 }
 
+
+
+// ==========================================
+// UPDATE PAYMENT STATUS
+// ==========================================
+
+async function updatePaymentStatus(orderId, newPaymentStatus) {
+  const isPaid = newPaymentStatus === "paid";
+  try {
+    const response = await fetch(
+      SUPABASE_URL + "/rest/v1/orders?id=eq." + encodeURIComponent(orderId),
+      {
+        method: "PATCH",
+        headers: { ...headers(), "Prefer": "return=minimal" },
+        body: JSON.stringify({
+          payment_method: "venmo",
+          payment_status: newPaymentStatus,
+          payment_paid_at: isPaid ? new Date().toISOString() : null
+        })
+      }
+    );
+    if (!response.ok) {
+      const message = await response.text();
+      throw new Error(message || "Could not update payment status.");
+    }
+    await loadOrders();
+    alert(isPaid ? "Payment marked as paid." : "Payment marked as unpaid.");
+  } catch (e) {
+    alert("Payment status could not be updated.\n\n" + e.message);
+  }
+}
 
 
 // ==========================================
