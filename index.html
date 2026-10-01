@@ -550,7 +550,16 @@
       color: #777;
     }
 
-  </style>
+  
+    .payment-modal { position:fixed; inset:0; background:rgba(0,0,0,.55); display:flex; align-items:center; justify-content:center; padding:20px; z-index:9999; }
+    .payment-modal.hidden { display:none; }
+    .payment-card { background:#fff; width:min(520px,100%); max-height:90vh; overflow:auto; border-radius:14px; padding:24px; text-align:center; box-shadow:0 12px 40px rgba(0,0,0,.25); }
+    .payment-card h2 { margin-top:0; }
+    .payment-card .awaiting { color:#9b2c2c; font-weight:bold; }
+    .payment-card .venmo-user { font-size:1.15rem; font-weight:bold; }
+    .payment-card .venmo-qr { width:220px; max-width:80%; display:block; margin:14px auto; border-radius:12px; }
+    .payment-card .close-payment { margin-top:10px; padding:12px 20px; border:0; border-radius:8px; background:#38291f; color:#fff; cursor:pointer; }
+</style>
 
 </head>
 
@@ -2180,22 +2189,7 @@ Thank you!`;
           console.error("Order email could not be sent:", emailError);
         }
 
-        alert(
-          "Order received!\n\n" +
-          "Order Number: " + result.order_code + "\n" +
-          "Bags: " + result.bags + "\n" +
-          "Coffee: $" + Number(result.subtotal).toFixed(2) + "\n" +
-          "Shipping: $" + Number(result.shipping).toFixed(2) + "\n" +
-          (!shippingSelected
-            ? "Pickup: " +
-              (customer.pickupLocation === "applebees_germantown"
-                ? "Applebee's - Germantown"
-                : "Royal Farms - Gaithersburg") + "\n"
-            : "") +
-          "Total: $" + Number(result.total).toFixed(2) + "\n\n" +
-          "A confirmation email will be sent to " + customer.email + ".\n\n" +
-          "Thank you!"
-        );
+        showPaymentModal(result.order_code, result.total);
 
         // Clear the cart only after Supabase confirms the order.
         orderItems = [];
@@ -2223,6 +2217,23 @@ Thank you!`;
       }
     }
 
+
+
+    function showPaymentModal(orderCode, total) {
+      document.getElementById("paymentOrderNumber").innerHTML =
+        "<strong>Order #" + String(orderCode) + "</strong>";
+      document.getElementById("paymentTotal").innerHTML =
+        "<strong>Total Due: $" + Number(total).toFixed(2) + "</strong>";
+      document.getElementById("paymentInstructions").innerHTML =
+        "Please send exactly <strong>$" + Number(total).toFixed(2) +
+        "</strong> and enter <strong>" + String(orderCode) +
+        "</strong> in the Venmo payment note.";
+      document.getElementById("paymentModal").classList.remove("hidden");
+    }
+
+    function closePaymentModal() {
+      document.getElementById("paymentModal").classList.add("hidden");
+    }
 
 
     /* =========================================================
@@ -2338,6 +2349,21 @@ Thank you!`;
 
   </script>
 
+
+
+<div id="paymentModal" class="payment-modal hidden">
+  <div class="payment-card">
+    <h2>Order Received!</h2>
+    <div id="paymentOrderNumber"></div>
+    <p class="awaiting">Payment: Awaiting Payment</p>
+    <p id="paymentTotal"></p>
+    <div class="venmo-user">@ColorfulCoffeeBean</div>
+    <img class="venmo-qr" src="images/venmo-qr.png" alt="Venmo QR code for Colorful Coffee Bean">
+    <p id="paymentInstructions"></p>
+    <p>A confirmation email will be sent to the email address on your order.</p>
+    <button class="close-payment" type="button" onclick="closePaymentModal()">Done</button>
+  </div>
+</div>
 
 </body>
 
