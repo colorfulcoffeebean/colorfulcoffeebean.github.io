@@ -493,6 +493,63 @@
 
     }
 
+  
+    /* ==========================================
+       PROMOTION CODES
+       ========================================== */
+    .promo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+    }
+    .promo-card {
+      border-left: 4px solid #8a5b35;
+    }
+    .promo-head {
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      align-items:flex-start;
+      flex-wrap:wrap;
+    }
+    .promo-code {
+      font-size:1.25rem;
+      font-weight:bold;
+      letter-spacing:.03em;
+    }
+    .promo-badge {
+      display:inline-block;
+      padding:5px 9px;
+      border-radius:999px;
+      font-size:.78rem;
+      font-weight:bold;
+      background:#eee7dc;
+    }
+    .promo-badge.active { background:#e6f2e7; color:#2f6b3c; }
+    .promo-badge.expired { background:#f7e5e5; color:#9b2c2c; }
+    .promo-badge.scheduled { background:#fff3d8; color:#765515; }
+    .promo-badge.inactive { background:#ececec; color:#666; }
+    .promo-actions {
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:16px;
+    }
+    .promo-checks {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin:14px 0;
+    }
+    .promo-checks label {
+      display:flex;
+      gap:8px;
+      align-items:center;
+      font-weight:normal;
+      margin:0;
+    }
+    .promo-checks input { width:auto; }
+
   </style>
 
 </head>
@@ -633,6 +690,14 @@
         onclick="showTab('inventory')"
       >
         Inventory
+      </button>
+
+      <button
+        id="promotionsTabButton"
+        class="tab-button"
+        onclick="showTab('promotions')"
+      >
+        Promotions
       </button>
 
     </div>
@@ -872,6 +937,68 @@
 
       <div id="inventoryList"></div>
 
+
+    </div>
+
+
+    <!-- ==========================================
+         PROMOTIONS TAB
+         ========================================== -->
+    <div id="promotionsTab" class="hidden">
+
+      <div class="card topbar">
+        <div>
+          <div class="stats">Promotion Codes</div>
+          <div class="muted">
+            Create and manage discount codes, date limits, pickup-only offers,
+            and first-time customer promotions.
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="button" onclick="openPromotionForm()">+ Create Promotion Code</button>
+          <button class="button secondary" onclick="loadPromotions()">Refresh Promotions</button>
+        </div>
+      </div>
+
+      <div id="promotionFormCard" class="card hidden">
+        <h2 id="promotionFormTitle">Create Promotion Code</h2>
+        <input id="promotionId" type="hidden">
+
+        <div class="promo-grid">
+          <div class="form-group">
+            <label for="promotionCode">Promotion Code</label>
+            <input id="promotionCode" type="text" maxlength="50" placeholder="Example: FRIEND25">
+          </div>
+          <div class="form-group">
+            <label for="promotionDiscount">Discount (%)</label>
+            <input id="promotionDiscount" type="number" min="0.01" max="100" step="0.01" placeholder="25">
+          </div>
+          <div class="form-group">
+            <label for="promotionStartDate">Start Date</label>
+            <input id="promotionStartDate" type="date">
+          </div>
+          <div class="form-group">
+            <label for="promotionExpirationDate">Expiration Date</label>
+            <input id="promotionExpirationDate" type="date">
+          </div>
+        </div>
+
+        <div class="promo-checks">
+          <label><input id="promotionPickupOnly" type="checkbox"> Local Pickup Only</label>
+          <label><input id="promotionFirstTime" type="checkbox"> First-time Customer Only</label>
+          <label><input id="promotionActive" type="checkbox" checked> Active</label>
+        </div>
+
+        <div id="promotionError" style="color:#9b2c2c; margin-bottom:12px;"></div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button id="savePromotionButton" class="button" onclick="savePromotion()">Save Promotion Code</button>
+          <button class="button secondary" onclick="closePromotionForm()">Cancel</button>
+        </div>
+      </div>
+
+      <div id="promotionsLoading" class="hidden">Loading promotion codes...</div>
+      <div id="promotionsList"></div>
 
     </div>
 
@@ -1529,6 +1656,11 @@ function logout() {
   document
     .getElementById("inventoryList")
     .innerHTML = "";
+
+
+  const promotionsList = document.getElementById("promotionsList");
+  if (promotionsList) promotionsList.innerHTML = "";
+  cachedPromotions = [];
 
 
   document
@@ -2598,54 +2730,288 @@ async function updateStatus(
 
 function showTab(tab) {
 
-  const inventoryMode =
-    tab === "inventory";
+  const ordersMode = tab === "orders";
+  const inventoryMode = tab === "inventory";
+  const promotionsMode = tab === "promotions";
 
+  document.getElementById("ordersTab").classList.toggle("hidden", !ordersMode);
+  document.getElementById("inventoryTab").classList.toggle("hidden", !inventoryMode);
+  document.getElementById("promotionsTab").classList.toggle("hidden", !promotionsMode);
 
-  document
-    .getElementById("ordersTab")
-    .classList
-    .toggle(
-      "hidden",
-      inventoryMode
-    );
+  document.getElementById("ordersTabButton").classList.toggle("active", ordersMode);
+  document.getElementById("inventoryTabButton").classList.toggle("active", inventoryMode);
+  document.getElementById("promotionsTabButton").classList.toggle("active", promotionsMode);
 
-
-  document
-    .getElementById("inventoryTab")
-    .classList
-    .toggle(
-      "hidden",
-      !inventoryMode
-    );
-
-
-  document
-    .getElementById("ordersTabButton")
-    .classList
-    .toggle(
-      "active",
-      !inventoryMode
-    );
-
-
-  document
-    .getElementById("inventoryTabButton")
-    .classList
-    .toggle(
-      "active",
-      inventoryMode
-    );
-
-
-  if (inventoryMode) {
-
-    loadInventory();
-
-  }
-
+  if (inventoryMode) loadInventory();
+  if (promotionsMode) loadPromotions();
 }
 
+
+
+// ==========================================
+// PROMOTION CODES
+// ==========================================
+
+let cachedPromotions = [];
+
+function promotionStatus(p) {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  const start = new Date(p.start_date + "T00:00:00");
+  const end = new Date(p.expiration_date + "T00:00:00");
+
+  if (!p.active) return { text:"INACTIVE", cls:"inactive" };
+  if (today < start) return { text:"SCHEDULED", cls:"scheduled" };
+  if (today > end) return { text:"EXPIRED", cls:"expired" };
+  return { text:"ACTIVE", cls:"active" };
+}
+
+function formatPromoDate(value) {
+  if (!value) return "—";
+  return new Date(value + "T00:00:00").toLocaleDateString();
+}
+
+async function loadPromotions() {
+  const loading = document.getElementById("promotionsLoading");
+  const list = document.getElementById("promotionsList");
+
+  loading.classList.remove("hidden");
+
+  try {
+    const response = await fetch(
+      SUPABASE_URL +
+      "/rest/v1/promotion_codes?select=*&order=created_at.desc",
+      { headers: headers() }
+    );
+
+    if (!response.ok) {
+      throw new Error(await response.text() || "Could not load promotion codes.");
+    }
+
+    cachedPromotions = await response.json();
+
+    if (!cachedPromotions.length) {
+      list.innerHTML =
+        '<div class="card"><div class="muted">No promotion codes have been created yet.</div></div>';
+      return;
+    }
+
+    list.innerHTML = cachedPromotions.map(p => {
+      const status = promotionStatus(p);
+      const restrictions = [];
+      if (p.local_pickup_only) restrictions.push("Local Pickup Only");
+      else restrictions.push("Pickup + Shipping");
+      if (p.first_time_customer_only) restrictions.push("First-time Customer Only");
+
+      return `
+        <div class="card promo-card">
+          <div class="promo-head">
+            <div>
+              <div class="promo-code">${escapeHtml(p.code)}</div>
+              <div class="muted">${Number(p.discount_percent).toFixed(2).replace(/\\.00$/,"")}% OFF</div>
+            </div>
+            <span class="promo-badge ${status.cls}">${status.text}</span>
+          </div>
+
+          <div class="promo-grid" style="margin-top:16px;">
+            <div><strong>Valid</strong><br>${formatPromoDate(p.start_date)} – ${formatPromoDate(p.expiration_date)}</div>
+            <div><strong>Order Type</strong><br>${escapeHtml(restrictions.join(" · "))}</div>
+          </div>
+
+          <div class="promo-actions">
+            <button class="button secondary" onclick="editPromotion('${p.id}')">Edit</button>
+            <button class="button secondary" onclick="togglePromotion('${p.id}', ${!p.active})">
+              ${p.active ? "Deactivate" : "Activate"}
+            </button>
+            <button class="button danger" onclick="deletePromotion('${p.id}', '${escapeHtml(p.code)}')">Delete</button>
+          </div>
+        </div>`;
+    }).join("");
+  }
+  catch (e) {
+    list.innerHTML = '<div class="card"><div style="color:#9b2c2c;">' + escapeHtml(e.message) + '</div></div>';
+  }
+  finally {
+    loading.classList.add("hidden");
+  }
+}
+
+function openPromotionForm(p = null) {
+  document.getElementById("promotionFormCard").classList.remove("hidden");
+  document.getElementById("promotionError").textContent = "";
+
+  if (p) {
+    document.getElementById("promotionFormTitle").textContent = "Edit Promotion Code";
+    document.getElementById("promotionId").value = p.id;
+    document.getElementById("promotionCode").value = p.code || "";
+    document.getElementById("promotionDiscount").value = p.discount_percent ?? "";
+    document.getElementById("promotionStartDate").value = p.start_date || "";
+    document.getElementById("promotionExpirationDate").value = p.expiration_date || "";
+    document.getElementById("promotionPickupOnly").checked = !!p.local_pickup_only;
+    document.getElementById("promotionFirstTime").checked = !!p.first_time_customer_only;
+    document.getElementById("promotionActive").checked = !!p.active;
+  } else {
+    document.getElementById("promotionFormTitle").textContent = "Create Promotion Code";
+    document.getElementById("promotionId").value = "";
+    document.getElementById("promotionCode").value = "";
+    document.getElementById("promotionDiscount").value = "";
+    document.getElementById("promotionStartDate").value = "";
+    document.getElementById("promotionExpirationDate").value = "";
+    document.getElementById("promotionPickupOnly").checked = false;
+    document.getElementById("promotionFirstTime").checked = false;
+    document.getElementById("promotionActive").checked = true;
+  }
+
+  document.getElementById("promotionFormCard").scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+function closePromotionForm() {
+  document.getElementById("promotionFormCard").classList.add("hidden");
+  document.getElementById("promotionError").textContent = "";
+}
+
+function editPromotion(id) {
+  const p = cachedPromotions.find(x => x.id === id);
+  if (!p) {
+    alert("Promotion code could not be found. Refresh Promotions and try again.");
+    return;
+  }
+  openPromotionForm(p);
+}
+
+async function savePromotion() {
+  const id = document.getElementById("promotionId").value;
+  const code = document.getElementById("promotionCode").value.trim().toUpperCase();
+  const discount = Number(document.getElementById("promotionDiscount").value);
+  const startDate = document.getElementById("promotionStartDate").value;
+  const expirationDate = document.getElementById("promotionExpirationDate").value;
+  const pickupOnly = document.getElementById("promotionPickupOnly").checked;
+  const firstTime = document.getElementById("promotionFirstTime").checked;
+  const active = document.getElementById("promotionActive").checked;
+  const errorBox = document.getElementById("promotionError");
+  const button = document.getElementById("savePromotionButton");
+
+  errorBox.textContent = "";
+
+  if (!code) {
+    errorBox.textContent = "Enter a promotion code.";
+    return;
+  }
+  if (!Number.isFinite(discount) || discount <= 0 || discount > 100) {
+    errorBox.textContent = "Discount must be greater than 0 and no more than 100%.";
+    return;
+  }
+  if (!startDate || !expirationDate) {
+    errorBox.textContent = "Choose both a start date and an expiration date.";
+    return;
+  }
+  if (expirationDate < startDate) {
+    errorBox.textContent = "Expiration date cannot be before the start date.";
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Saving...";
+
+  try {
+    const body = {
+      code: code,
+      discount_percent: discount,
+      start_date: startDate,
+      expiration_date: expirationDate,
+      local_pickup_only: pickupOnly,
+      first_time_customer_only: firstTime,
+      active: active
+    };
+
+    const url = id
+      ? SUPABASE_URL + "/rest/v1/promotion_codes?id=eq." + encodeURIComponent(id)
+      : SUPABASE_URL + "/rest/v1/promotion_codes";
+
+    const response = await fetch(url, {
+      method: id ? "PATCH" : "POST",
+      headers: {
+        ...headers(),
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (!response.ok) {
+      const message = await response.text();
+      if (response.status === 409 || message.includes("promotion_codes_code_unique")) {
+        throw new Error("That promotion code already exists.");
+      }
+      throw new Error(message || "Promotion code could not be saved.");
+    }
+
+    closePromotionForm();
+    await loadPromotions();
+    alert(id ? "Promotion code updated." : "Promotion code created.");
+  }
+  catch (e) {
+    errorBox.textContent = e.message;
+  }
+  finally {
+    button.disabled = false;
+    button.textContent = "Save Promotion Code";
+  }
+}
+
+async function togglePromotion(id, makeActive) {
+  try {
+    const response = await fetch(
+      SUPABASE_URL + "/rest/v1/promotion_codes?id=eq." + encodeURIComponent(id),
+      {
+        method:"PATCH",
+        headers:{
+          ...headers(),
+          "Prefer":"return=minimal"
+        },
+        body:JSON.stringify({active:makeActive})
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(await response.text() || "Promotion status could not be updated.");
+    }
+
+    await loadPromotions();
+  }
+  catch (e) {
+    alert("Promotion status could not be updated.\\n\\n" + e.message);
+  }
+}
+
+async function deletePromotion(id, code) {
+  if (!confirm(
+    "Delete promotion code " + code + "?\\n\\n" +
+    "Past orders will keep their saved promotion and discount information."
+  )) return;
+
+  try {
+    const response = await fetch(
+      SUPABASE_URL + "/rest/v1/promotion_codes?id=eq." + encodeURIComponent(id),
+      {
+        method:"DELETE",
+        headers:{
+          ...headers(),
+          "Prefer":"return=minimal"
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(await response.text() || "Promotion code could not be deleted.");
+    }
+
+    await loadPromotions();
+  }
+  catch (e) {
+    alert("Promotion code could not be deleted.\\n\\n" + e.message);
+  }
+}
 
 
 // ==========================================
