@@ -399,6 +399,14 @@
     }
 
 
+    .promotion-box { background:white; border:1px solid #d6cabc; border-radius:8px; padding:15px; margin:18px 0; }
+    .promotion-row { display:flex; gap:10px; align-items:center; }
+    .promotion-row input { flex:1; padding:12px; border:1px solid #ccc; border-radius:8px; font-size:16px; text-transform:uppercase; }
+    .promotion-message { margin-top:9px; font-size:.92rem; }
+    .promotion-message.success { color:#2f6b3c; font-weight:bold; }
+    .promotion-message.error { color:#9b2c2c; }
+    .discount-line { color:#2f6b3c; }
+
     .total {
       margin-top: 15px;
 
@@ -825,6 +833,20 @@
 
 
 
+          <div class="promotion-box">
+            <label for="promotionCode"><strong>Promotion Code</strong></label>
+            <div class="promotion-row" style="margin-top:8px;">
+              <input id="promotionCode" type="text" placeholder="Enter promotion code" autocomplete="off">
+              <button id="applyPromotionButton" type="button" class="button" onclick="applyPromotionCode()">Apply</button>
+            </div>
+            <div id="promotionMessage" class="promotion-message"></div>
+          </div>
+
+          <div id="discountSummaryLine" class="summary-line discount-line" style="display:none;">
+            <strong>Promotion Discount (<span id="discountPercent">0</span>%):</strong>
+            -$<span id="discountAmount">0.00</span>
+          </div>
+
           <div class="total">
 
             Total:
@@ -1090,6 +1112,7 @@
        ========================================================= */
 
     let orderItems = [];
+    let appliedPromotion = null;
 
 
 
@@ -1388,6 +1411,7 @@
          ----------------------------------------- */
 
       orderItems.push(item);
+      invalidateAppliedPromotion("Your order changed. Please apply the promotion code again.");
 
 
 
@@ -1434,6 +1458,8 @@
       );
 
 
+      invalidateAppliedPromotion("Your order changed. Please apply the promotion code again.");
+
       updateOrderSummary();
 
 
@@ -1446,6 +1472,7 @@
        ========================================================= */
 
     function toggleShippingAddress() {
+      invalidateAppliedPromotion("Delivery method changed. Please apply the promotion code again.");
 
       const shippingSelected =
         document.getElementById("shippingCheckbox").checked;
@@ -1532,6 +1559,44 @@
     }
 
 
+
+    function clearPromotion(message = "") {
+      appliedPromotion = null;
+      const line = document.getElementById("discountSummaryLine");
+      if (line) line.style.display = "none";
+      const msg = document.getElementById("promotionMessage");
+      if (msg) { msg.textContent = message; msg.className = "promotion-message" + (message ? " error" : ""); }
+    }
+
+    async function applyPromotionCode() {
+      const code = document.getElementById("promotionCode").value.trim();
+      const name = document.getElementById("customerName").value.trim();
+      const email = document.getElementById("customerEmail").value.trim();
+      const fulfillment = document.getElementById("shippingCheckbox").checked ? "shipping" : "pickup";
+      const button = document.getElementById("applyPromotionButton");
+      const msg = document.getElementById("promotionMessage");
+      if (!code) { clearPromotion("Please enter a promotion code."); updateOrderSummary(); return; }
+      button.disabled = true; button.textContent = "Checking..."; msg.textContent = "";
+      try {
+        const response = await fetch(SUPABASE_URL + "/rest/v1/rpc/validate_promotion_code", {
+          method:"POST", headers:{"Content-Type":"application/json","apikey":SUPABASE_PUBLISHABLE_KEY,"Authorization":"Bearer " + SUPABASE_PUBLISHABLE_KEY},
+          body:JSON.stringify({p_code:code,p_customer_name:name,p_email:email,p_fulfillment:fulfillment})
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.message || "Unable to validate promotion code.");
+        if (!result.valid) { clearPromotion(result.message || "This promotion code is not valid."); updateOrderSummary(); return; }
+        appliedPromotion = {code:result.code, discountPercent:Number(result.discount_percent)};
+        document.getElementById("promotionCode").value = result.code;
+        msg.textContent = "Promotion applied: " + appliedPromotion.discountPercent + "% off coffee subtotal.";
+        msg.className = "promotion-message success"; updateOrderSummary();
+      } catch(e) { console.error(e); clearPromotion("This promotion code could not be validated. Please try again."); updateOrderSummary(); }
+      finally { button.disabled = false; button.textContent = "Apply"; }
+    }
+
+    function invalidateAppliedPromotion(message) {
+      if (!appliedPromotion) return;
+      clearPromotion(message || "Please apply your promotion code again after changing the order.");
+    }
 
     /* =========================================================
        UPDATE ORDER SUMMARY
@@ -1676,9 +1741,11 @@
          GRAND TOTAL
          ----------------------------------------- */
 
-      const grandTotal =
-        coffeeTotal +
-        shippingCost;
+      const discountAmount = appliedPromotion
+        ? Math.round((coffeeTotal * appliedPromotion.discountPercent / 100) * 100) / 100
+        : 0;
+
+      const grandTotal = coffeeTotal - discountAmount + shippingCost;
 
 
 
@@ -1738,6 +1805,13 @@
         .textContent =
           shippingText;
 
+
+      const discountLine = document.getElementById("discountSummaryLine");
+      if (appliedPromotion && discountAmount > 0) {
+        discountLine.style.display = "block";
+        document.getElementById("discountPercent").textContent = appliedPromotion.discountPercent;
+        document.getElementById("discountAmount").textContent = discountAmount.toFixed(2);
+      } else { discountLine.style.display = "none"; }
 
       document
         .getElementById("grandTotal")
@@ -2102,7 +2176,8 @@ Thank you!`;
         p_state: address.state || "",
         p_postal_code: address.postalCode || "",
         p_pickup_location: shippingSelected ? null : customer.pickupLocation,
-        p_items: items
+        p_items: items,
+        p_promotion_code: appliedPromotion ? appliedPromotion.code : null
       };
 
       const button = document.getElementById("placeOrderButton");
@@ -2155,6 +2230,13 @@ Thank you!`;
             return;
           }
 
+          if (errorText.includes("PROMOTION_CODE_INVALID")) { alert("This promotion code is not valid."); return; }
+          if (errorText.includes("PROMOTION_CODE_INACTIVE")) { alert("This promotion code is not currently active."); return; }
+          if (errorText.includes("PROMOTION_CODE_NOT_STARTED")) { alert("This promotion code is not active yet."); return; }
+          if (errorText.includes("PROMOTION_CODE_EXPIRED")) { alert("This promotion code has expired."); return; }
+          if (errorText.includes("PROMOTION_LOCAL_PICKUP_ONLY")) { alert("This promotion code is valid for Local Pickup orders only."); return; }
+          if (errorText.includes("PROMOTION_FIRST_TIME_ONLY")) { alert("This promotion code is for first-time customers only."); return; }
+
           throw new Error(errorText);
         }
 
@@ -2193,6 +2275,9 @@ Thank you!`;
 
         // Clear the cart only after Supabase confirms the order.
         orderItems = [];
+        appliedPromotion = null;
+        document.getElementById("promotionCode").value = "";
+        document.getElementById("promotionMessage").textContent = "";
         document.getElementById("shippingCheckbox").checked = false;
         document.getElementById("pickupLocation").value = "";
         toggleShippingAddress();
