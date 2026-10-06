@@ -456,6 +456,11 @@
 
 
 
+    .package-sizes { margin-top:18px; padding-top:14px; border-top:1px solid #e1d8cc; }
+    .package-size-row { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid #eee7df; flex-wrap:wrap; }
+    .package-size-actions { display:flex; gap:8px; flex-wrap:wrap; }
+    .button.small { padding:8px 12px; font-size:13px; }
+
     /* ==========================================
        MOBILE
        ========================================== */
@@ -1343,6 +1348,37 @@
 </div>
 
 
+<!-- PACKAGE SIZE MODAL -->
+<div id="packageSizeModal" class="modal-backdrop hidden">
+  <div class="modal">
+    <h3 id="packageSizeModalTitle">Add Package Size</h3>
+    <input id="packageSizeId" type="hidden">
+    <input id="packageSizeProductId" type="hidden">
+    <div id="packageSizeCoffee" class="muted" style="margin-bottom:18px;"></div>
+    <div class="grid">
+      <div class="form-group">
+        <label for="packageSizeOz">Package Size (oz)</label>
+        <input id="packageSizeOz" type="number" min="0.01" step="0.01" placeholder="Example: 8">
+      </div>
+      <div class="form-group">
+        <label for="packageSizePrice">Price ($)</label>
+        <input id="packageSizePrice" type="number" min="0" step="0.01" placeholder="Example: 16.00">
+      </div>
+    </div>
+    <div class="form-group">
+      <label style="display:flex;align-items:center;gap:10px;font-weight:normal;">
+        <input id="packageSizeActive" type="checkbox" checked style="width:auto;">
+        Active on Customer Website
+      </label>
+    </div>
+    <div id="packageSizeError" class="low-stock" style="min-height:20px;"></div>
+    <div class="modal-actions">
+      <button class="button secondary" onclick="closePackageSizeModal()">Cancel</button>
+      <button id="packageSizeSaveButton" class="button" onclick="savePackageSize()">Save Package Size</button>
+    </div>
+  </div>
+</div>
+
 <footer>
   Colorful Coffee Bean · Admin
 </footer>
@@ -1366,6 +1402,8 @@ let cachedItems = [];
 let cachedInventory = [];
 
 let cachedInventoryTransactions = [];
+
+let cachedProductSizes = [];
 
 let inventoryModalMode = null;
 
@@ -3202,6 +3240,18 @@ async function loadInventory() {
         product;
     });
 
+    // --------------------------------------
+    // LOAD PACKAGE SIZES
+    // --------------------------------------
+    const sizesResponse = await fetch(
+      SUPABASE_URL + "/rest/v1/product_sizes?select=id,product_id,size_oz,price,active,created_at&order=size_oz.asc",
+      { headers: headers() }
+    );
+    if (!sizesResponse.ok) {
+      throw new Error(await sizesResponse.text() || "Could not load package sizes.");
+    }
+    cachedProductSizes = await sizesResponse.json();
+
 
     // --------------------------------------
     // LOAD CURRENT INVENTORY
@@ -3387,16 +3437,31 @@ function renderInventory() {
         // POSSIBLE BAGS
         // ----------------------------------
 
-        const bags6 =
-          Math.floor(
-            roasted / 6
-          );
+        const productSizes = cachedProductSizes
+          .filter(size => size.product_id === inventory.product_id)
+          .sort((a,b) => Number(a.size_oz) - Number(b.size_oz));
 
+        const bagStatsHtml = productSizes.length
+          ? productSizes.map(size =>
+              '<div class="inventory-stat">' +
+                escapeHtml(formatOz(size.size_oz)) + ' oz Bags Possible' +
+                '<strong>' + Math.floor(roasted / Number(size.size_oz)) + '</strong>' +
+              '</div>'
+            ).join('')
+          : '<div class="inventory-stat">Package Sizes<strong>None</strong></div>';
 
-        const bags12 =
-          Math.floor(
-            roasted / 12
-          );
+        const packageSizesHtml = productSizes.length
+          ? productSizes.map(size =>
+              '<div class="package-size-row">' +
+                '<div><strong>' + escapeHtml(formatOz(size.size_oz)) + ' oz</strong> · $' + Number(size.price).toFixed(2) +
+                (size.active ? ' <span class="stock-ok">Active</span>' : ' <span class="muted">Inactive</span>') + '</div>' +
+                '<div class="package-size-actions">' +
+                  '<button class="button secondary small" onclick="openPackageSizeModal(\'' + escapeHtml(inventory.product_id) + '\', \'' + escapeHtml(size.id) + '\')">Edit</button>' +
+                  '<button class="button danger small" onclick="deletePackageSize(\'' + escapeHtml(size.id) + '\', \'' + escapeHtml(inventory.product_id) + '\')">Delete</button>' +
+                '</div>' +
+              '</div>'
+            ).join('')
+          : '<div class="muted" style="margin:10px 0;">No package sizes configured.</div>';
 
 
 
@@ -3665,32 +3730,7 @@ function renderInventory() {
 
 
 
-              '<div class="inventory-stat">' +
-
-                '6 oz Bags Possible' +
-
-                '<strong>' +
-
-                  bags6 +
-
-                '</strong>' +
-
-              '</div>' +
-
-
-
-              '<div class="inventory-stat">' +
-
-                '12 oz Bags Possible' +
-
-                '<strong>' +
-
-                  bags12 +
-
-                '</strong>' +
-
-              '</div>' +
-
+              bagStatsHtml +
 
 
               '<div class="inventory-stat">' +
@@ -3772,6 +3812,14 @@ function renderInventory() {
 '</div>' +
 
 
+
+            '<div class="package-sizes">' +
+              '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">' +
+                '<strong>Package Sizes & Prices</strong>' +
+                '<button class="button small" onclick="openPackageSizeModal(\'' + escapeHtml(inventory.product_id) + '\')">+ Add Package Size</button>' +
+              '</div>' +
+              packageSizesHtml +
+            '</div>' +
 
             '<div class="history">' +
 
@@ -4860,6 +4908,76 @@ async function saveNewCoffee() {
 }
 
 
+
+// ==========================================
+// PACKAGE SIZES
+// ==========================================
+function formatOz(value) {
+  const n = Number(value);
+  return Number.isInteger(n) ? String(n) : String(n).replace(/0+$/, '').replace(/\.$/, '');
+}
+
+function openPackageSizeModal(productId, sizeId = null) {
+  const row = sizeId ? cachedProductSizes.find(x => x.id === sizeId) : null;
+  document.getElementById("packageSizeId").value = row ? row.id : "";
+  document.getElementById("packageSizeProductId").value = productId;
+  document.getElementById("packageSizeCoffee").textContent = PRODUCT_NAMES[productId] || productId;
+  document.getElementById("packageSizeOz").value = row ? row.size_oz : "";
+  document.getElementById("packageSizePrice").value = row ? row.price : "";
+  document.getElementById("packageSizeActive").checked = row ? row.active === true : true;
+  document.getElementById("packageSizeError").textContent = "";
+  document.getElementById("packageSizeModalTitle").textContent = row ? "Edit Package Size" : "Add Package Size";
+  document.getElementById("packageSizeModal").classList.remove("hidden");
+}
+
+function closePackageSizeModal() {
+  document.getElementById("packageSizeModal").classList.add("hidden");
+}
+
+async function savePackageSize() {
+  const id = document.getElementById("packageSizeId").value;
+  const productId = document.getElementById("packageSizeProductId").value;
+  const sizeOz = Number(document.getElementById("packageSizeOz").value);
+  const price = Number(document.getElementById("packageSizePrice").value);
+  const active = document.getElementById("packageSizeActive").checked;
+  const errorBox = document.getElementById("packageSizeError");
+  const button = document.getElementById("packageSizeSaveButton");
+  errorBox.textContent = "";
+  if (!Number.isFinite(sizeOz) || sizeOz <= 0) { errorBox.textContent = "Package size must be greater than 0 oz."; return; }
+  if (!Number.isFinite(price) || price < 0) { errorBox.textContent = "Enter a valid price."; return; }
+  button.disabled = true; button.textContent = "Saving...";
+  try {
+    const url = id
+      ? SUPABASE_URL + "/rest/v1/product_sizes?id=eq." + encodeURIComponent(id)
+      : SUPABASE_URL + "/rest/v1/product_sizes";
+    const response = await fetch(url, {
+      method: id ? "PATCH" : "POST",
+      headers: { ...headers(), "Prefer": "return=minimal" },
+      body: JSON.stringify({ product_id: productId, size_oz: sizeOz, price: price, active: active })
+    });
+    if (!response.ok) {
+      const msg = await response.text();
+      if (msg.includes("product_sizes_product_id_size_oz_unique")) throw new Error("This coffee already has that package size.");
+      throw new Error(msg || "Could not save package size.");
+    }
+    closePackageSizeModal();
+    await loadInventory();
+  } catch (e) { errorBox.textContent = e.message; }
+  finally { button.disabled = false; button.textContent = "Save Package Size"; }
+}
+
+async function deletePackageSize(sizeId, productId) {
+  const row = cachedProductSizes.find(x => x.id === sizeId);
+  const label = row ? formatOz(row.size_oz) + " oz" : "this package size";
+  if (!confirm("Delete " + label + " from " + (PRODUCT_NAMES[productId] || productId) + "?")) return;
+  try {
+    const response = await fetch(SUPABASE_URL + "/rest/v1/product_sizes?id=eq." + encodeURIComponent(sizeId), {
+      method: "DELETE", headers: headers()
+    });
+    if (!response.ok) throw new Error(await response.text() || "Could not delete package size.");
+    await loadInventory();
+  } catch (e) { alert("Package size could not be deleted.\n\n" + e.message); }
+}
 
 // ==========================================
 // ESCAPE HTML
