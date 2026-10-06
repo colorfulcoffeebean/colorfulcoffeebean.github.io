@@ -843,8 +843,8 @@
           </div>
 
           <div id="discountSummaryLine" class="summary-line discount-line" style="display:none;">
-            <strong>Promotion Discount (<span id="discountPercent">0</span>%):</strong>
-            -$<span id="discountAmount">0.00</span>
+            <strong>Promotion Discount:</strong>
+             -$<span id="discountAmount">0.00</span>
           </div>
 
           <div class="total">
@@ -1585,9 +1585,9 @@
         const result = await response.json();
         if (!response.ok) throw new Error(result.message || "Unable to validate promotion code.");
         if (!result.valid) { clearPromotion(result.message || "This promotion code is not valid."); updateOrderSummary(); return; }
-        appliedPromotion = {code:result.code, discountPercent:Number(result.discount_percent)};
+        appliedPromotion = {code:result.code, discountAmount:Number(result.discount_amount || 0)};
         document.getElementById("promotionCode").value = result.code;
-        msg.textContent = "Promotion applied: " + appliedPromotion.discountPercent + "% off coffee subtotal.";
+        msg.textContent = "Promotion applied: $" + appliedPromotion.discountAmount.toFixed(2) + " off coffee subtotal.";
         msg.className = "promotion-message success"; updateOrderSummary();
       } catch(e) { console.error(e); clearPromotion("This promotion code could not be validated. Please try again."); updateOrderSummary(); }
       finally { button.disabled = false; button.textContent = "Apply"; }
@@ -1742,7 +1742,7 @@
          ----------------------------------------- */
 
       const discountAmount = appliedPromotion
-        ? Math.round((coffeeTotal * appliedPromotion.discountPercent / 100) * 100) / 100
+        ? Math.min(coffeeTotal, Math.max(0, Number(appliedPromotion.discountAmount || 0)))
         : 0;
 
       const grandTotal = coffeeTotal - discountAmount + shippingCost;
@@ -1809,7 +1809,6 @@
       const discountLine = document.getElementById("discountSummaryLine");
       if (appliedPromotion && discountAmount > 0) {
         discountLine.style.display = "block";
-        document.getElementById("discountPercent").textContent = appliedPromotion.discountPercent;
         document.getElementById("discountAmount").textContent = discountAmount.toFixed(2);
       } else { discountLine.style.display = "none"; }
 
@@ -2077,9 +2076,14 @@
          GRAND TOTAL
          ----------------------------------------- */
 
+      const discountAmount = appliedPromotion
+        ? Math.min(coffeeTotal, Math.max(0, Number(appliedPromotion.discountAmount || 0)))
+        : 0;
+
       const grandTotal =
-        coffeeTotal +
-        shippingCost;
+         coffeeTotal -
+         discountAmount +
+         shippingCost;
 
 
 
@@ -2098,7 +2102,7 @@ ${orderDetails}
 Total Bags: ${orderItems.length}
 
 Coffee Total: $${coffeeTotal.toFixed(2)}
-Delivery Method: ${deliveryText}
+${appliedPromotion ? `Promotion Code: ${appliedPromotion.code}\nPromotion Discount: -$${discountAmount.toFixed(2)}\n` : ""}Delivery Method: ${deliveryText}
 Shipping: ${shippingText}
 
 TOTAL: $${grandTotal.toFixed(2)}
