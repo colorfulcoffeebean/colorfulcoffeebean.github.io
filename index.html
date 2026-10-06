@@ -482,12 +482,36 @@
 
     .shipping-info {
       color: #66584c;
-
       font-size: 0.9rem;
-
       line-height: 1.6;
-
       margin-top: 8px;
+    }
+
+    .maryland-warning {
+      margin-top: 10px;
+      padding: 12px 14px;
+      border: 1px solid #b3261e;
+      border-radius: 8px;
+      background: #fff4f2;
+      color: #8b1e18;
+      font-weight: bold;
+      line-height: 1.5;
+    }
+
+    .cottage-food-notice {
+      max-width: 1060px;
+      margin: 35px auto 0;
+      padding: 22px 20px;
+      box-sizing: border-box;
+      background: #fff;
+      border: 1px solid #d6cabc;
+      border-radius: 12px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .cottage-food-notice h3 {
+      margin-top: 0;
     }
 
 
@@ -654,8 +678,8 @@
 
 
       <p>
-        Every coffee is roasted fresh in small batches
-        and available in 6 oz and 12 oz sizes.
+        Every coffee is roasted fresh in small batches.
+        Package sizes and prices vary by coffee and are shown with each selection below.
         Explore our current selection and find your
         next favorite cup.
       </p>
@@ -716,6 +740,19 @@
         Our coffees are carefully sourced and roasted
         in small batches to highlight the unique character
         of each origin.
+      </p>
+
+      <h3>Why “Colorful”?</h3>
+
+      <p>
+        At Colorful Coffee Bean, <strong>Colorful means variety</strong>.
+        A coffee bean can be roasted, brewed, and enjoyed in many different ways,
+        bringing out different flavors, aromas, and character.
+      </p>
+
+      <p>
+        <strong>Many ways to brew. Many ways to enjoy.<br>
+        One purpose — a great cup of coffee.</strong>
       </p>
 
     </section>
@@ -898,6 +935,12 @@
             2 bags $8 •
             3 bags $9
 
+            <br><br>
+
+            <strong>Maryland shipping only.</strong>
+            Because Colorful Coffee Bean operates as a Maryland Cottage Food Business,
+            shipping is available only to addresses within Maryland.
+
           </p>
 
         </div>
@@ -949,7 +992,12 @@
 
           <div class="form-group">
             <label for="shippingState">State *</label>
-            <input type="text" id="shippingState" placeholder="State">
+            <input type="text" id="shippingState" placeholder="MD or Maryland"
+              oninput="validateMarylandShippingState(false)"
+              onblur="validateMarylandShippingState(true)">
+            <div id="marylandShippingWarning" class="maryland-warning" style="display:none;">
+              ⚠ Shipping is available only within Maryland. Colorful Coffee Bean cannot ship cottage food products outside the State of Maryland.
+            </div>
           </div>
 
           <div class="form-group">
@@ -1078,10 +1126,21 @@
        FOOTER
        ========================================================= -->
 
+  <section class="cottage-food-notice">
+    <h3>Maryland Cottage Food Business</h3>
+    <p>
+      Colorful Coffee Bean operates as a Maryland Cottage Food Business.
+      Sales and shipping are available within Maryland only.
+    </p>
+    <p>
+      <strong>Registration / License No.:</strong>
+      <span id="cottageFoodLicenseNumber">To be added</span>
+    </p>
+  </section>
+
   <footer>
     10% of the profits from every order will be donated to charity. Thank you for enjoying great coffee while helping us give back.
      © 2026 Colorful Coffee Bean
-
   </footer>
 
 
@@ -1129,7 +1188,7 @@
 
 
     /* =========================================================
-       LOAD ACTIVE COFFEES FROM SUPABASE
+       LOAD ACTIVE COFFEES + ACTIVE PACKAGE SIZES FROM SUPABASE
        ========================================================= */
 
     function escapeCoffeeHtml(value) {
@@ -1148,16 +1207,56 @@
         <option value="Dark">Dark</option>`;
     }
 
+    function packageSizeKey(sizeOz) {
+      return String(sizeOz).replace(".", "_");
+    }
+
+    function formatSizeOz(sizeOz) {
+      const n = Number(sizeOz);
+      return Number.isInteger(n) ? String(n) : String(n);
+    }
+
     function buildCoffeeCard(product) {
       const id = escapeCoffeeHtml(product.id);
-      const price6 = Number(product.price_6oz || 0);
-      const price12 = Number(product.price_12oz || 0);
+      const sizes = Array.isArray(product.packageSizes) ? product.packageSizes : [];
 
       coffeeData[product.id] = {
         name: product.name,
-        price6: price6,
-        price12: price12
+        sizes: {}
       };
+
+      sizes.forEach(function(size) {
+        coffeeData[product.id].sizes[String(size.size_oz)] = Number(size.price || 0);
+      });
+
+      let optionsHtml = "";
+
+      if (sizes.length) {
+        optionsHtml = sizes.map(function(size, index) {
+          const sizeValue = formatSizeOz(size.size_oz);
+          const key = packageSizeKey(sizeValue);
+          const inputId = id + "-size-" + key;
+          const roastId = id + "-roast-" + key;
+          const price = Number(size.price || 0);
+
+          return `
+            <div class="coffee-option">
+              <input type="radio"
+                name="${id}-size"
+                id="${inputId}"
+                value="${escapeCoffeeHtml(sizeValue)}"
+                ${index === 0 ? "checked" : ""}>
+              <label for="${inputId}">${escapeCoffeeHtml(sizeValue)} oz</label>
+              <select id="${roastId}">${roastOptions()}</select>
+              <span class="option-price">$${price.toFixed(2).replace(".00","")}</span>
+            </div>`;
+        }).join("");
+      } else {
+        optionsHtml = `
+          <p class="cart-empty">
+            Package sizes are not currently available for this coffee.
+          </p>`;
+      }
 
       return `
         <div class="coffee-card">
@@ -1168,26 +1267,15 @@
           <p><strong>Tasting Notes:</strong><br>${escapeCoffeeHtml(product.tasting_notes || "")}</p>
 
           <div class="coffee-options">
-            <div class="coffee-option">
-              <input type="radio" name="${id}-size" id="${id}-6" value="6" checked>
-              <label for="${id}-6">6 oz</label>
-              <select id="${id}-roast-6">${roastOptions()}</select>
-              <span class="option-price">$${price6.toFixed(2).replace(".00","")}</span>
-            </div>
+            ${optionsHtml}
 
-            <div class="coffee-option">
-              <input type="radio" name="${id}-size" id="${id}-12" value="12">
-              <label for="${id}-12">12 oz</label>
-              <select id="${id}-roast-12">${roastOptions()}</select>
-              <span class="option-price">$${price12.toFixed(2).replace(".00","")}</span>
-            </div>
-
+            ${sizes.length ? `
             <div class="card-order-button">
               <button type="button" class="button"
                 onclick='addCoffeeToOrder(${JSON.stringify(product.id)})'>
                 Add to Order
               </button>
-            </div>
+            </div>` : ""}
           </div>
         </div>`;
     }
@@ -1196,23 +1284,44 @@
       const grid = document.getElementById("coffeeGrid");
 
       try {
-        const response = await fetch(
-          SUPABASE_URL +
-          "/rest/v1/products?select=id,name,price_6oz,price_12oz,active,origin,region,process,tasting_notes" +
-          "&active=eq.true&order=name.asc",
-          {
-            headers: {
-              "apikey": SUPABASE_PUBLISHABLE_KEY,
-              "Authorization": "Bearer " + SUPABASE_PUBLISHABLE_KEY
-            }
-          }
-        );
+        const headers = {
+          "apikey": SUPABASE_PUBLISHABLE_KEY,
+          "Authorization": "Bearer " + SUPABASE_PUBLISHABLE_KEY
+        };
 
-        if (!response.ok) {
-          throw new Error(await response.text() || "Unable to load coffees.");
+        const [productsResponse, sizesResponse] = await Promise.all([
+          fetch(
+            SUPABASE_URL +
+            "/rest/v1/products?select=id,name,active,origin,region,process,tasting_notes" +
+            "&active=eq.true&order=name.asc",
+            { headers: headers }
+          ),
+          fetch(
+            SUPABASE_URL +
+            "/rest/v1/product_sizes?select=product_id,size_oz,price,active" +
+            "&active=eq.true&order=size_oz.asc",
+            { headers: headers }
+          )
+        ]);
+
+        if (!productsResponse.ok) {
+          throw new Error(await productsResponse.text() || "Unable to load coffees.");
         }
 
-        const products = await response.json();
+        if (!sizesResponse.ok) {
+          throw new Error(await sizesResponse.text() || "Unable to load package sizes.");
+        }
+
+        const products = await productsResponse.json();
+        const packageSizes = await sizesResponse.json();
+
+        const sizesByProduct = {};
+        packageSizes.forEach(function(size) {
+          if (!sizesByProduct[size.product_id]) {
+            sizesByProduct[size.product_id] = [];
+          }
+          sizesByProduct[size.product_id].push(size);
+        });
 
         Object.keys(coffeeData).forEach(function(key) {
           delete coffeeData[key];
@@ -1222,6 +1331,10 @@
           grid.innerHTML = '<p class="cart-empty">No coffees are currently available.</p>';
           return;
         }
+
+        products.forEach(function(product) {
+          product.packageSizes = sizesByProduct[product.id] || [];
+        });
 
         grid.innerHTML = products.map(buildCoffeeCard).join("");
       }
@@ -1357,31 +1470,21 @@
           .getElementById(
             coffeeId +
             "-roast-" +
-            size
+            packageSizeKey(size)
           )
           .value;
 
 
 
       /* -----------------------------------------
-         FIND PRICE
+         FIND PRICE FROM ACTIVE PACKAGE SIZE
          ----------------------------------------- */
 
-      let price;
+      const price = Number(coffee.sizes[String(size)]);
 
-
-      if (size === "6") {
-
-        price =
-          coffee.price6;
-
-      }
-
-      else {
-
-        price =
-          coffee.price12;
-
+      if (!Number.isFinite(price)) {
+        alert("This package size is no longer available. Please refresh the page and try again.");
+        return;
       }
 
 
@@ -1483,8 +1586,37 @@
       document.getElementById("pickupLocationFields").style.display =
         shippingSelected ? "none" : "block";
 
+      validateMarylandShippingState(false);
+
     }
 
+
+
+    function validateMarylandShippingState(showWarning = true) {
+      const shippingSelected =
+        document.getElementById("shippingCheckbox").checked;
+
+      const stateInput =
+        document.getElementById("shippingState");
+
+      const warning =
+        document.getElementById("marylandShippingWarning");
+
+      if (!shippingSelected) {
+        if (warning) warning.style.display = "none";
+        return true;
+      }
+
+      const state = stateInput.value.trim().toUpperCase();
+      const valid = state === "MD" || state === "MARYLAND";
+
+      if (warning) {
+        warning.style.display =
+          (!valid && state !== "" && showWarning) ? "block" : "none";
+      }
+
+      return valid;
+    }
 
 
     /* =========================================================
@@ -1966,6 +2098,15 @@
           return null;
         }
 
+        if (!validateMarylandShippingState(true)) {
+          alert(
+            "Maryland shipping only.\n\n" +
+            "Colorful Coffee Bean operates as a Maryland Cottage Food Business and cannot ship cottage food products outside the State of Maryland."
+          );
+          document.getElementById("shippingState").focus();
+          return null;
+        }
+
         shippingAddress = {
           addressLine1: addressLine1,
           addressLine2: addressLine2,
@@ -2260,6 +2401,22 @@ Thank you!`;
 
           if (errorText.includes("SHIPPING_ADDRESS_REQUIRED")) {
             alert("Please complete the required shipping address fields.");
+            return;
+          }
+
+          if (errorText.includes("SHIPPING_MARYLAND_ONLY")) {
+            alert(
+              "Maryland shipping only.\n\n" +
+              "Colorful Coffee Bean cannot ship cottage food products outside the State of Maryland."
+            );
+            return;
+          }
+
+          if (errorText.includes("INVALID_OR_INACTIVE_PACKAGE_SIZE")) {
+            alert(
+              "One of the package sizes in your order is no longer available.\n\n" +
+              "Please refresh the page and select an available size."
+            );
             return;
           }
 
