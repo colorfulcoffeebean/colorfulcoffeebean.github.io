@@ -1585,9 +1585,18 @@
         const result = await response.json();
         if (!response.ok) throw new Error(result.message || "Unable to validate promotion code.");
         if (!result.valid) { clearPromotion(result.message || "This promotion code is not valid."); updateOrderSummary(); return; }
-        appliedPromotion = {code:result.code, discountAmount:Number(result.discount_amount || 0)};
+        appliedPromotion = {
+          code: result.code,
+          discountAmount: Number(result.discount_amount || 0),
+          discountType: result.discount_type === "per_bag" ? "per_bag" : "per_order"
+        };
         document.getElementById("promotionCode").value = result.code;
-        msg.textContent = "Promotion applied: $" + appliedPromotion.discountAmount.toFixed(2) + " off coffee subtotal.";
+        msg.textContent =
+          "Promotion applied: $" +
+          appliedPromotion.discountAmount.toFixed(2) +
+          (appliedPromotion.discountType === "per_bag"
+            ? " off per bag."
+            : " off coffee subtotal.");
         msg.className = "promotion-message success"; updateOrderSummary();
       } catch(e) { console.error(e); clearPromotion("This promotion code could not be validated. Please try again."); updateOrderSummary(); }
       finally { button.disabled = false; button.textContent = "Apply"; }
@@ -1741,9 +1750,17 @@
          GRAND TOTAL
          ----------------------------------------- */
 
-      const discountAmount = appliedPromotion
-        ? Math.min(coffeeTotal, Math.max(0, Number(appliedPromotion.discountAmount || 0)))
+      const rawPromotionDiscount = appliedPromotion
+        ? Math.max(
+            0,
+            Number(appliedPromotion.discountAmount || 0) *
+              (appliedPromotion.discountType === "per_bag" ? orderItems.length : 1)
+          )
         : 0;
+
+      // A promotion can reduce the coffee subtotal to $0, but never below $0.
+      // Shipping is not discounted.
+      const discountAmount = Math.min(coffeeTotal, rawPromotionDiscount);
 
       const grandTotal = coffeeTotal - discountAmount + shippingCost;
 
@@ -1810,7 +1827,16 @@
       if (appliedPromotion && discountAmount > 0) {
         discountLine.style.display = "block";
         document.getElementById("discountAmount").textContent = discountAmount.toFixed(2);
-      } else { discountLine.style.display = "none"; }
+        const discountLabel = discountLine.querySelector("strong");
+        if (discountLabel) {
+          discountLabel.textContent =
+            appliedPromotion.discountType === "per_bag"
+              ? "Promotion Discount (" + orderItems.length + " bag" + (orderItems.length === 1 ? "" : "s") + "):"
+              : "Promotion Discount:";
+        }
+      } else {
+        discountLine.style.display = "none";
+      }
 
       document
         .getElementById("grandTotal")
@@ -2076,9 +2102,17 @@
          GRAND TOTAL
          ----------------------------------------- */
 
-      const discountAmount = appliedPromotion
-        ? Math.min(coffeeTotal, Math.max(0, Number(appliedPromotion.discountAmount || 0)))
+      const rawPromotionDiscount = appliedPromotion
+        ? Math.max(
+            0,
+            Number(appliedPromotion.discountAmount || 0) *
+              (appliedPromotion.discountType === "per_bag" ? orderItems.length : 1)
+          )
         : 0;
+
+      // A promotion can reduce the coffee subtotal to $0, but never below $0.
+      // Shipping is not discounted.
+      const discountAmount = Math.min(coffeeTotal, rawPromotionDiscount);
 
       const grandTotal =
          coffeeTotal -
