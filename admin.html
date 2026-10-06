@@ -1180,17 +1180,6 @@
       <input id="editCoffeeTastingNotes" type="text">
     </div>
 
-    <div class="grid">
-      <div class="form-group">
-        <label for="editCoffeePrice6">6 oz Price ($)</label>
-        <input id="editCoffeePrice6" type="number" min="0" step="0.01">
-      </div>
-      <div class="form-group">
-        <label for="editCoffeePrice12">12 oz Price ($)</label>
-        <input id="editCoffeePrice12" type="number" min="0" step="0.01">
-      </div>
-    </div>
-
     <div class="form-group">
       <label style="display:flex;align-items:center;gap:10px;font-weight:normal;">
         <input id="editCoffeeActive" type="checkbox" style="width:auto;">
@@ -1283,17 +1272,8 @@
         placeholder="Example: Chocolate / Caramel / Citrus"
       >
     </div>
-
-    <div class="grid">
-      <div class="form-group">
-        <label for="newCoffeePrice6">6 oz Price ($)</label>
-        <input id="newCoffeePrice6" type="number" min="0" step="0.01">
-      </div>
-
-      <div class="form-group">
-        <label for="newCoffeePrice12">12 oz Price ($)</label>
-        <input id="newCoffeePrice12" type="number" min="0" step="0.01">
-      </div>
+    <div class="muted" style="margin:-2px 0 18px;">
+      Package sizes and prices are managed separately after the coffee is added.
     </div>
 
     <div class="grid">
@@ -4405,8 +4385,6 @@ async function openEditCoffeeModal(productId) {
   document.getElementById("editCoffeeElevation").value = p.elevation || "";
   document.getElementById("editCoffeeProcess").value = p.process || "";
   document.getElementById("editCoffeeTastingNotes").value = p.tasting_notes || "";
-  document.getElementById("editCoffeePrice6").value = p.price_6oz ?? "";
-  document.getElementById("editCoffeePrice12").value = p.price_12oz ?? "";
   document.getElementById("editCoffeeActive").checked = p.active === true;
   document.getElementById("editCoffeeModal").classList.remove("hidden");
 }
@@ -4423,8 +4401,6 @@ async function saveCoffeeEdits() {
   const elevation = document.getElementById("editCoffeeElevation").value.trim();
   const process = document.getElementById("editCoffeeProcess").value.trim();
   const tastingNotes = document.getElementById("editCoffeeTastingNotes").value.trim();
-  const price6 = Number(document.getElementById("editCoffeePrice6").value);
-  const price12 = Number(document.getElementById("editCoffeePrice12").value);
   const active = document.getElementById("editCoffeeActive").checked;
   const errorBox = document.getElementById("editCoffeeError");
   const button = document.getElementById("editCoffeeSaveButton");
@@ -4435,11 +4411,6 @@ async function saveCoffeeEdits() {
   // only one field. Existing blank fields may remain blank.
   if (!name) {
     errorBox.textContent = "Display Name cannot be blank.";
-    return;
-  }
-
-  if (!Number.isFinite(price6) || price6 < 0 || !Number.isFinite(price12) || price12 < 0) {
-    errorBox.textContent = "Enter valid 6 oz and 12 oz prices.";
     return;
   }
 
@@ -4459,8 +4430,6 @@ async function saveCoffeeEdits() {
           elevation,
           process,
           tasting_notes: tastingNotes,
-          price_6oz: price6,
-          price_12oz: price12,
           active
         })
       }
@@ -4548,14 +4517,6 @@ function openAddCoffeeModal() {
 
   document
     .getElementById("newCoffeeTastingNotes")
-    .value = "";
-
-  document
-    .getElementById("newCoffeePrice6")
-    .value = "";
-
-  document
-    .getElementById("newCoffeePrice12")
     .value = "";
 
   document
@@ -4672,22 +4633,7 @@ async function saveNewCoffee() {
       .getElementById("newCoffeeTastingNotes")
       .value
       .trim();
-
-  const price6 =
-    Number(
-      document
-        .getElementById("newCoffeePrice6")
-        .value
-    );
-
-  const price12 =
-    Number(
-      document
-        .getElementById("newCoffeePrice12")
-        .value
-    );
-
-  const greenWeight =
+const greenWeight =
     Number(
       document
         .getElementById("newCoffeeGreenWeight")
@@ -4746,17 +4692,6 @@ async function saveNewCoffee() {
   }
 
   if (
-    !Number.isFinite(price6) ||
-    price6 < 0 ||
-    !Number.isFinite(price12) ||
-    price12 < 0
-  ) {
-    errorBox.textContent =
-      "Enter valid 6 oz and 12 oz prices.";
-    return;
-  }
-
-  if (
     !Number.isFinite(greenWeight) ||
     greenWeight < 0
   ) {
@@ -4811,8 +4746,10 @@ async function saveNewCoffee() {
               elevation: elevation,
               process: process,
               tasting_notes: tastingNotes,
-              price_6oz: price6,
-              price_12oz: price12,
+              // Legacy compatibility columns are still NOT NULL in the database.
+              // Package prices are managed only in product_sizes.
+              price_6oz: 0,
+              price_12oz: 0,
               active: active
             })
         }
