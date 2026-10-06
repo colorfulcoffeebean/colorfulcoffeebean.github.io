@@ -974,6 +974,14 @@
             <input id="promotionDiscount" type="number" min="0.01" step="0.01" placeholder="5.00">
           </div>
           <div class="form-group">
+            <label for="promotionDiscountType">Discount Type</label>
+            <select id="promotionDiscountType">
+              <option value="per_order">Per Order</option>
+              <option value="per_bag">Per Bag</option>
+            </select>
+            <div class="muted" style="margin-top:6px;">Per Order applies the amount once. Per Bag applies the amount to each coffee bag.</div>
+          </div>
+          <div class="form-group">
             <label for="promotionStartDate">Start Date</label>
             <input id="promotionStartDate" type="date">
           </div>
@@ -2809,13 +2817,14 @@ async function loadPromotions() {
           <div class="promo-head">
             <div>
               <div class="promo-code">${escapeHtml(p.code)}</div>
-              <div class="muted">$${Number(p.discount_amount || 0).toFixed(2)} OFF</div>
+              <div class="muted">$${Number(p.discount_amount || 0).toFixed(2)} OFF ${p.discount_type === "per_bag" ? "per bag" : "per order"}</div>
             </div>
             <span class="promo-badge ${status.cls}">${status.text}</span>
           </div>
 
           <div class="promo-grid" style="margin-top:16px;">
             <div><strong>Valid</strong><br>${formatPromoDate(p.start_date)} – ${formatPromoDate(p.expiration_date)}</div>
+            <div><strong>Discount Type</strong><br>${p.discount_type === "per_bag" ? "Per Bag" : "Per Order"}</div>
             <div><strong>Order Type</strong><br>${escapeHtml(restrictions.join(" · "))}</div>
           </div>
 
@@ -2846,6 +2855,7 @@ function openPromotionForm(p = null) {
     document.getElementById("promotionId").value = p.id;
     document.getElementById("promotionCode").value = p.code || "";
     document.getElementById("promotionDiscount").value = p.discount_amount ?? "";
+    document.getElementById("promotionDiscountType").value = p.discount_type === "per_bag" ? "per_bag" : "per_order";
     document.getElementById("promotionStartDate").value = p.start_date || "";
     document.getElementById("promotionExpirationDate").value = p.expiration_date || "";
     document.getElementById("promotionPickupOnly").checked = !!p.local_pickup_only;
@@ -2856,6 +2866,7 @@ function openPromotionForm(p = null) {
     document.getElementById("promotionId").value = "";
     document.getElementById("promotionCode").value = "";
     document.getElementById("promotionDiscount").value = "";
+    document.getElementById("promotionDiscountType").value = "per_order";
     document.getElementById("promotionStartDate").value = "";
     document.getElementById("promotionExpirationDate").value = "";
     document.getElementById("promotionPickupOnly").checked = false;
@@ -2884,6 +2895,7 @@ async function savePromotion() {
   const id = document.getElementById("promotionId").value;
   const code = document.getElementById("promotionCode").value.trim().toUpperCase();
   const discount = Number(document.getElementById("promotionDiscount").value);
+  const discountType = document.getElementById("promotionDiscountType").value;
   const startDate = document.getElementById("promotionStartDate").value;
   const expirationDate = document.getElementById("promotionExpirationDate").value;
   const pickupOnly = document.getElementById("promotionPickupOnly").checked;
@@ -2918,6 +2930,7 @@ async function savePromotion() {
     const body = {
       code: code,
       discount_amount: discount,
+      discount_type: discountType,
       // Legacy column is still NOT NULL in the current database schema.
       // Keep it at zero while all real promotion calculations use discount_amount.
       discount_percent: 0,
