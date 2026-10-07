@@ -694,7 +694,7 @@
 
       <p>
         <strong>Many ways to brew. Many ways to enjoy.<br>
-        One purpose — Enjoy and Share a great cup of coffee.</strong>
+        One purpose — a great cup of coffee.</strong>
       </p>
 
     </section>
@@ -885,8 +885,13 @@
             <div class="promotion-row" style="margin-top:8px;">
               <input id="promotionCode" type="text" placeholder="Enter promotion code" autocomplete="off">
               <button id="applyPromotionButton" type="button" class="button" onclick="applyPromotionCode()">Apply</button>
+              <button id="removePromotionButton" type="button" class="button"
+                onclick="removePromotionCode()" style="display:none;">Remove</button>
             </div>
             <div id="promotionMessage" class="promotion-message"></div>
+            <div class="muted" style="margin-top:6px; font-size:0.88rem;">
+              Only one promotion code may be used per order.
+            </div>
           </div>
 
           <div id="discountSummaryLine" class="summary-line discount-line" style="display:none;">
@@ -1741,11 +1746,25 @@
       appliedPromotion = null;
       const line = document.getElementById("discountSummaryLine");
       if (line) line.style.display = "none";
+      const removeButton = document.getElementById("removePromotionButton");
+      if (removeButton) removeButton.style.display = "none";
+      const applyButton = document.getElementById("applyPromotionButton");
+      if (applyButton) applyButton.style.display = "inline-block";
+      const promoInput = document.getElementById("promotionCode");
+      if (promoInput) promoInput.readOnly = false;
       const msg = document.getElementById("promotionMessage");
       if (msg) { msg.textContent = message; msg.className = "promotion-message" + (message ? " error" : ""); }
     }
 
     async function applyPromotionCode() {
+      if (appliedPromotion) {
+        alert(
+          "Only one promotion code can be used per order.\n\n" +
+          "Please remove the current promotion before applying another code."
+        );
+        return;
+      }
+
       const code = document.getElementById("promotionCode").value.trim();
       const name = document.getElementById("customerName").value.trim();
       const email = document.getElementById("customerEmail").value.trim();
@@ -1768,6 +1787,9 @@
           discountType: result.discount_type === "per_bag" ? "per_bag" : "per_order"
         };
         document.getElementById("promotionCode").value = result.code;
+        document.getElementById("promotionCode").readOnly = true;
+        document.getElementById("applyPromotionButton").style.display = "none";
+        document.getElementById("removePromotionButton").style.display = "inline-block";
         msg.textContent =
           "Promotion applied: $" +
           appliedPromotion.discountAmount.toFixed(2) +
@@ -1777,6 +1799,12 @@
         msg.className = "promotion-message success"; updateOrderSummary();
       } catch(e) { console.error(e); clearPromotion("This promotion code could not be validated. Please try again."); updateOrderSummary(); }
       finally { button.disabled = false; button.textContent = "Apply"; }
+    }
+
+    function removePromotionCode() {
+      document.getElementById("promotionCode").value = "";
+      clearPromotion("");
+      updateOrderSummary();
     }
 
     function invalidateAppliedPromotion(message) {
