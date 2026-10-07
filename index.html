@@ -996,13 +996,16 @@
               oninput="validateMarylandShippingState(false)"
               onblur="validateMarylandShippingState(true)">
             <div id="marylandShippingWarning" class="maryland-warning" style="display:none;">
-              ⚠ Shipping is available only within Maryland. Colorful Coffee Bean cannot ship cottage food products outside the State of Maryland.
+              ⚠ Shipping is available only within Maryland. Please enter a Maryland state and ZIP Code. Colorful Coffee Bean cannot ship cottage food products outside the State of Maryland.
             </div>
           </div>
 
           <div class="form-group">
             <label for="shippingZip">ZIP Code *</label>
-            <input type="text" id="shippingZip" placeholder="ZIP Code">
+            <input type="text" id="shippingZip" placeholder="ZIP Code"
+              inputmode="numeric" maxlength="10"
+              oninput="validateMarylandShippingState(false)"
+              onblur="validateMarylandShippingState(true)">
           </div>
 
         </div>
@@ -1599,6 +1602,9 @@
       const stateInput =
         document.getElementById("shippingState");
 
+      const zipInput =
+        document.getElementById("shippingZip");
+
       const warning =
         document.getElementById("marylandShippingWarning");
 
@@ -1608,14 +1614,43 @@
       }
 
       const state = stateInput.value.trim().toUpperCase();
-      const valid = state === "MD" || state === "MARYLAND";
+      const stateValid = state === "MD" || state === "MARYLAND";
+
+      // Accept 5-digit ZIP or ZIP+4, but validate the first 5 digits.
+      const zipMatch = zipInput.value.trim().match(/^(\d{5})(?:-\d{4})?$/);
+      const zip5 = zipMatch ? zipMatch[1] : "";
+      const zipPrefix = zip5 ? zip5.substring(0, 3) : "";
+
+      // Maryland ZIP prefixes used for ordinary Maryland destinations.
+      // 213 is unassigned. 200-205 are Washington, DC / federal ZIPs,
+      // so they are intentionally not accepted here.
+      const marylandZipPrefixes = new Set([
+        "206", "207", "208", "209",
+        "210", "211", "212",
+        "214", "215", "216", "217", "218", "219"
+      ]);
+
+      const zipValid =
+        zip5 !== "" &&
+        marylandZipPrefixes.has(zipPrefix);
+
+      const stateEntered = state !== "";
+      const zipEntered = zipInput.value.trim() !== "";
+
+      // One shared warning for either an invalid state or invalid ZIP.
+      const shouldWarn =
+        showWarning &&
+        (
+          (stateEntered && !stateValid) ||
+          (zipEntered && !zipValid)
+        );
 
       if (warning) {
-        warning.style.display =
-          (!valid && state !== "" && showWarning) ? "block" : "none";
+        warning.style.display = shouldWarn ? "block" : "none";
       }
 
-      return valid;
+      // During final order validation both fields must be valid.
+      return stateValid && zipValid;
     }
 
 
@@ -2101,7 +2136,7 @@
         if (!validateMarylandShippingState(true)) {
           alert(
             "Maryland shipping only.\n\n" +
-            "Colorful Coffee Bean operates as a Maryland Cottage Food Business and cannot ship cottage food products outside the State of Maryland."
+            "Please enter a Maryland state and ZIP Code. Colorful Coffee Bean operates as a Maryland Cottage Food Business and cannot ship cottage food products outside the State of Maryland."
           );
           document.getElementById("shippingState").focus();
           return null;
