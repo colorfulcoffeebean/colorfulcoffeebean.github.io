@@ -407,6 +407,31 @@
     .promotion-message.error { color:#9b2c2c; }
     .discount-line { color:#2f6b3c; }
 
+    /* Promotion code: stack input and buttons on narrow screens */
+    @media (max-width: 600px) {
+      .promotion-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .promotion-row input {
+        flex: none;
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+      }
+      .promotion-row .button {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        margin: 0;
+        text-align: center;
+      }
+      .promotion-row .button[style*="display:none"] {
+        display: none !important;
+      }
+    }
+
+
     .total {
       margin-top: 15px;
 
