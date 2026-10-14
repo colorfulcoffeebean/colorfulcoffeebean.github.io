@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A simple pour-over brewing guide for Colorful Coffee Bean specialty coffee.">
+  <title>Coffee Recipes | Colorful Coffee Bean</title>
+  <style>
+    :root { color-scheme: light; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:Arial,sans-serif; background:#f7f3eb; color:#2c2118; }
+    header { text-align:center; padding:60px 20px 40px; }
+    .brand { display:flex; align-items:center; justify-content:center; gap:18px; margin-bottom:15px; }
+    .brand-logo { width:200px; height:200px; object-fit:contain; flex-shrink:0; }
+    .brand h1 { font-size:5rem; margin:0; }
+    header p { max-width:650px; margin:auto; line-height:1.7; color:#66584c; }
+    .buttons { margin-top:25px; }
+    .button { display:inline-block; padding:13px 22px; margin:5px; background:#38291f; color:white; text-decoration:none; border:0; border-radius:8px; cursor:pointer; font-size:16px; font-family:Arial,sans-serif; }
+    .button:hover { background:#594235; }
+    .button[aria-current="page"] { background:#8a5b35; }
+    .container { max-width:1100px; margin:auto; padding:30px 20px; }
+    section { margin:40px 0 60px; }
+    h2 { font-size:2rem; border-bottom:1px solid #d6cabc; padding-bottom:10px; }
+    .intro { color:#66584c; line-height:1.7; max-width:760px; }
+    .equipment-panel { background:#fff; border:1px solid #d6cabc; border-radius:12px; padding:24px; margin:30px 0 36px; }
+    .equipment-panel h3 { margin:0 0 8px; font-size:1.45rem; }
+    .equipment-panel p { color:#66584c; line-height:1.7; }
+    .equipment-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px; padding:0; margin:20px 0; list-style:none; }
+    .equipment-list li { background:#f7f3eb; border-radius:8px; padding:14px 16px; }
+    .recipe-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr)); gap:22px; margin-top:28px; }
+    .recipe-category { margin-top:44px; }
+    .recipe-category h3 { font-size:1.55rem; margin-bottom:8px; }
+    .recipe-category > p { color:#66584c; line-height:1.7; }
+    .recipe-details { display:grid; grid-template-columns:repeat(auto-fit,minmax(145px,1fr)); gap:12px; margin:20px 0 28px; }
+    .recipe-detail { background:#f7f3eb; border-radius:8px; padding:15px; }
+    .recipe-detail strong { display:block; margin-bottom:6px; }
+    .recipe-steps { padding-left:22px; line-height:1.8; }
+    .recipe-steps li { padding-left:5px; margin-bottom:12px; }
+    .recipe-note { background:#f7f3eb; padding:16px 18px; border-left:4px solid #8a5b35; border-radius:6px; line-height:1.7; }
+    .recipe-card { background:white; border-radius:12px; padding:25px; box-shadow:0 3px 12px rgba(0,0,0,.08); }
+    .recipe-card h3 { margin-top:0; font-size:1.3rem; }
+    .recipe-card p { line-height:1.7; color:#66584c; }
+    .recipe-tag { color:#8a5b35; font-weight:bold; font-size:.85rem; text-transform:uppercase; letter-spacing:.07em; }
+    .cottage-food-notice { max-width:1060px; margin:35px auto 0; padding:22px 20px; background:#fff; border:1px solid #d6cabc; border-radius:12px; text-align:center; line-height:1.6; }
+    .cottage-food-notice h3 { margin-top:0; }
+    footer { text-align:center; padding:40px 20px; color:#777; line-height:1.7; }
+    @media(max-width:600px) { header { padding-top:40px; } .brand { gap:12px; } .brand-logo { width:120px; height:120px; } .brand h1 { font-size:2rem; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <img src="images/colorful-coffee-bean-logo.png" alt="Colorful Coffee Bean Logo" class="brand-logo">
+      <h1>Colorful Coffee Bean</h1>
+    </div>
+    <p>Freshly roasted specialty coffee featuring carefully selected single-origin beans from around the world.</p>
+    <nav class="buttons" aria-label="Main navigation">
+      <a class="button" href="index.html#coffee">Shop Coffee</a>
+      <a class="button" href="index.html#order">View Order</a>
+      <a class="button" href="status.html">Check Order Status</a>
+      <a class="button" href="recipe.html" aria-current="page">Recipe</a>
+    </nav>
+  </header>
+  <main class="container">
+    <section>
+      <h2>Pour Over Coffee Recipes</h2>
+      <p class="intro"><strong>Many ways to brew. Many ways to enjoy.</strong><br>Explore five pour-over recipes designed to bring out different qualities in freshly roasted specialty coffee.</p>
+      <div class="equipment-panel" aria-labelledby="equipment-heading">
+        <h3 id="equipment-heading">Equipment You'll Need</h3>
+        <p>Gather these tools before starting your pour-over coffee.</p>
+        <ul class="equipment-list">
+          <li><strong>Pour-Over Dripper</strong><br>V60-style or similar</li>
+          <li><strong>Paper Filters</strong><br>Compatible with your dripper</li>
+          <li><strong>Coffee Grinder</strong><br>Preferably a burr grinder</li>
+          <li><strong>Digital Scale</strong><br>For weighing coffee and water</li>
+          <li><strong>Gooseneck Kettle</strong><br>For controlled pouring</li>
+          <li><strong>Cup or Coffee Server</strong><br>Heat-safe; add ice for iced recipes</li>
+          <li><strong>Timer</strong><br>A phone timer works well</li>
+          <li><strong>Colorful Coffee Bean</strong><br>Colorful Coffee Bean roasted beans</li>
+        </ul>
+        <p><strong>Before brewing:</strong> Rinse the paper filter with hot water and discard the rinse water. For iced recipes, weigh the ice separately and place it in the server before brewing.</p>
+      </div>
+      <p class="intro">These recipes are starting points; results vary by bean, roast, dripper, and grind.</p>
+      <div class="recipe-category" id="hot">
+        <h3>Hot Pour Over</h3>
+        <p>Three ways to enjoy your coffee hot, from bright and delicate to rich and full-bodied.</p>
+        <div class="recipe-grid">
+        <article class="recipe-card">
+          <div class="recipe-tag">Hot Pour Over</div>
+          <h3>Balanced & Sweet</h3>
+          <p>Balanced sweetness, clarity, and body.</p>
+          <div class="recipe-details">
+            <div class="recipe-detail"><strong>Coffee</strong>20 g</div>
+            <div class="recipe-detail"><strong>Water</strong>320 g</div>
+            <div class="recipe-detail"><strong>Ratio</strong>1:16</div>
+            <div class="recipe-detail"><strong>Temperature</strong>200°F / 93°C</div>
+            <div class="recipe-detail"><strong>Grind</strong>Medium-fine</div>
+            <div class="recipe-detail"><strong>Target Brew Time</strong>2:30–3:30</div>
+          </div>
+          <h4>Brewing Steps</h4>
+          <ol class="recipe-steps">
+              <li><strong>0:00–0:45:</strong> Bloom with 40 g of water.</li>
+              <li><strong>0:45:</strong> Pour slowly to 160 g total.</li>
+              <li><strong>1:15:</strong> Pour to 240 g total.</li>
+              <li><strong>1:45:</strong> Pour to 320 g total and allow to drain.</li>
+          </ol>
+        </article>
+        <article class="recipe-card">
+          <div class="recipe-tag">Hot Pour Over</div>
+          <h3>Bright & Fruity</h3>
+          <p>A lively cup highlighting floral notes and fruit-like acidity.</p>
+          <div class="recipe-details">
+            <div class="recipe-detail"><strong>Coffee</strong>15 g</div>
+            <div class="recipe-detail"><strong>Water</strong>250 g</div>
+            <div class="recipe-detail"><strong>Ratio</strong>1:16.7</div>
+            <div class="recipe-detail"><strong>Temperature</strong>205°F / 96°C</div>
+            <div class="recipe-detail"><strong>Grind</strong>Medium-fine</div>
+            <div class="recipe-detail"><strong>Target Brew Time</strong>2:30–3:15</div>
+          </div>
+          <h4>Brewing Steps</h4>
+          <ol class="recipe-steps">
+              <li><strong>0:00–0:40:</strong> Bloom with 45 g of water.</li>
+              <li><strong>0:40:</strong> Pour gently to 120 g total.</li>
+              <li><strong>1:15:</strong> Pour to 185 g total.</li>
+              <li><strong>1:50:</strong> Pour to 250 g total and allow to drain.</li>
+          </ol>
+        </article>
+        <article class="recipe-card">
+          <div class="recipe-tag">Hot Pour Over</div>
+          <h3>Rich & Bold</h3>
+          <p>A fuller-bodied cup with a more concentrated flavor.</p>
+          <div class="recipe-details">
+            <div class="recipe-detail"><strong>Coffee</strong>22 g</div>
+            <div class="recipe-detail"><strong>Water</strong>300 g</div>
+            <div class="recipe-detail"><strong>Ratio</strong>1:13.6</div>
+            <div class="recipe-detail"><strong>Temperature</strong>198°F / 92°C</div>
+            <div class="recipe-detail"><strong>Grind</strong>Medium-fine</div>
+            <div class="recipe-detail"><strong>Target Brew Time</strong>2:45–3:45</div>
+          </div>
+          <h4>Brewing Steps</h4>
+          <ol class="recipe-steps">
+              <li><strong>0:00–0:45:</strong> Bloom with 50 g of water.</li>
+              <li><strong>0:45:</strong> Pour slowly to 150 g total.</li>
+              <li><strong>1:25:</strong> Pour to 225 g total.</li>
+              <li><strong>2:00:</strong> Pour to 300 g total and allow to drain.</li>
+          </ol>
+        </article>
+        </div>
+      </div>
+      <div class="recipe-category" id="iced">
+        <h3>Iced Pour Over</h3>
+        <p>Flash-brewed directly over ice. The ice is part of the total brew water, not extra water.</p>
+        <div class="recipe-grid">
+        <article class="recipe-card">
+          <div class="recipe-tag">Iced Pour Over</div>
+          <h3>Iced Pour Over</h3>
+          <p>Brew directly over ice for a crisp, aromatic iced coffee.</p>
+          <div class="recipe-details">
+            <div class="recipe-detail"><strong>Coffee</strong>20 g</div>
+            <div class="recipe-detail"><strong>Water</strong>200 g hot + 120 g ice</div>
+            <div class="recipe-detail"><strong>Ratio</strong>1:16 total</div>
+            <div class="recipe-detail"><strong>Temperature</strong>200°F / 93°C</div>
+            <div class="recipe-detail"><strong>Grind</strong>Medium-fine</div>
+            <div class="recipe-detail"><strong>Target Brew Time</strong>2:15–3:15</div>
+          </div>
+          <h4>Brewing Steps</h4>
+          <ol class="recipe-steps">
+              <li><strong>Prepare:</strong> Place 120 g of ice in the server beneath the dripper.</li>
+              <li><strong>0:00–0:40:</strong> Bloom the grounds with 40 g of hot water.</li>
+              <li><strong>0:40:</strong> Pour to 120 g hot water total.</li>
+              <li><strong>1:20:</strong> Pour to 200 g hot water total. Let drain, swirl to melt and chill, then serve.</li>
+          </ol>
+        </article>
+        <article class="recipe-card">
+          <div class="recipe-tag">Iced Pour Over</div>
+          <h3>Bright & Refreshing Iced</h3>
+          <p>A lighter, aromatic iced cup, especially enjoyable with fruity coffees.</p>
+          <div class="recipe-details">
+            <div class="recipe-detail"><strong>Coffee</strong>18 g</div>
+            <div class="recipe-detail"><strong>Water</strong>180 g hot + 120 g ice</div>
+            <div class="recipe-detail"><strong>Ratio</strong>1:16.7 total</div>
+            <div class="recipe-detail"><strong>Temperature</strong>205°F / 96°C</div>
+            <div class="recipe-detail"><strong>Grind</strong>Medium-fine</div>
+            <div class="recipe-detail"><strong>Target Brew Time</strong>2:15–3:15</div>
+          </div>
+          <h4>Brewing Steps</h4>
+          <ol class="recipe-steps">
+              <li><strong>Prepare:</strong> Place 120 g of ice in the server beneath the dripper.</li>
+              <li><strong>0:00–0:40:</strong> Bloom the grounds with 40 g of hot water.</li>
+              <li><strong>0:40:</strong> Pour to 110 g hot water total.</li>
+              <li><strong>1:20:</strong> Pour to 180 g hot water total. Let drain, swirl to chill, then serve.</li>
+          </ol>
+        </article>
+        </div>
+      </div>
+      <div class="recipe-note" style="margin-top:30px;"><strong>Make it yours:</strong> If your coffee tastes sour or weak, try a slightly finer grind. If it tastes harsh or bitter, try a slightly coarser grind. Brew times are guides, not strict rules. For iced recipes, swirl the finished coffee with the ice before serving; some ice may remain.</div>
+    </section>
+  </main>
+  <section class="cottage-food-notice">
+    <h3>Maryland Cottage Food Business</h3>
+    <p>Colorful Coffee Bean operates as a Maryland Cottage Food Business.<br>Sales and shipping are available within Maryland only.</p>
+  </section>
+  <footer>10% of the profits from every order will be donated to charity.<br>Thank you for enjoying great coffee while helping us give back.<br>© 2026 Colorful Coffee Bean</footer>
+</body>
+</html>
