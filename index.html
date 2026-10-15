@@ -2743,19 +2743,45 @@ Thank you!`;
 
 
 
+
 <div id="paymentModal" class="payment-modal hidden">
   <div class="payment-card">
     <h2>Order Received!</h2>
     <div id="paymentOrderNumber"></div>
     <p class="awaiting">Payment: Awaiting Payment</p>
     <p id="paymentTotal"></p>
+
     <div class="venmo-user">@ColorfulCoffeeBean</div>
-    <img class="venmo-qr" src="images/venmo-qr.png" alt="Venmo QR code for Colorful Coffee Bean">
+
+    <img class="venmo-qr"
+         src="images/venmo-qr.png"
+         alt="Venmo QR code for Colorful Coffee Bean">
+
+    <!-- Venmo Mobile Payment Button -->
+    <a href="https://venmo.com/u/ColorfulCoffeeBean"
+       target="_blank"
+       rel="noopener noreferrer"
+       style="display:inline-block;
+              background:#2684c5;
+              color:white;
+              padding:14px 24px;
+              border-radius:8px;
+              text-decoration:none;
+              font-weight:bold;
+              margin:15px 0;">
+      Pay with Venmo
+    </a>
+
     <p id="paymentInstructions"></p>
+
     <p>A confirmation email will be sent to the email address on your order.</p>
-    <button class="close-payment" type="button" onclick="closePaymentModal()">Done</button>
+
+    <button class="close-payment"
+            type="button"
+            onclick="closePaymentModal()">Done</button>
   </div>
 </div>
+
 
 </body>
 
