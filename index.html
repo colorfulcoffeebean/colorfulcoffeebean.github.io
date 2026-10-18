@@ -2721,6 +2721,33 @@ Thank you!`;
 
 
 
+
+    // Anonymous visitor counting: one browser per Eastern calendar day.
+    async function recordVisitor() {
+      try {
+        const storageKey = "ccb_anonymous_visitor_v1";
+        let visitorId = localStorage.getItem(storageKey);
+        if (!visitorId || !/^[0-9a-f-]{36}$/i.test(visitorId)) {
+          visitorId = crypto.randomUUID();
+          localStorage.setItem(storageKey, visitorId);
+        }
+        const response = await fetch(SUPABASE_URL + "/rest/v1/rpc/record_visitor", {
+          method: "POST",
+          headers: {
+            "apikey": SUPABASE_PUBLISHABLE_KEY,
+            "Authorization": "Bearer " + SUPABASE_PUBLISHABLE_KEY,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ p_visitor_id: visitorId }),
+          keepalive: true
+        });
+        if (!response.ok) console.warn("Visitor count unavailable:", response.status);
+      } catch (error) {
+        // Statistics should never interfere with ordering.
+        console.warn("Visitor count unavailable:", error);
+      }
+    }
+
     /* =========================================================
        PAGE LOAD
        ========================================================= */
@@ -2733,6 +2760,7 @@ Thank you!`;
 
         updateOrderSummary();
         loadCoffeeProducts();
+        recordVisitor();
 
       }
 
