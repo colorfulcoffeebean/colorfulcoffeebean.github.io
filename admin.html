@@ -555,6 +555,14 @@
     }
     .promo-checks input { width:auto; }
 
+
+    /* Compact, admin-only visitor summary */
+    .visitor-strip { background:#fff; border:1px solid #e5dcd0; border-radius:8px;
+      padding:10px 14px; margin-bottom:14px; text-align:center;
+      font-size:13px; color:#38291f; }
+    .visitor-strip strong { font-weight:700; }
+    .visitor-strip .separator { color:#b5a89b; margin:0 9px; }
+
   </style>
 
 </head>
@@ -677,6 +685,14 @@
     class="hidden"
   >
 
+
+
+    <!-- Visitor summary: visible only after admin login -->
+    <div class="visitor-strip" id="visitorStats" aria-live="polite">
+      <strong>Visitors</strong> &nbsp; Today: <strong id="visitorToday">—</strong>
+      <span class="separator">|</span> Week: <strong id="visitorWeek">—</strong>
+      <span class="separator">|</span> Total: <strong id="visitorTotal">—</strong>
+    </div>
 
     <!-- ADMIN TABS -->
 
@@ -1624,6 +1640,7 @@ async function login() {
     await loadOrders();
 
     await loadInventory();
+    await loadVisitorStats();
 
   }
 
@@ -1652,6 +1669,10 @@ async function login() {
 // ==========================================
 
 function logout() {
+  ["visitorToday", "visitorWeek", "visitorTotal"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = "—";
+  });
 
   accessToken = null;
 
@@ -2751,6 +2772,28 @@ async function updateStatus(
 }
 
 
+
+
+// ==========================================
+// ADMIN-ONLY VISITOR COUNTS
+// ==========================================
+async function loadVisitorStats() {
+  try {
+    const response = await fetch(SUPABASE_URL + "/rest/v1/rpc/get_visitor_stats", {
+      method: "POST",
+      headers: headers(),
+      body: JSON.stringify({})
+    });
+    if (!response.ok) throw new Error("Visitor statistics unavailable (" + response.status + ")");
+    const data = await response.json();
+    document.getElementById("visitorToday").textContent = Number(data.today || 0).toLocaleString();
+    document.getElementById("visitorWeek").textContent = Number(data.week || 0).toLocaleString();
+    document.getElementById("visitorTotal").textContent = Number(data.total || 0).toLocaleString();
+  } catch (error) {
+    console.warn(error);
+    document.getElementById("visitorStats").title = error.message;
+  }
+}
 
 // ==========================================
 // ADMIN TABS
